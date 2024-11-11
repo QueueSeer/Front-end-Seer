@@ -1,7 +1,11 @@
+import React from "react";
+import Navbar from "./components/navbar"; 
+import './index.css';
+
 export default function App() {
   return (
-    <div>
-      <h1>Hello world</h1>
+    <div className="App">
+      <Navbar />
     </div>
   );
 }
