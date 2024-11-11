@@ -1,8 +1,18 @@
-# React + Vite
+วิธีโคลนและรันโปรเจกต์นี้
+1. โคลนโปรเจกต์ไปยังเครื่องของคุณ
+เริ่มจากเปิด Terminal หรือ Command Prompt แล้วพิมพ์คำสั่งนี้ลงไป เพื่อโหลดโปรเจกต์มาที่เครื่อง
+git clone <URL ของโปรเจกต์>
+(แทนที่ <URL ของโปรเจกต์> ด้วยลิงก์ Git repository ของโปรเจกต์นี้)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+2. เข้าไปที่โฟลเดอร์โปรเจกต์
+หลังจากโคลนเสร็จแล้ว ให้พิมพ์คำสั่งนี้เพื่อเข้าไปที่โฟลเดอร์โปรเจกต์:
+cd ชื่อโปรเจกต์
 
-Currently, two official plugins are available:
+3.ติดตั้ง dependencies ที่ต้องใช้
+npm install
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+4. รันเซิร์ฟเวอร์ในโหมดพัฒนา
+npm run dev
+
+หลังจากรันคำสั่งนี้ จะมีลิงก์ขึ้นมาใน Terminal ให้คัดลอกลิงก์นั้นแล้วเปิดในเบราว์เซอร์เพื่อดูโปรเจกต์ได้เลย!
+
