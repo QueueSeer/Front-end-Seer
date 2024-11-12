@@ -1,11 +1,18 @@
+// App.js
 import React from "react";
-import Navbar from "./components/navbar"; 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/navbar";
+import Login from "./pages/Login/Login";
 import './index.css';
 
 export default function App() {
   return (
-    <div className="App">
+    <Router>
       <Navbar />
-    </div>
+      <Routes>
+        <Route path="/" element={<h1>หน้าแรก</h1>} />
+        <Route path="/Login" element={<Login />} />
+      </Routes>
+    </Router>
   );
 }

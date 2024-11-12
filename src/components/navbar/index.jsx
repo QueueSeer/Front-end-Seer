@@ -1,5 +1,6 @@
 import React from "react";
 import Images from "../../assets";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
@@ -21,15 +22,14 @@ export default function Navbar() {
           <li><a href="#home">หน้าหลัก</a></li>
           <li><a href="#packages">แพ็กเกจ</a></li>
           <li><a href="#auction">ประมูล</a></li>
-          <li><a href="#articles">บทความ</a></li>
         </ul>
       </div>
 
       {/* ปุ่มเข้าสู่ระบบและลงทะเบียน */}
       <div className="flex-none flex gap-2">
-      <button className="btn btn-outline btn-sm text-white hover:bg-opacity-20" style={{ color: "#8677A7", borderColor: "#8677A7" }}>
-          เข้าสู่ระบบ
-        </button>
+      <Link to="/login" className="btn btn-outline btn-sm text-white hover:bg-opacity-20" style={{ color: "#8677A7", borderColor: "#8677A7" }}>
+    เข้าสู่ระบบ
+  </Link>
         <button className="btn btn-sm text-white" style={{ backgroundColor: "#8677A7" }}>
           ลงทะเบียน
         </button>
