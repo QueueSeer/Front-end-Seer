@@ -8,9 +8,8 @@ import './index.css';
 export default function App() {
   return (
     <Router>
-      <Navbar />
+   
       <Routes>
-        <Route path="/" element={<h1>หน้าแรก</h1>} />
         <Route path="/Login" element={<Login />} />
       </Routes>
     </Router>
