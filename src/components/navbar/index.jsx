@@ -30,9 +30,9 @@ export default function Navbar() {
       <Link to="/login" className="btn btn-outline btn-sm text-white hover:bg-opacity-20" style={{ color: "#8677A7", borderColor: "#8677A7" }}>
     เข้าสู่ระบบ
   </Link>
-        <button className="btn btn-sm text-white" style={{ backgroundColor: "#8677A7" }}>
+      <Link to="/Register" className="btn btn-sm text-white" style={{ backgroundColor: "#8677A7" }}>
           ลงทะเบียน
-        </button>
+          </Link>
       </div>
     </div>
   );
