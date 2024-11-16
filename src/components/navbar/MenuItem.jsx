@@ -6,11 +6,11 @@ const MenuItem = ({ icon, children, onClick }) => {
     <li>
       <a
         href="#"
-        className="flex items-center px-4 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+        className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
         onClick={onClick}
       >
         {/* ไอคอน */}
-        <span className="mr-2">{icon}</span>
+        <span className="mr-3 w-6 h-6">{icon}</span>
         {/* ข้อความหรือคอนเทนต์ */}
         {children}
       </a>

@@ -87,8 +87,8 @@ export default function Navbar() {
         {isDropdownOpen && (
           <div
             ref={dropdownRef}
-            className="absolute top-10 right-0 z-50 bg-white shadow-lg rounded-lg"
-            style={{ minWidth: "260px" }} // Adjust width as needed
+            className="absolute top-10 right-0 z-50 bg-white shadow-lg rounded-3xl"
+            style={{ minWidth: "300px" }} // Adjust width as needed
           >
             <UserMenu />
           </div>
