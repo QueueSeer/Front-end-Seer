@@ -13,7 +13,7 @@ export default function App() {
         {/* เส้นทางสำหรับหน้า Profile */}
         <Route path="/" element={<Profile />} />
         <Route path="/profile" element={<Profile />} />
-        
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

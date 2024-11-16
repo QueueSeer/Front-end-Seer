@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
 // src/components/Navbar.jsx
-import UserMenu from "./UserMenu";
+import React, { useState, useEffect, useRef } from "react";
 import Images from "../../assets";
+import UserProfile from "./NavbarProfile/Userprofile"; // Import ไฟล์ที่แยกออกมา
+import Notification from "./NavbarNotification/Notification";
 
 export default function Navbar() {
   // State สำหรับจัดการ dropdown
@@ -47,52 +48,27 @@ export default function Navbar() {
         </span>
       </div>
 
-      {/* ลิงก์เมนู */}
-      <div className="hidden lg:flex flex-none">
-        <ul className="menu menu-horizontal gap-1 text-gray-800">
-          <li>
-            <a href="#home">หน้าหลัก</a>
-          </li>
-          <li>
-            <a href="#packages">แพ็กเกจ</a>
-          </li>
-          <li>
-            <a href="#auction">ประมูล</a>
-          </li>
-          <img
-            src={Images.bellIcon}
-            alt="BellIcon"
-            className="w-5 h-5 rounded-md mt-2"
-          />
-        </ul>
-      </div>
+      <div className="space-x-5">
+        {/* ลิงก์เมนู */}
+        <div className="hidden lg:flex flex-none">
+          <ul className="flex space-x-5 gap-1 text-gray-800">
+            <li>
+              <a href="#home">หน้าหลัก</a>
+            </li>
+            <li>
+              <a href="#packages">แพ็กเกจ</a>
+            </li>
+            <li>
+              <a href="#auction">ประมูล</a>
+            </li>
+          </ul>
+        </div>
 
-      {/* โปรไฟล์ผู้ใช้ */}
-      <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
-        <button
-          type="button"
-          className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-          id="user-menu-button"
-          aria-expanded={isDropdownOpen ? "true" : "false"}
-          onClick={toggleDropdown}
-        >
-          <span className="sr-only">Open user menu</span>
-          <img
-            className="w-8 h-8 rounded-full"
-            src={Images.profile_seer}
-            alt="profile_seer"
-          />
-        </button>
-        {/* Dropdown position adjustment */}
-        {isDropdownOpen && (
-          <div
-            ref={dropdownRef}
-            className="absolute top-10 right-0 z-50 bg-white shadow-lg rounded-3xl"
-            style={{ minWidth: "300px" }} // Adjust width as needed
-          >
-            <UserMenu />
-          </div>
-        )}
+        {/* การแจ้งเตือน */}
+        <Notification />
+
+        {/* โปรไฟล์ผู้ใช้ */}
+        <UserProfile />
       </div>
     </div>
   );
