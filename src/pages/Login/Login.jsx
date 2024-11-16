@@ -1,31 +1,34 @@
-// src/pages/login/Login.jsx
+// src/pages/Login/Login.jsx
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Images from "../../assets";
-import Navbar from "../../components/navbar"; // เรียกใช้ path ที่ถูกต้อง
+import Navbar from "../../components/navbar"; // Navbar ที่อยู่ใน components
+
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate(); // ใช้ useNavigate สำหรับนำทาง
+
+  const handleLogin = (e) => {
+    e.preventDefault(); // ป้องกันการรีเฟรชหน้า
+    navigate("/fillter"); // นำทางไปยังหน้า Fillter
+  };
 
   return (
     <div>
-      <Navbar /> {/* เรียกใช้ Navbar */}
-      <div className="flex h-screen font-sans lg:flex-row flex-col">
+      <Navbar />
+      <div className="flex h-screen font-notosans lg:flex-row flex-col">
         {/* ด้านซ้าย: พื้นหลังเบลอ */}
         <div className="w-full lg:w-1/2 relative flex flex-col bg-gray-50 lg:bg-gray-50 p-8">
-          {/* พื้นหลังเบลอที่เหมือนเดิม */}
+          {/* พื้นหลังเบลอ */}
           <div className="absolute top-5 left-10 rounded-full w-96 h-96 bg-yellow-100 opacity-70 blur-3xl hidden lg:block"></div>
           <div className="absolute top-1/2 right-[25%] transform -translate-y-1/2 rounded-full w-96 h-96 bg-purple-300 opacity-70 blur-3xl hidden lg:block"></div>
           <div className="absolute top-1/2 right-[1%] transform -translate-y-1/2 rounded-full w-96 h-96 bg-purple-200 opacity-70 blur-3xl hidden lg:block"></div>
-
-          {/* ภาพ marble สำหรับมือถือ ปรับให้ใหญ่ขึ้นแต่ไม่มาก */}
           <img
             src={Images.marble}
             alt="marble"
             className="w-36 h-36 mx-auto mt-1 lg:absolute lg:top-[calc(50%-60px)] lg:right-[calc(30px)] lg:left-30 lg:transform lg:-translate-y-1/2 lg:translate-x-[calc(10px)] lg:w-[28rem] lg:h-[28rem] lg:mx-0"
           />
-
-          {/* ข้อความสำหรับหน้าจอใหญ่ */}
           <div className="relative z-10 ml-10 mt-10 hidden lg:block">
             <h2 className="text-2xl lg:text-4xl font-bold text-gray-800">
               Sign In to apply for <br /> a Fortune teller
@@ -45,7 +48,7 @@ export default function Login() {
             <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center mt-4 lg:mt-0">
               เข้าสู่ระบบ
             </h2>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleLogin}>
               {/* Email Field */}
               <div className="relative">
                 <span className="absolute left-4 top-1/2 transform -translate-y-1/2">

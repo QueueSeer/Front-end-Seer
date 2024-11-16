@@ -2,7 +2,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
-import Register from "./pages/Login/Register"; // เปลี่ยนชื่อให้ตรงกับหน้า Register
+import Register from "./pages/Login/Register"; 
+import Fillter from "./pages/Login/Fillter";
 import './index.css';
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         {/* เส้นทางสำหรับหน้า Register */}
         <Route path="/register" element={<Register />} />
+        <Route path="/fillter" element={<Fillter />} />
       </Routes>
     </Router>
   );

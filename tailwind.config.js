@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Noto Sans Thai', 'sans-serif'],
+        notosans: ['Noto Sans Thai', 'sans-serif'], // ฟอนต์ที่กำหนดเอง
       },
     },
   },
