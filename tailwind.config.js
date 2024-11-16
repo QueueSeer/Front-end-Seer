@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: "#8677A7", // ตั้งค่า primary color
+      },
       fontFamily: {
         sans: ['Noto Sans Thai', 'sans-serif'],
       },

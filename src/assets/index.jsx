@@ -15,6 +15,7 @@ import OutlineIcon from './icon/Navbar/OutlineIcon.png'
 import Star_Icon from './icon/Navbar/Star_Icon.png'
 import Users_GroupIcon from './icon/Navbar/Users_GroupIcon.png'
 import LogoutIcon from './icon/Navbar/LogoutIcon.png'
+import bellClickIcon from './icon/Navbar/bellClickIcon.png'
 
 
 
@@ -36,6 +37,7 @@ const images = {
     Star_Icon,
     Users_GroupIcon,
     LogoutIcon,
+    bellClickIcon
 
   };
   

@@ -14,6 +14,10 @@ export default function App() {
         <Route path="/" element={<Profile />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
+        <Route
+          path="/notifications"
+          element={<p className="p-4">หน้าการแจ้งเตือนทั้งหมด</p>}
+        />
       </Routes>
     </Router>
   );

@@ -1,7 +1,6 @@
 import React from "react";
-import UserInfo from "../NavbarProfile/UserInfo";
-import Logout from "../NavbarProfile/Logout";
 import Item from "../NavbarProfile/Item";
+import NotificationInfo  from "./NotificationInfo";
 
 const NotificationMenu = () => {
   return (
@@ -10,14 +9,10 @@ const NotificationMenu = () => {
       id="user-dropdown"
     >
       {/* User Info */}
-      <UserInfo
-        name="การแจ้งเตือน"
-        username="@FahKu64"
-        border={true} // Adds the bottom border
+      <NotificationInfo
       />
 
       <Item />
-      <Logout />
     </div>
   );
 };
