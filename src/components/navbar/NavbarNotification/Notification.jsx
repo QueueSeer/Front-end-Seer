@@ -52,7 +52,7 @@ export default function Notification() {
         <div
           ref={dropdownRef}
           className="absolute top-10 right-0 z-50 bg-white shadow-lg rounded-3xl"
-          style={{ minWidth: "300px" }}
+          style={{ minWidth: "340px" }}
         >
           <NotificationMenu />
         </div>

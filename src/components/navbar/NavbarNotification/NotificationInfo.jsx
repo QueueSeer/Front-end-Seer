@@ -10,7 +10,7 @@ const NotificationInfo = () => {
   };
 
   return (
-    <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-gray-600">
+    <div className="flex justify-between items-center px-4 py-2 pb-2 border-b border-gray-200 dark:border-gray-600">
       {/* หัวข้อ */}
       <span className="text-gray-900 dark:text-white font-sans font-semibold text-lg">
         การแจ้งเตือน

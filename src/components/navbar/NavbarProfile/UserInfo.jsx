@@ -4,7 +4,7 @@ import React from "react";
 const UserInfo = ({ name, username, border }) => {
   return (
     <div
-      className={`px-4 py-3 ${
+      className={`px-4 py-2 ${
         border ? "border-b border-gray-200 dark:border-gray-600" : ""
       }`}
     >

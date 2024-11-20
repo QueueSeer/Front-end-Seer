@@ -1,5 +1,5 @@
 import React from "react";
-import Item from "../NavbarProfile/Item";
+import ItemNotification from "./ItemNotification";
 import NotificationInfo  from "./NotificationInfo";
 
 const NotificationMenu = () => {
@@ -12,7 +12,7 @@ const NotificationMenu = () => {
       <NotificationInfo
       />
 
-      <Item />
+      <ItemNotification />
     </div>
   );
 };
