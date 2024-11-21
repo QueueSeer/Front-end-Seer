@@ -13,6 +13,8 @@ import iconStart from './icon/membership/iconStart.png';
 import iconProfiles from './icon/membership/iconProfiles.png';
 import iconProfiles1 from './icon/membership/iconProfiles1.png';
 import iconcalendar from './icon/membership/iconcalendar.png';
+import iconTickCircle from './icon/membership/iconTickCircle.png';
+
 
 
 const images = {
@@ -31,6 +33,8 @@ const images = {
     iconProfiles,
     iconProfiles1,
     iconcalendar,
+    iconTickCircle,
+
 
 };
 
