@@ -1,5 +1,6 @@
 {
   "name": "qseer-project",
+  "homepage": "https://queueseer.github.io/Front-end-Seer/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
