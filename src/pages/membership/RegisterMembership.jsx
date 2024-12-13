@@ -245,50 +245,8 @@ const RegisterMembership = () => {
       กรุณาตรวจสอบอีเมลของคุณ
     </h2>
     <p className="text-sm text-gray-600 mb-6">
-      ทางเราได้ส่ง code ไปที่อีเมล hello@qseer.com
+    คลิกปุ่มยืนยันในอีเมล ปุ่มนี้จะหมดอายุภายใน 24 ชั่วโมง
     </p>
-    <div className="flex justify-center gap-2 mb-6">
-      {Array(6)
-        .fill("")
-        .map((_, index) => (
-          <input
-            key={index}
-            id={`code-input-${index}`}
-            type="text"
-            maxLength={1}
-            value={verificationCode[index] || ""}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (/^\d?$/.test(value)) {
-                const updatedCode = [...verificationCode];
-                updatedCode[index] = value;
-                setVerificationCode(updatedCode);
-
-                // Auto move to the next input
-                if (value && index < 5) {
-                  document.getElementById(`code-input-${index + 1}`).focus();
-                }
-              }
-            }}
-            className={`w-10 h-10 sm:w-12 sm:h-12 text-center border ${
-              verificationCode[index] === ""
-                ? "border-gray-300"
-                : "border-purple-500"
-            } rounded-lg text-lg font-medium focus:outline-none focus:ring-2 focus:ring-purple-500`}
-          />
-        ))}
-    </div>
-    <button
-      onClick={handleVerificationSubmit}
-      disabled={!verificationCode.every((digit) => digit.trim() !== "")}
-      className={`w-full py-2 rounded-lg font-medium transition ${
-        verificationCode.every((digit) => digit.trim() !== "")
-          ? "bg-purple-500 text-white hover:bg-purple-600"
-          : "bg-gray-300 text-gray-500 cursor-not-allowed"
-      }`}
-    >
-      ยืนยัน
-    </button>
     <p className="text-sm text-gray-600 mt-4">
       ไม่ได้รับอีเมลล์ใช่หรือไม่?{" "}
       <span
@@ -300,6 +258,7 @@ const RegisterMembership = () => {
     </p>
   </div>
 )}
+
 
         {currentStep === 3 && (
           <div className="bg-white w-full max-w-md p-8 rounded-lg shadow-md text-center">

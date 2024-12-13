@@ -12,9 +12,12 @@ export default function App() {
     <Router>
       <Routes>
         {/* เส้นทางสำหรับหน้า Login */}
-          <Route path="/" element={<RegisterMembership />} />
+        <Route path="/" element={<RegisterMembership />} />
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/" element={<RegisterMembership />} />
+    
+        
         {/* เส้นทางสำหรับหน้า Register */}
         <Route path="/register" element={<Register />} />
         <Route path="/fillter" element={<Fillter />} />
