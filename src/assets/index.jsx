@@ -14,6 +14,14 @@ import iconProfiles from './icon/membership/iconProfiles.png';
 import iconProfiles1 from './icon/membership/iconProfiles1.png';
 import iconcalendar from './icon/membership/iconcalendar.png';
 import iconTickCircle from './icon/membership/iconTickCircle.png';
+import OracleCards1 from './images/landingpage/OracleCards1.png';
+import OracleCards2 from './images/landingpage/OracleCards2.png';
+import OracleCards3 from './images/landingpage/OracleCards3.png';
+import OracleIcon from './images/landingpage/OracleIcon.png';
+import eyecheckIcon from './images/landingpage/eyecheckIcon.png';
+import Topseer from './images/landingpage/Topseer.png';
+import videoIcon from './icon/landingpage/videoIcon.png';
+
 
 
 
@@ -34,6 +42,18 @@ const images = {
     iconProfiles1,
     iconcalendar,
     iconTickCircle,
+    //landingpage 
+    OracleCards1,
+    OracleCards2,
+    OracleCards3,
+    OracleIcon,
+    eyecheckIcon,
+    Topseer,
+    //landingpage Icon
+    videoIcon,
+
+
+
 
 
 };
