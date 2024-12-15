@@ -1,6 +1,8 @@
 import React from "react";
 import Fillterbar from "../../components/fillterbar";
-import images from "../../assets"; // Import the centralized images module
+import Footer from "../../components/Footer";
+
+import images from "../../assets"; 
 
 const LandingPage = () => {
   return (
@@ -16,16 +18,16 @@ const LandingPage = () => {
             <h1 className="font-playfair-display text-[64px] font-bold text-[#8677A7]" style={{ fontFamily: "Playfair Display" }}>
               Qseer
             </h1>
-            <p className="text-[55px] font-semibold text-black" style={{ fontFamily: "Noto Sans Thai" }}>
+            <p className="text-[50px] font-semibold text-black" style={{ fontFamily: "Noto Sans Thai" }}>
               ผู้ช่วยอัจฉริยะสำหรับหมอดู
             </p>
-            <p className="text-[55px] font-semibold text-[#8677A7]" style={{ fontFamily: "Noto Sans Thai" }}>
+            <p className="text-[50px] font-semibold text-[#8677A7]" style={{ fontFamily: "Noto Sans Thai" }}>
               ยกระดับการจัดการคิว
             </p>
-            <p className="text-[55px] font-semibold text-black" style={{ fontFamily: "Noto Sans Thai" }}>
+            <p className="text-[50px] font-semibold text-black" style={{ fontFamily: "Noto Sans Thai" }}>
               อย่างมืออาชีพ
             </p>
-            <p className="text-[20px] font-normal text-black mt-6 leading-relaxed" style={{ fontFamily: "Noto Sans Thai" }}>
+            <p className="text-[19px] font-normal text-black mt-6 leading-relaxed" style={{ fontFamily: "Noto Sans Thai" }}>
               Qseer ช่วยให้หมอดูจัดการคิวลูกค้าได้อย่างง่ายดาย ช่วยเพิ่มความสะดวกในการ
               <br />
               วางแผนการทำงาน และทำให้ลูกค้าได้รับบริการที่รวดเร็วและมีประสิทธิภาพ
@@ -391,6 +393,148 @@ const LandingPage = () => {
     </div>
   </div>
 </div>
+{/* Section 6: Discover New Features */}
+<div className="bg-gray-50 py-12 -mt-12">
+  <div className="container mx-auto px-4 md:flex md:flex-row items-center">
+
+    {/* Left Section: Text Content */}
+    <div className="w-full md:w-1/2 text-left">
+      {/* Section Title */}
+      <h2 className="text-[#8677A7] text-[32px] font-semibold mb-4" style={{ fontFamily: "Noto Sans Thai" }}>
+        ค้นพบฟีเจอร์ที่แตกต่าง
+      </h2>
+      <h3 className="text-black text-[40px] font-semibold mb-6" style={{ fontFamily: "Noto Sans Thai" }}>
+        เพิ่มมิติใหม่ให้กับการดูดวง
+      </h3>
+
+      {/* Description */}
+      <p className="text-gray-700 text-[18px] font-medium leading-relaxed mb-8" style={{ fontFamily: "Noto Sans Thai" }}>
+        Qseer สร้างประสบการณ์ใหม่ให้กับทั้งหมอดูและผู้ใช้บริการด้วยคุณสมบัติที่ล้ำสมัย
+        พัฒนาการให้บริการที่เหนือระดับ ด้วยฟีเจอร์เฉพาะที่ตอบโจทย์ความต้องการของหมอดู
+        โดยเฉพาะ และสนับสนุนการเติบโตของธุรกิจดูดวงของคุณ
+      </p>
+
+      {/* Features in Rounded Rectangle */}
+      <div className="space-y-6">
+        {/* Feature 1: Auction */}
+        <div className="bg-white rounded-lg p-6 shadow-md flex items-start">
+          <img src={images.Augtion} alt="Auction Icon" className="w-22 h-22 mr-4 flex-shrink-0" />
+          <div>
+            <h4 className="text-[#8677A7] text-[18px] font-bold mb-2" style={{ fontFamily: "Noto Sans Thai" }}>
+              ประมูลคิวดูดวง
+            </h4>
+            <p className="text-gray-700 text-[18px] font-medium" style={{ fontFamily: "Noto Sans Thai" }}>
+              ช่วยหมอดูในการเข้าถึงลูกค้าใหม่ๆ และสร้างรายได้จากการประมูลเพื่อดูดวงให้ลูกค้าที่สนใจที่สุด
+            </p>
+          </div>
+        </div>
+
+        {/* Feature 2: Instant Horoscope */}
+        <div className="bg-white rounded-lg p-6 shadow-md flex items-start">
+          <img src={images.InstantHoroscope} alt="Instant Horoscope Icon" className="w-22 h-22 mr-4 flex-shrink-0" />
+          <div>
+            <h4 className="text-[#8677A7] text-[18px] font-bold mb-2" style={{ fontFamily: "Noto Sans Thai" }}>
+              ดูดวงทันที
+            </h4>
+            <p className="text-gray-700 text-[18px] font-medium" style={{ fontFamily: "Noto Sans Thai" }}>
+              เสริมสร้างความสามารถในการให้บริการลูกค้าอย่างรวดเร็ว โดยไม่ต้องใช้การนัดหมายล่วงหน้า
+            </p>
+          </div>
+        </div>
+
+        {/* Feature 3: Horoscope Science */}
+        <div className="bg-white rounded-lg p-6 shadow-md flex items-start">
+          <img src={images.HoroscopeScience} alt="Horoscope Science Icon" className="w-22 h-22 mr-4 flex-shrink-0" />
+          <div>
+            <h4 className="text-[#8677A7] text-[18px] font-bold mb-2" style={{ fontFamily: "Noto Sans Thai" }}>
+              การแบ่งตามศาสตร์
+            </h4>
+            <p className="text-gray-700 text-[18px] font-medium" style={{ fontFamily: "Noto Sans Thai" }}>
+              สำรวจหมอดูตามศาสตร์ ค้นหาตามความเชี่ยวชาญ เพิ่มโอกาสในการถูกเลือกโดยลูกค้าที่สนใจศาสตร์นั้นๆ
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Right Section: Image */}
+    <div className="w-full md:w-1/2 flex justify-center md:justify-end relative items-center">
+  <img
+    src={images.Taro}
+    alt="Taro"
+    className="max-w-full h-auto rounded-lg "
+    style={{ position: "relative", right: "-50px" }} 
+  />
+</div>
+  </div>
+</div>
+{/* Layer Section */}
+<div className="relative -mt-80 z-0">
+  <img
+    src={images.layer}
+    alt="Layer"
+    className="w-full h-auto"
+  />
+</div>
+
+{/* Section 7: Marble2 Left, Text Right */}
+<div className="relative bg-gray-50" style={{ marginTop: "-550px", paddingTop: "-300px" }}>
+  <div className="container mx-auto px-4 flex flex-col md:flex-row items-center relative">
+     {/* Left Section: Image with Blur Background */}
+     <div className="w-full md:w-1/2 flex justify-center md:justify-start relative">
+      {/* พื้นหลังเบลอ */}
+      <div className="absolute top-1/2 left-[10%] transform -translate-y-1/2 rounded-full w-[300px] h-[300px] bg-[#8677A7] opacity-50 blur-3xl -z-10"></div>
+
+      {/* ภาพหลัก */}
+      <img
+        src={images.marbel2}
+        alt="Marble2"
+        className="relative max-w-[90%] h-auto"
+      />
+    </div>
+
+    {/* Right Section: Text Content */}
+    <div className="w-full md:w-1/2 text-left">
+      {/* Title */}
+      <h1
+        className="font-playfair-display text-[61px] font-bold text-[#8677A7] mb-4"
+        style={{ fontFamily: "Playfair Display" }}
+      >
+        Qseer
+      </h1>
+      {/* Subtitle */}
+      <p
+        className="text-[45px] font-semibold text-black mb-2"
+        style={{ fontFamily: "Noto Sans Thai" }}
+      >
+        เครื่องมือสำคัญสำหรับหมอดู
+      </p>
+      <p
+        className="text-[45px] font-semibold text-[#8677A7] mb-6"
+        style={{ fontFamily: "Noto Sans Thai" }}
+      >
+        จัดการคิวอย่างไร้กังวล
+      </p>
+
+      {/* Description */}
+      <p
+        className="text-[24px] font-normal text-gray-700 mb-8 leading-relaxed"
+        style={{ fontFamily: "Noto Sans Thai" }}
+      >
+        พร้อมหรือยัง? ให้ Qseer ช่วยคุณจัดการคิวอย่างมืออาชีพ
+      </p>
+
+      {/* Button */}
+      <button
+        className="bg-[#8677A7] text-white text-[30px] font-bold py-3 px-8 rounded-lg shadow-md hover:bg-[#755c97] transition"
+        style={{ fontFamily: "Noto Sans Thai" }}
+      >
+        เริ่มต้นการใช้งาน
+      </button>
+    </div>
+  </div>
+</div>
+<Footer />
 
     </div>
   );

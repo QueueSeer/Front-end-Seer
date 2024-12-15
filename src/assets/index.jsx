@@ -29,8 +29,16 @@ import Managequeue from './images/landingpage/Managequeue.png';
 import cubeIcon from './icon/landingpage/cubeIcon.png';
 import notiRealtime from './images/landingpage/notiRealtime.png';
 import statusRealtime from './images/landingpage/statusRealtime.png';
-
-
+import Taro from './images/landingpage/Taro.png';
+import Augtion  from './images/landingpage/Augtion.png';
+import InstantHoroscope  from './images/landingpage/InstantHoroscope.png';
+import HoroscopeScience from './images/landingpage/HoroscopeScience.png';
+import layer from './images/landingpage/layer.png';
+import marbel2 from './images/landingpage/marbel2.png';
+import Facebook from './icon/Footer/Facebook.png';
+import Instagram from './icon/Footer/Instagram.png';
+import Twitter from './icon/Footer/Twitter.png';
+ 
 const images = {
     // โลโก้และไอคอนทั่วไป
     logo,
@@ -66,12 +74,21 @@ const images = {
     Managequeue,
     notiRealtime,
     statusRealtime,
+    Taro,
+    Augtion ,
+    InstantHoroscope ,
+    HoroscopeScience,
+    layer,
+    marbel2,
 
-   
    
     // ไอคอนเพิ่มเติม
     videoIcon,
     cubeIcon,
+ // ไอคอน footer
+    Facebook,
+    Instagram ,
+    Twitter,
 };
 
 export default images;
