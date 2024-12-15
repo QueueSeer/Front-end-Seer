@@ -1,8 +1,8 @@
-import Images from "../../assets";
+import Images from "../../../assets";
 
 const menuItems = [
   { icon: Images.UserIcon, text: "โปรไฟล์", href: "/profile" },
-  { icon: Images.calendarIcon, text: "จองคิว", href: "/test" },
+  { icon: Images.calendarIcon, text: "จองคิว", href: "/" },
   { icon: Images.BoxIcon, text: "แพ็กเกจ", href: "/" },
   { icon: Images.BoltIcon, text: "ดูดวงทันที", href: "/" },
   { icon: Images.SledgehammerIcon, text: "ประมูล", href: "/" },

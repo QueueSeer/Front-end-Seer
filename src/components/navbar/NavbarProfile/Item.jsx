@@ -11,7 +11,7 @@ const menuItems = [
   {
     icon: Images.BoxIcon,
     label: "แพ็กเกจ",
-    to: "/test", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/", // กำหนดเส้นทางที่จะไปเมื่อคลิก
   },
   {
     icon: Images.BoltIcon,

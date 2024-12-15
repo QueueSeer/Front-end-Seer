@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import NotificationDetail from "./pages/Notification/NotificationDetail"; // คอมโพเนนต์สำหรับแสดงรายละเอียดการแจ้งเตือน
-import Test from "./pages/Profile/test";
 
 import './index.css';
 
@@ -13,7 +12,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Profile />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/test" element={<Test />} />
 
         <Route path="/login" element={<Login />} />
         <Route
