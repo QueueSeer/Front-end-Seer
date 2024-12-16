@@ -481,7 +481,7 @@ const LandingPage = () => {
 {/* Layer Section */}
 <div className="relative -mt-80 z-0">
   <img
-    src={images.layer}
+    src={images.Layer}
     alt="Layer"
     className="w-full h-auto"
   />
