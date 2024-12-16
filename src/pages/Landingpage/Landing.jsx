@@ -478,11 +478,11 @@ const LandingPage = () => {
 </div>
   </div>
 </div>
-{/* Layer Section */}
+{/* layer Section */}
 <div className="relative -mt-80 z-0">
   <img
-    src={images.Layer}
-    alt="Layer"
+    src={images.layer}
+    alt="layer"
     className="w-full h-auto"
   />
 </div>
