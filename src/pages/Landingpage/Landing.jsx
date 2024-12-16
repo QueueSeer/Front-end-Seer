@@ -1,10 +1,17 @@
 import React from "react";
 import Fillterbar from "../../components/fillterbar";
 import Footer from "../../components/Footer";
+import { useNavigate } from "react-router-dom"; 
 
 import images from "../../assets"; 
 
 const LandingPage = () => {
+  const navigate = useNavigate(); 
+
+  const handleStart = () => {
+    navigate("/register-membership"); 
+  };
+
   return (
     <div className="bg-gray-50">
       {/* Section 1: Landing Page */}
@@ -33,7 +40,10 @@ const LandingPage = () => {
               วางแผนการทำงาน และทำให้ลูกค้าได้รับบริการที่รวดเร็วและมีประสิทธิภาพ
             </p>
             <div className="flex gap-4 mt-8">
-              <button className="bg-purple-500 font-semibold text-white py-3 px-6 rounded-lg shadow hover:bg-purple-600">
+            <button
+                className="bg-purple-500 font-semibold text-white py-3 px-6 rounded-lg shadow hover:bg-purple-600"
+                onClick={handleStart} // เรียกฟังก์ชัน handleStart เมื่อกดปุ่ม
+              >
                 เริ่มต้นการใช้งาน
               </button>
               <button className="border border-gray-300 font-semibold flex items-center text-gray-700 py-3 px-6 rounded-lg hover:border-purple-400">
@@ -504,13 +514,13 @@ const LandingPage = () => {
       </h1>
       {/* Subtitle */}
       <p
-        className="text-[45px] font-semibold text-black mb-2"
+        className="text-[40px] font-semibold text-black mb-2"
         style={{ fontFamily: "Noto Sans Thai" }}
       >
         เครื่องมือสำคัญสำหรับหมอดู
       </p>
       <p
-        className="text-[45px] font-semibold text-[#8677A7] mb-6"
+        className="text-[40px] font-semibold text-[#8677A7] mb-6"
         style={{ fontFamily: "Noto Sans Thai" }}
       >
         จัดการคิวอย่างไร้กังวล
@@ -526,11 +536,12 @@ const LandingPage = () => {
 
       {/* Button */}
       <button
-        className="bg-[#8677A7] text-white text-[30px] font-bold py-3 px-8 rounded-lg shadow-md hover:bg-[#755c97] transition"
+        className="bg-[#8677A7] text-white text-[25px] font-bold py-3 px-8 rounded-lg shadow-md hover:bg-[#755c97] transition"
         style={{ fontFamily: "Noto Sans Thai" }}
-      >
-        เริ่มต้นการใช้งาน
-      </button>
+        onClick={handleStart} // เรียกฟังก์ชัน handleStart เมื่อกดปุ่ม
+        >
+          เริ่มต้นการใช้งาน
+        </button>
     </div>
   </div>
 </div>

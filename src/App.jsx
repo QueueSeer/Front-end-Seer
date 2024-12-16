@@ -5,27 +5,30 @@ import Register from "./pages/Login/Register";
 import Fillter from "./pages/Login/Fillter";
 import './index.css';
 import RegisterMembership from "./pages/membership/RegisterMembership";
-import LandingPage from "./pages/Landingpage/Landing"; // Updated the import path for LandingPage
+import LandingPage from "./pages/Landingpage/Landing"; 
 
 export default function App() {
   return (
     <Router>
-      <Routes>
-        {/* Default page */}
-        <Route path="/" element={<LandingPage />} />
-        
-        {/* Register Membership */}
-        <Route path="/register-membership" element={<RegisterMembership />} />
-        
-        {/* Login */}
-        <Route path="/login" element={<Login />} />
-        
-        {/* Register */}
-        <Route path="/register" element={<Register />} />
-        
-        {/* Fillter */}
-        <Route path="/fillter" element={<Fillter />} />
-      </Routes>
-    </Router>
+    <Routes>
+      {/* Default page (set to Login) */}
+      <Route path="/" element={<Login />} />
+  
+      {/* Login */}
+      <Route path="/login" element={<Login />} />
+      
+      {/* Register */}
+      <Route path="/register" element={<Register />} />
+      
+      {/* Fillter */}
+      <Route path="/fillter" element={<Fillter />} />
+  
+      {/* Landing Page */}
+      <Route path="/landing" element={<LandingPage />} />
+  
+      {/* Register Membership */}
+      <Route path="/register-membership" element={<RegisterMembership />} />
+    </Routes>
+  </Router>
   );
 }

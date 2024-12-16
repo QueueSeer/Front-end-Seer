@@ -6,6 +6,7 @@ import Fillterbar from "../../components/fillterbar";
 export default function Fillter() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [step, setStep] = useState(1);
+  const lastStep = 2;
   const navigate = useNavigate(); // ใช้ hook นี้สำหรับการนำทาง
 
   const tags = [
@@ -33,6 +34,8 @@ export default function Fillter() {
     if (step === 1) {
       setStep(2);
       setSelectedTags([]); // รีเซ็ตแท็กเมื่อไปขั้นตอนถัดไป
+    } else if (step === lastStep) { // กรณีถึงขั้นตอนสุดท้าย
+      navigate("/landing"); // เปลี่ยนเส้นทางไปหน้า Landing Page
     }
   };
 
