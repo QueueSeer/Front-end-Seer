@@ -33,7 +33,7 @@ import Taro from './images/landingpage/Taro.png';
 import Augtion  from './images/landingpage/Augtion.png';
 import InstantHoroscope  from './images/landingpage/InstantHoroscope.png';
 import HoroscopeScience from './images/landingpage/HoroscopeScience.png';
-import layer from './images/landingpage/layer.png';
+import boundaries from './images/landingpage/boundaries.png';
 import marbel2 from './images/landingpage/marbel2.png';
 import Facebook from './icon/Footer/Facebook.png';
 import Instagram from './icon/Footer/Instagram.png';
@@ -78,7 +78,7 @@ const images = {
     Augtion ,
     InstantHoroscope ,
     HoroscopeScience,
-    layer,
+    boundaries,
     marbel2,
 
    
