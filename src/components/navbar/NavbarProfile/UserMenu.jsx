@@ -3,6 +3,8 @@ import UserInfo from "./UserInfo";
 import Logout from "./Logout";
 import Item from "./Item";
 
+//หน้าที่ดึง API จาก Backend
+
 const UserMenu = () => {
   const [userData, setUserData] = useState(null); // State สำหรับเก็บข้อมูล user
   const [loading, setLoading] = useState(true); // State สำหรับแสดงสถานะการโหลด
@@ -47,7 +49,7 @@ const UserMenu = () => {
       {/* User Info */}
       <UserInfo
         name={userData.name} // ใช้ค่าจาก API
-        username={userData.username} // ใช้ค่าจาก API
+        // username={userData.username} // ใช้ค่าจาก API
         border={true} // Adds the bottom border
       />
 

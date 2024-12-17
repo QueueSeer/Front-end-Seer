@@ -12,9 +12,9 @@ const UserInfo = ({ name, username, border }) => {
         {/* เพิ่ม mb-1 (margin-bottom) เพื่อสร้างระยะห่าง */}
         {name}
       </span>
-      <span className="block text-gray-500 truncate dark:text-gray-400 font-sans text-sm">
+      {/* <span className="block text-gray-500 truncate dark:text-gray-400 font-sans text-sm">
         {username}
-      </span>
+      </span> */}
     </div>
   );
 };
