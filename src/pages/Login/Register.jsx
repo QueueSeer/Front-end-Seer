@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Images from "../../assets";
 import Navbar from "../../components/navbar"; // เรียกใช้ path ที่ถูกต้อง
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function Register() {
     return regex.test(password);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setPasswordError("");
     setConfirmPasswordError("");
@@ -58,225 +59,302 @@ export default function Register() {
       return;
     }
 
-    // หากข้อมูลครบถ้วนและถูกต้องทั้งหมด นำทางไปหน้า Login
-    setTimeout(() => {
+    try {
+      const response = await fetch("https://backend.qseer.app/api/user/register", {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          display_name: displayName,
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          phone_number: phoneNumber,
+          password,
+          properties: {
+            interested_topics: ["love", "money", "health"],
+            reading_type: ["palm_read", "physiognomy"],
+          },
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsLoading(false);
+        navigate("/login");
+      } else {
+        setFormError(data.errors || { server: "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง" });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setFormError({ server: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้" });
       setIsLoading(false);
-      navigate("/login");
-    }, 2000); // ตั้งเวลาเพื่อแสดง loading
+    }
   };
 
-  const handleGoogleLogin = () => {
-    alert("กำลังเข้าสู่ระบบด้วย Google...");
+  const handleGoogleLogin = async (credentialResponse) => {
+    const jwtToken = credentialResponse.credential;
+    console.log("JWT Token:", jwtToken); // Debugging
+  
+    setIsLoading(true);
+    try {
+      const response = await fetch("https://backend.qseer.app/api/access/google/signin", {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({ credential: jwtToken }).toString(),
+      });
+  
+      const data = await response.json();
+      console.log("Response Data:", data); // Debugging
+  
+      if (response.ok) {
+        alert("เข้าสู่ระบบด้วย Google สำเร็จ");
+        navigate("/login");
+      } else {
+        console.error("Login failed", data);
+        alert("ไม่สามารถเข้าสู่ระบบด้วย Google ได้");
+      }
+    } catch (error) {
+      console.error("Error logging in with Google", error);
+      alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google");
+    } finally {
+      setIsLoading(false);
+    }
   };
+  
 
   return (
-    <div>
-      <Navbar />
-      
-      {/* Loading Overlay */}
-      {isLoading && (
-        <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-50">
-          <svg
-            className="animate-spin h-12 w-12 text-purple-600"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z"
-            ></path>
-          </svg>
-        </div>
-      )}
-      
-      <div className="flex h-screen font-sans lg:flex-row flex-col">
-        {/* ด้านซ้าย: พื้นหลังเบลอ */}
-        <div className="w-full lg:w-1/2 relative flex flex-col bg-gray-50 lg:bg-gray-50 p-8">
-          {/* ส่วนพื้นหลังและภาพที่ไม่เปลี่ยน */}
-          <div className="absolute top-5 left-10 rounded-full w-96 h-96 bg-yellow-100 opacity-70 blur-3xl hidden lg:block"></div>
-          <div className="absolute top-1/2 right-[25%] transform -translate-y-1/2 rounded-full w-96 h-96 bg-purple-300 opacity-70 blur-3xl hidden lg:block"></div>
-          <div className="absolute top-1/2 right-[1%] transform -translate-y-1/2 rounded-full w-96 h-96 bg-purple-200 opacity-70 blur-3xl hidden lg:block"></div>
-          <img
-            src={Images.marble}
-            alt="marble"
-            className="w-36 h-36 mx-auto mt-1 lg:absolute lg:top-[calc(50%-60px)] lg:right-[calc(30px)] lg:left-30 lg:transform lg:-translate-y-1/2 lg:translate-x-[calc(10px)] lg:w-[28rem] lg:h-[28rem] lg:mx-0"
-          />
+    <GoogleOAuthProvider clientId="482872878938-qln7jlcv0elrffnnaqd4qpqs43jh4ob9.apps.googleusercontent.com">
+      <div className="dark:bg-gray-800 dark:text-white">
+        <Navbar />
 
-          <div className="relative z-10 ml-10 mt-10 hidden lg:block">
-            <h2 className="text-2xl lg:text-4xl font-bold text-gray-800">
-              Sign Up to <br /> booking Qseer
-            </h2>
-            <p className="text-lg lg:text-xl text-gray-700 mt-4">
-              If You Have An Account? <br /> You Can
-              <Link to="/login" className="text-purple-500 hover:underline ml-2">
-                Login Here!
-              </Link>
-            </p>
+        {/* Loading Overlay */}
+        {isLoading && (
+          <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-50 dark:bg-gray-800 dark:bg-opacity-90">
+            <svg
+              className="animate-spin h-12 w-12 text-purple-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z"
+              ></path>
+            </svg>
           </div>
-        </div>
+        )}
 
-        {/* ฟอร์ม Register */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center items-center bg-gray-50 px-6 lg:px-20 mt-0 lg:mt-0 mb-4 lg:mb-12 relative lg:static top-[-20px] lg:top-0">
-          <div className="w-full max-w-2xl p-6 bg-white shadow-lg rounded-lg">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              ลงทะเบียน
-            </h2>
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              {/* User Name และ ID Name */}
-              <div className="flex space-x-4">
-                <div className="w-1/2">
-                  <input
-                    type="text"
-                    placeholder="Username"
-                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.username ? 'border-red-500' : ''}`}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                  {formError.username && <p className="text-red-500 text-xs mt-1">{formError.username}</p>}
-                </div>
-                <div className="w-1/2">
+        <div className="flex h-screen font-sans lg:flex-row flex-col">
+          {/* ด้านซ้าย: พื้นหลังเบลอ */}
+          <div className="w-full lg:w-1/2 relative flex flex-col bg-gray-50 dark:bg-gray-800 p-8">
+            {/* ส่วนพื้นหลังและภาพที่ไม่เปลี่ยน */}
+            <div className="absolute top-5 left-10 rounded-full w-96 h-96 bg-yellow-100 opacity-70 blur-3xl hidden lg:block"></div>
+            <div className="absolute top-1/2 right-[25%] transform -translate-y-1/2 rounded-full w-96 h-96 bg-purple-300 opacity-70 blur-3xl hidden lg:block"></div>
+            <div className="absolute top-1/2 right-[1%] transform -translate-y-1/2 rounded-full w-96 h-96 bg-purple-200 opacity-70 blur-3xl hidden lg:block"></div>
+            <img
+              src={Images.marble}
+              alt="marble"
+              className="w-36 h-36 mx-auto mt-1 lg:absolute lg:top-[calc(50%-60px)] lg:right-[calc(30px)] lg:left-30 lg:transform lg:-translate-y-1/2 lg:translate-x-[calc(10px)] lg:w-[28rem] lg:h-[28rem] lg:mx-0"
+            />
+
+            <div className="relative z-10 ml-10 mt-10 hidden lg:block">
+              <h2 className="text-2xl lg:text-4xl font-bold text-gray-800 dark:text-white">
+                Sign Up to <br /> booking Qseer
+              </h2>
+              <p className="text-lg lg:text-xl text-gray-700 dark:text-gray-300 mt-4">
+                If You Have An Account? <br /> You Can
+                <Link to="/login" className="text-purple-500 hover:underline ml-2">
+                  Login Here!
+                </Link>
+              </p>
+            </div>
+          </div>
+
+          {/* ฟอร์ม Register */}
+          <div className="w-full lg:w-1/2 flex flex-col justify-center items-center bg-gray-50 dark:bg-gray-800 px-6 lg:px-20 mt-0 lg:mt-0 mb-4 lg:mb-12 relative lg:static top-[-20px] lg:top-0">
+            <div className="w-full max-w-2xl p-6 bg-white dark:bg-gray-700 shadow-lg rounded-lg">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                ลงทะเบียน
+              </h2>
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                {/* User Name และ ID Name */}
+                <div className="flex space-x-4">
+                  <div className="w-1/2">
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.username ? 'border-red-500' : ''} dark:border-gray-600 dark:bg-gray-800 dark:text-white`}
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                    {formError.username && <p className="text-red-500 text-xs mt-1">{formError.username}</p>}
+                  </div>
+                  <div className="w-1/2">
                   <input
                     type="text"
                     placeholder="Display Name"
-                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.displayName ? 'border-red-500' : ''}`}
+                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${
+                      formError.displayName ? "border-red-500" : ""
+                    } dark:border-gray-600 dark:bg-gray-800 dark:text-white`}
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                   />
-                  {formError.displayName && <p className="text-red-500 text-xs mt-1">{formError.displayName}</p>}
+                  {formError.displayName && (
+                    <p className="text-red-500 text-xs mt-1">{formError.displayName}</p>
+                  )}
                 </div>
-              </div>
 
-              {/* First Name และ Last Name */}
-              <div className="flex space-x-4">
-                <div className="w-1/2">
-                  <input
-                    type="text"
-                    placeholder="First Name"
-                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.firstName ? 'border-red-500' : ''}`}
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                  {formError.firstName && <p className="text-red-500 text-xs mt-1">{formError.firstName}</p>}
                 </div>
-                <div className="w-1/2">
-                  <input
-                    type="text"
-                    placeholder="Last Name"
-                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.lastName ? 'border-red-500' : ''}`}
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                  {formError.lastName && <p className="text-red-500 text-xs mt-1">{formError.lastName}</p>}
-                </div>
-              </div>
 
-              {/* Email และ Phone Number */}
-              <div className="flex space-x-4">
-                <div className="w-1/2">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.email ? 'border-red-500' : ''}`}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  {formError.email && <p className="text-red-500 text-xs mt-1">{formError.email}</p>}
+                {/* First Name และ Last Name */}
+                <div className="flex space-x-4">
+                  <div className="w-1/2">
+                    <input
+                      type="text"
+                      placeholder="First Name"
+                      className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.firstName ? 'border-red-500' : ''} dark:border-gray-600 dark:bg-gray-800 dark:text-white`}
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                    {formError.firstName && <p className="text-red-500 text-xs mt-1">{formError.firstName}</p>}
+                  </div>
+                  <div className="w-1/2">
+                    <input
+                      type="text"
+                      placeholder="Last Name"
+                      className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.lastName ? 'border-red-500' : ''} dark:border-gray-600 dark:bg-gray-800 dark:text-white`}
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                    {formError.lastName && <p className="text-red-500 text-xs mt-1">{formError.lastName}</p>}
+                  </div>
                 </div>
-                <div className="w-1/2">
-                  <input
-                    type="text"
-                    placeholder="Phone Number"
-                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.phoneNumber ? 'border-red-500' : ''}`}
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                  />
-                  {formError.phoneNumber && <p className="text-red-500 text-xs mt-1">{formError.phoneNumber}</p>}
-                </div>
-              </div>
 
-              {/* Password */}
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.password ? 'border-red-500' : ''}`}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <span
-                  className="absolute right-4 top-1/3 transform -translate-y-1/2 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
+                {/* Email และ Phone Number */}
+                <div className="flex space-x-4">
+                  <div className="w-1/2">
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.email ? 'border-red-500' : ''} dark:border-gray-600 dark:bg-gray-800 dark:text-white`}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    {formError.email && <p className="text-red-500 text-xs mt-1">{formError.email}</p>}
+                  </div>
+                  <div className="w-1/2">
+                    <input
+                      type="text"
+                      placeholder="Phone Number"
+                      className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.phoneNumber ? 'border-red-500' : ''} dark:border-gray-600 dark:bg-gray-800 dark:text-white`}
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                    />
+                    {formError.phoneNumber && <p className="text-red-500 text-xs mt-1">{formError.phoneNumber}</p>}
+                  </div>
+                </div>
+
+                {/* Password */}
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.password ? 'border-red-500' : ''} dark:border-gray-600 dark:bg-gray-800 dark:text-white`}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <span
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <img
+                      src={showPassword ? Images.eyeopenIcon : Images.eyeIcon}
+                      alt="Toggle Password Visibility"
+                      className="w-5 h-5"
+                    />
+                  </span>
+                  {formError.password && <p className="text-red-500 text-xs mt-1">{formError.password}</p>}
+                </div>
+
+                {/* Confirm Password */}
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.confirmPassword ? 'border-red-500' : ''} dark:border-gray-600 dark:bg-gray-800 dark:text-white`}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  <span
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    <img
+                      src={showConfirmPassword ? Images.eyeopenIcon : Images.eyeIcon}
+                      alt="Toggle Confirm Password Visibility"
+                      className="w-5 h-5"
+                    />
+                  </span>
+                  {formError.confirmPassword && <p className="text-red-500 text-xs mt-1">{formError.confirmPassword}</p>}
+                </div>
+
+                {/* ปุ่มยืนยัน */}
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition duration-200 flex justify-center items-center"
                 >
-                  <img
-                    src={showPassword ? Images.eyeopenIcon : Images.eyeIcon}
-                    alt="Toggle Password Visibility"
-                    className="w-5 h-5"
-                  />
-                </span>
-                {formError.password && <p className="text-red-500 text-xs mt-1">{formError.password}</p>}
+                  ยืนยัน
+                </button>
+              </form>
+
+              <div className="flex items-center my-6">
+                <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                <span className="mx-4 text-gray-500 dark:text-gray-300">OR Sign in with</span>
+                <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
               </div>
 
-              {/* Confirm Password */}
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  className={`w-full py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm ${formError.confirmPassword ? 'border-red-500' : ''}`}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <span
-                  className="absolute right-4 top-1/3 transform -translate-y-1/2 cursor-pointer"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  <img
-                    src={showConfirmPassword ? Images.eyeopenIcon : Images.eyeIcon}
-                    alt="Toggle Confirm Password Visibility"
-                    className="w-5 h-5"
-                  />
-                </span>
-                {formError.confirmPassword && <p className="text-red-500 text-xs mt-1">{formError.confirmPassword}</p>}
-              </div>
+                                  <GoogleLogin
+                      onSuccess={handleGoogleLogin}
+                      onError={() => {
+                        alert("การเข้าสู่ระบบด้วย Google ล้มเหลว");
+                      }}
+                      render={(renderProps) => (
+                        <button
+                          onClick={renderProps.onClick}
+                          disabled={renderProps.disabled}
+                          className="flex items-center justify-center w-full py-3 border rounded-lg transition duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white"
+                        >
+                          <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                            alt="Google Icon"
+                            className="w-5 h-5 mr-3"
+                          />
+                          Sign in with Google
+                        </button>
+                      )}
+                    />
 
-              {/* ปุ่มยืนยัน */}
-              <button
-                type="submit"
-                className="w-full py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition duration-200 flex justify-center items-center"
-              >
-                ยืนยัน
-              </button>
-            </form>
-
-            <div className="flex items-center my-6">
-              <div className="flex-grow border-t border-gray-300"></div>
-              <span className="mx-4 text-gray-500">OR Sign in with</span>
-              <div className="flex-grow border-t border-gray-300"></div>
             </div>
-
-            <button
-              onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center border border-gray-300 py-3 rounded-lg hover:bg-gray-100 transition duration-200"
-            >
-              <img
-                src="https://www.google.com/favicon.ico"
-                alt="Google icon"
-                className="w-5 h-5 mr-2"
-              />
-              Login with Google
-            </button>
           </div>
         </div>
       </div>
-    </div>
+    </GoogleOAuthProvider>
   );
 }
