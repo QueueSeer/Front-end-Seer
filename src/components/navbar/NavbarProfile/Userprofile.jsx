@@ -7,6 +7,7 @@ export default function UserProfile() {
   const [loading, setLoading] = useState(true); // สถานะการโหลดรูปภาพ
   const [error, setError] = useState(false); // สถานะข้อผิดพลาด
   const dropdownRef = useRef(null); // ตรวจจับคลิกนอก dropdown
+  const buttonRef = useRef(null); // อ้างอิงปุ่มที่ใช้เปิด dropdown
 
   // ดึง URL รูปภาพจาก API
   useEffect(() => {
@@ -34,9 +35,14 @@ export default function UserProfile() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // ฟังก์ชันปิด dropdown เมื่อคลิกนอก
+  // ฟังก์ชันปิด dropdown เมื่อคลิกนอก dropdown และปุ่มเปิด
   const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    if (
+      dropdownRef.current && 
+      !dropdownRef.current.contains(event.target) && 
+      buttonRef.current &&
+      !buttonRef.current.contains(event.target)
+    ) {
       setIsDropdownOpen(false);
     }
   };
@@ -53,6 +59,7 @@ export default function UserProfile() {
     <div className="relative flex items-center">
       <button
         type="button"
+        ref={buttonRef} // อ้างอิงปุ่มใน useRef
         className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
         id="user-menu-button"
         aria-expanded={isDropdownOpen ? "true" : "false"}

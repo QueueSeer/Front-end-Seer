@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         primary: "#8677A7", // ตั้งค่า primary color
         secondary: "#65558F",
+        secondary2: "#420F75",
         background: "#b2aac7",
       },
       fontFamily: {

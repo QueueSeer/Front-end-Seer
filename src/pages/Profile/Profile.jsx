@@ -15,7 +15,7 @@ export default function Profile() {
           <Sidebar />
         </div>
         {/* คอลัมน์ที่ 2 ใช้พื้นที่ที่เหลือ */}
-        <div className="flex-1">
+        <div className="flex-1 pb-10">
           <UserProfile />
         </div>
       </div>

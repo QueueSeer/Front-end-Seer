@@ -1,86 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 import Images from "../../../assets";
+import HeaderProfile from "./HeaderProfile";
+import ContentUser from "./ContentUser";
+import AboutUser from "./AboutUser";
 
 const Profile = () => {
+  const Aboutme =
+    "ฉันเป็นหมอดูที่มีประสบการณ์ในการทำนายดวงชะตาและให้คำปรึกษาเรื่องชีวิตส่วนตัว การงาน ความรัก และสุขภาพ ด้วยศาสตร์การพยากรณ์หลากหลายรูปแบบ เช่น ไพ่ยิปซี, โหราศาสตร์ไทย และการใช้พลังงาน จิตในการแนะนำเส้นทาง ชีวิตของคุณ ฉันตั้งใจให้คำปรึกษาที่ชัดเจนและตรงประเด็น โดยจะช่วยให้คุณ มองเห็นแนวทางในการแก้ไขปัญหา และตัดสินใจในเรื่องสำคัญอย่างมั่นใจ";
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const [textarea, setTextarea] = useState(Aboutme);
+
+  const handleChange = (event) => {
+    setTextarea(event.target.value);
+  };
+
+  // Function to toggle the popup visibility
+  const togglePopup = () => setIsPopupOpen(!isPopupOpen);
+
   return (
-    <div className="px-8 pt-6 mx-auto bg-white border rounded-lg shadow-md">
-      <div className="pb-[12px] flex items-center gap-2 border-b-2">
-        {/* ไอคอน */}
-        <img src={Images.UserIcon} alt="User Icon" className="mr-3 w-7 h-7" />
-        {/* ข้อความ */}
-        <span className="text-secondary font-semibold text-xl">โปรไฟล์</span>
-      </div>
+    <div className="px-8 py-6 mx-auto bg-white border rounded-lg shadow-md">
+      <HeaderProfile />
 
-      <div className="py-8 flex py-8 flex space-x-20 lg:px-[30px] lg:space-x-[100px]">
-        {/* Column 1 */}
-        <div className="flex-2 flex items-start">
-          <div className="flex flex-col items-center">
-            <div className="relative">
-              <img
-                // src="https://via.placeholder.com/100"
-                alt="Profile Avatar"
-                className="w-[200px] h-[200px] rounded-full border-2 border-purple-500"
-              />
-              <button
-                className="absolute bottom-0 right-0 bg-purple-500 text-white text-sm p-1 rounded-full"
-                title="Edit"
-              >
-                ✎
-              </button>
-            </div>
-            <div className="mt-4 text-center">
-              <h1 className="text-xl font-semibold">เพียงฟ้า พาชัย</h1>
-            </div>
-            {/* Buttons */}
-            <div className="mt-3 flex flex-col gap-4 w-full">
-              <button className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600">
-                แก้ไขโปรไฟล์
-              </button>
-              <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">
-                แชร์โปรไฟล์
-              </button>
-            </div>
-          </div>
-        </div>
+      <ContentUser />
+      <div className="flex flex-col gap-[30px] px-[30px] pb-[18px]">
+        {/* Button to show the popup */}
+        <AboutUser/>
 
-        {/* Column 2 */}
-        <div className="flex-1 text-base">
+        <div>
           <h2 className="text-xl text-gray-800 font-semibold mb-4">
-            ข้อมูลส่วนตัว
+            เรื่องที่เชี่ยวชาญของฉัน
           </h2>
-          <div className="space-y-2">
-            <div className="flex">
-              <div className="w-32 font-medium text-black">ชื่อหมอดู</div>
-              <div>เพียงฟ้า พาชัย</div>
-            </div>
-            <div className="flex">
-              <div className="w-32 font-medium text-black">ชื่อจริง</div>
-              <div>สุรีภรณ์</div>
-            </div>
-            <div className="flex">
-              <div className="w-32 font-medium text-black">นามสกุล</div>
-              <div>นาภาลัย</div>
-            </div>
-            <div className="flex">
-              <div className="w-32 font-medium text-black">วันเดือนปีเกิด</div>
-              <div>17 ตุลาคม 2545</div>
-            </div>
-            <div className="flex">
-              <div className="w-32 font-medium text-black">อีเมล</div>
-              <div>
-                <a
-                  href="mailto:Sureeporn.SN@gmail.com"
-                  className="text-blue-500"
-                >
-                  Sureeporn.SN@gmail.com
-                </a>
+          <button  className=" border-2 px-[30px] py-[20px] rounded-[5px] w-[420px]">
+            <div className="flex flex-row gap-[20px] items-center">
+              <img
+                src={Images.StarsIcon}
+                alt="Starts Icon"
+                className="mr-3 w-8 h-8 items-center"
+              />
+              <div className="flex flex-col gap-[5px] items-start">
+                <div className="font-semibold text-black">หมวดหมู่ดูดวง</div>
+                <div className="font-regular text-black/80 text-[18px]">
+                  โหราศาสตร์ไทย / ไพ่ยิปซี{" "}
+                </div>
               </div>
             </div>
-            <div className="flex">
-              <div className="w-32 font-medium text-black">เบอร์โทรศัพท์</div>
-              <div>0956966952</div>
+          </button>
+        </div>
+
+        <div>
+          <h2 className="text-xl text-gray-800 font-semibold mb-4">
+            ช่องทางการติดตาม
+          </h2>
+          <button className=" border-2 h-[90px] px-[30px] py-[20px] rounded-[5px] w-[420px]">
+            <div className="flex flex-row gap-[20px] items-center">
+              <img
+                src={Images.LinkIcon}
+                alt="Starts Icon"
+                className="mr-3 w-8 h-8 items-center"
+              />
+              <div className="flex flex-col gap-[5px] items-start">
+                <div className="font-semibold text-black text-[18px]">
+                  ลิงก์ช่องทางการติดตาม
+                </div>
+              </div>
             </div>
-          </div>
+          </button>
+        </div>
+
+        <div>
+          <h2 className="text-xl text-gray-800 font-semibold mb-4">
+            ข้อมูลบัญชีพร้อมเพย์
+          </h2>
+          <button className=" border-2 h-[90px]  px-[30px] py-[20px] rounded-[5px] w-[420px]">
+            <div className="flex flex-row gap-[20px] items-center">
+              <img
+                src={Images.WalletIcon}
+                alt="Starts Icon"
+                className="mr-3 w-8 h-8 items-center"
+              />
+              <div className="flex flex-col gap-[5px] items-start">
+                <div className="font-semibold text-black text-[18px]">
+                  บัญชีพร้อมเพย์
+                </div>
+              </div>
+            </div>
+          </button>
         </div>
       </div>
     </div>
