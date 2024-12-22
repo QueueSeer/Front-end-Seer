@@ -1,6 +1,5 @@
 import React from "react";
 import Buttonaboutme from "./Buttonaboutme";
-import Headerpopup from "./Headerpopup";
 
 const PopupProfile = ({ isOpen, onClose, textarea, setTextarea, onSave }) => {
   // ฟังก์ชันจัดการการเปลี่ยนแปลงใน textarea
@@ -21,7 +20,9 @@ const PopupProfile = ({ isOpen, onClose, textarea, setTextarea, onSave }) => {
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white px-[40px] py-7 rounded-[18px] max-w-[750px] mx-auto w-[700px]">
         {/* หัวข้อ Popup */}
-        <Headerpopup title="คำอธิบายเกี่ยวกับฉัน" />
+        <h2 className="text-[28px] font-semibold mb-6 border-zinc-300 border-b text-primary">
+        คำอธิบายเกี่ยวกับฉัน
+        </h2>
         <form className="text-[16px]">
           <textarea
             value={textarea} // แสดงข้อความที่ส่งมาจาก props

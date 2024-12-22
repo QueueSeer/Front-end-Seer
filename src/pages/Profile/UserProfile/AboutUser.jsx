@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AboutUserProfile from "../../../components/Profile/AboutUserProfile";
-import PopupProfile from "../../../components/Popup/profile/PopupProfile";
+import PopupAboutme from "../../../components/Popup/profile/PopupAboutme";
 
 const AboutUser = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false); // สถานะเปิด/ปิด Popup
@@ -38,7 +38,7 @@ const AboutUser = () => {
       </div>
 
       {/* Popup แสดงข้อความ */}
-      <PopupProfile
+      <PopupAboutme
         isOpen={isPopupOpen} // ส่งสถานะเปิด/ปิด
         onClose={togglePopup} // ส่งฟังก์ชันปิด Popup
         textarea={textarea} // ส่งข้อความใน Popup
