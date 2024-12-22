@@ -69,7 +69,7 @@ const PopupCategory = ({ isOpen, onClose, selectedCategory, onSave }) => {
         {/* ปุ่มบันทึก */}
         <button
           onClick={handleSave}
-          className="w-full bg-purple-600 text-white py-2 rounded-full hover:bg-purple-700"
+          className="w-full bg-primary text-white py-2 rounded-full hover:bg-primary/90"
         >
           บันทึก
         </button>

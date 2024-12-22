@@ -21,6 +21,16 @@ import StarsIcon from './icon/Profile/StarsIcon.png'
 import LinkIcon from './icon/Profile/LinkMinimalisticIcon.png'
 import WalletIcon from './icon/Profile/WalletIcon.png'
 
+import LineIcon from './icon/Profile/lineIcon.png'
+import FacebookIcon from './icon/Profile/FacebookIcon.png'
+import YoutubeIcon from './icon/Profile/YoutubeIcon.png'
+import InstagramIcon from './icon/Profile/InstagramIcon.png'
+import XIcon from './icon/Profile/XIcon.png'
+import TiktokIcon from './icon/Profile/TiktokIcon.png'
+import PlusIcon from './icon/Profile/PlusIcon.png'
+ 
+
+
 
 
 const images = {
@@ -46,6 +56,13 @@ const images = {
     StarsIcon,
     LinkIcon,
     WalletIcon,
+    LineIcon,
+    FacebookIcon,
+    YoutubeIcon,
+    InstagramIcon,
+    XIcon,
+    TiktokIcon,
+    PlusIcon,
 
   };
   
