@@ -54,12 +54,18 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
   
-    const email = document.getElementById("email").value;
+    const email = document.getElementById("email").value.trim().toLowerCase(); // Normalize email
     const password = document.getElementById("password").value;
   
-    console.log("Attempting login with:", { email, password });
+    if (!email || !password) {
+      alert("กรุณากรอกอีเมลและรหัสผ่าน");
+      return;
+    }
   
     try {
+      console.log("Attempting login with:", { email, password });
+  
+      // Make the login request
       const response = await axios.post(
         "https://backend.qseer.app/api/access/login",
         { email, password },
@@ -68,17 +74,17 @@ export default function Login() {
   
       if (response.status === 200) {
         console.log("Login Successful:", response.data);
-  
-        if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-        }
-  
-        navigate("/fillter");
+        localStorage.setItem("token", response.data.token); // Save token to localStorage
+        alert("เข้าสู่ระบบสำเร็จ!");
+        navigate("/fillter"); // Redirect to the desired page
       }
     } catch (error) {
+      // Handle different error scenarios
       if (error.response) {
         console.error("Login failed:", error.response.data);
-        alert(error.response.data.detail || "เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบข้อมูลของคุณ");
+        const errorMessage =
+          error.response.data.detail || "เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบข้อมูลของคุณ";
+        alert(errorMessage);
       } else {
         console.error("Unexpected error:", error.message);
         alert("เกิดข้อผิดพลาด โปรดลองอีกครั้ง");

@@ -38,6 +38,16 @@ import marbel2 from './images/landingpage/marbel2.png';
 import Facebook from './icon/Footer/Facebook.png';
 import Instagram from './icon/Footer/Instagram.png';
 import Twitter from './icon/Footer/Twitter.png';
+import Wallet from './images/revenue/Wallet.png';
+import next from './icon/reveneueicon/next.png';
+import backpage from './icon/reveneueicon/backpage.png';
+import backstep from './icon/reveneueicon/backstep.png';
+import marbelQseer from './icon/reveneueicon/marbelQseer.png';
+import ArrowLeft from './icon/reveneueicon/ArrowLeft.png';
+import logomarbeltext from './images/revenue/logomarbeltext.png';
+import Packetphoto from './images/revenue/Packetphoto.png';
+
+Packetphoto
  
 const images = {
     // โลโก้และไอคอนทั่วไป
@@ -89,6 +99,20 @@ const images = {
     Facebook,
     Instagram ,
     Twitter,
+
+    //Revenue 
+    Wallet ,
+    logomarbeltext, 
+    Packetphoto , 
+
+
+     //Revenue icon
+     next ,
+     backpage ,
+     backstep , 
+     marbelQseer , 
+     ArrowLeft ,
+
 };
 
 export default images;
