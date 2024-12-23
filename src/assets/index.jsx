@@ -46,8 +46,14 @@ import marbelQseer from './icon/reveneueicon/marbelQseer.png';
 import ArrowLeft from './icon/reveneueicon/ArrowLeft.png';
 import logomarbeltext from './images/revenue/logomarbeltext.png';
 import Packetphoto from './images/revenue/Packetphoto.png';
+import member1 from './images/follower/member1.png';
+import member2 from './images/follower/member2.png';
+import member3 from './images/follower/member3.png';
+import member4 from './images/follower/member4.png';
+import member5 from './images/follower/member5.png';
+import member6 from './images/follower/member6.png';
+import membericon from './icon/followerIcon/membericon.png';
 
-Packetphoto
  
 const images = {
     // โลโก้และไอคอนทั่วไป
@@ -112,6 +118,18 @@ const images = {
      backstep , 
      marbelQseer , 
      ArrowLeft ,
+
+    // follower images
+    member1, 
+    member2,
+    member3, 
+    member4, 
+    member5,  
+    member6, 
+    // follower icon
+    membericon ,
+
+
 
 };
 
