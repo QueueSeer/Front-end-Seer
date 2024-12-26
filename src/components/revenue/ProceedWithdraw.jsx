@@ -25,14 +25,14 @@ const ProceedWithdraw = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
       <Fillterbar />
 
       {/* Loading Overlay */}
       {isLoading && (
-        <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-70 flex items-center justify-center z-50">
           <svg
-            className="animate-spin h-12 w-12 text-purple-600"
+            className="animate-spin h-12 w-12 text-purple-600 dark:text-purple-400"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -57,11 +57,11 @@ const ProceedWithdraw = () => {
       {/* Success Popup */}
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-96 p-6 relative">
             {/* Close Button */}
             <button
               onClick={handleClosePopup}
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+              className="absolute top-3 right-3 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-white"
             >
               ✕
             </button>
@@ -73,8 +73,8 @@ const ProceedWithdraw = () => {
                 alt="Logo Marbel Text"
                 className="w-20 h-20 mb-4"
               />
-              <h2 className="text-lg font-bold text-purple-700 mb-2">Qseer</h2>
-              <p className="text-gray-600">ถอนเงินสำเร็จ</p>
+              <h2 className="text-lg font-bold text-purple-700 dark:text-purple-400 mb-2">Qseer</h2>
+              <p className="text-gray-600 dark:text-gray-300">ถอนเงินสำเร็จ</p>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ const ProceedWithdraw = () => {
       <div className="absolute top-16 left-5">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-full px-4 py-3 mt-5"
+          className="flex items-center space-x-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white border border-gray-300 dark:border-gray-700 rounded-full px-4 py-3 mt-5"
         >
           <img src={Images.ArrowLeft} alt="Arrow Left Icon" className="w-5 h-5" />
           <span className="text-sm">ย้อนกลับ</span>
@@ -92,13 +92,13 @@ const ProceedWithdraw = () => {
       </div>
 
       {/* Proceed Withdraw Content */}
-      <div className="max-w-xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-16">
+      <div className="max-w-xl mx-auto p-8 bg-white dark:bg-gray-800 shadow-lg rounded-lg mt-16">
         {/* Image Section */}
-        <div className="relative w-full h-48 bg-gray-100 rounded-lg mb-4">
+        <div className="relative w-full h-48 bg-gray-100 dark:bg-gray-700 rounded-lg mb-4">
           <img
             src={Images.Packetphoto}
             alt="Packet Photo"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-lg"
           />
           <img
             src={Images.logomarbeltext}
@@ -110,7 +110,7 @@ const ProceedWithdraw = () => {
         {/* Title */}
         <div className="text-center mb-6" style={{ marginTop: '3rem' }}>
           <span
-            className="text-2xl font-extrabold text-purple-800"
+            className="text-2xl font-extrabold text-purple-800 dark:text-purple-400"
             style={{ fontFamily: "Playfair Display", fontSize: "32px" }}
           >
             Qseer
@@ -118,18 +118,18 @@ const ProceedWithdraw = () => {
         </div>
 
         {/* Transaction Details */}
-        <div className="bg-gray-100 p-6 rounded-lg text-left shadow-md mb-6 mt-5">
+        <div className="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg text-left shadow-md mb-6 mt-5">
           <div className="flex justify-between mb-4">
-            <span className="text-gray-600 font-medium">จำนวนเงิน</span>
-            <span className="font-bold text-gray-800">{amount.toLocaleString()} บาท</span>
+            <span className="text-gray-600 dark:text-gray-300 font-medium">จำนวนเงิน</span>
+            <span className="font-bold text-gray-800 dark:text-gray-100">{amount.toLocaleString()} บาท</span>
           </div>
           <div className="flex justify-between mb-4">
-            <span className="text-gray-600 font-medium">ช่องทางโอนเงิน</span>
-            <span className="font-bold text-gray-800">Promptpay</span>
+            <span className="text-gray-600 dark:text-gray-300 font-medium">ช่องทางโอนเงิน</span>
+            <span className="font-bold text-gray-800 dark:text-gray-100">Promptpay</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600 font-medium">บัญชีปลายทาง</span>
-            <span className="font-bold text-gray-800">สุรีกรณ์ พานวังษ์</span>
+            <span className="text-gray-600 dark:text-gray-300 font-medium">บัญชีปลายทาง</span>
+            <span className="font-bold text-gray-800 dark:text-gray-100">สุรีกรณ์ พานวังษ์</span>
           </div>
         </div>
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from "../../components/navbar";
-import FollowerList from "../../components/follower/FollowerList";
 import Images from "../../assets";
 
 const FollowerPage = () => {
@@ -21,7 +20,10 @@ const FollowerPage = () => {
       {/* Main Content */}
       <div className="min-h-screen bg-gray-100 flex">
         <div className="flex flex-1 justify-end p-4">
-          <div className="bg-white w-3/4 rounded-lg shadow-lg p-6">
+        <div
+            className="bg-white w-full md:w-3/4 rounded-lg shadow-lg p-6 border-2"
+            style={{ borderColor: '#D1D5DB' }}
+          >
             {/* Header */}
             <div className="flex items-center space-x-2 mb-4">
               <img src={Images.membericon} alt="Follower Icon" className="w-10 h-10" />
@@ -34,8 +36,8 @@ const FollowerPage = () => {
               </span>
             </p>
 
-            {/* Follower List Component */}
-            <div className="grid grid-cols-1 gap-4 px-4">
+            {/* Follower List */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {followers.map((follower) => (
                 <div key={follower.id} className="flex items-center space-x-4">
                   <img

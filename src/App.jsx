@@ -16,7 +16,7 @@ export default function App() {
     <Router>
       <Routes>
         {/* Default route now set to RevenuePage */}
-        <Route path="/" element={<FollowerPage />} /> 
+        <Route path="/" element={<Fillter/>} /> 
         <Route path="/withdraw-money" element={<WithdrawMoney />} /> 
         <Route path="/proceed-withdraw" element={<ProceedWithdraw />} />
         <Route path="/revenue" element={<RevenuePage />} />

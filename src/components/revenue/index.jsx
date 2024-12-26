@@ -11,37 +11,36 @@ const Revenue = () => {
     { id: 'TXN-20230913-0004', date: '13 กันยายน 2567 09.00 น.', amount: 60, status: 'ชำระแล้ว', type: 'การประมูล' },
     { id: 'TXN-20230914-0005', date: '14 กันยายน 2567 12.20 น.', amount: -45, status: 'ถอน', type: 'การถอน' },
   ]);
-  
 
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
       {/* Main Content */}
       <div className="flex flex-1 justify-end p-4">
-        <div className="bg-white w-3/4 rounded-lg shadow-lg p-6">
-          <h1 className="text-xl font-bold text-purple-700 mb-2 flex items-center">
+        <div className="bg-white dark:bg-gray-800 w-3/4 rounded-lg shadow-lg p-6">
+          <h1 className="text-xl font-bold text-purple-700 dark:text-purple-400 mb-2 flex items-center">
             <img src={Images.Wallet} alt="Wallet Icon" className="w-6 h-6 mr-2" />
             รายรับของฉัน
           </h1>
-          <hr className="border-gray-300 mb-6" />
+          <hr className="border-gray-300 dark:border-gray-700 mb-6" />
 
           {/* Filter Bar */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
             <div className="flex items-center space-x-2">
-              <label htmlFor="rows" className="text-gray-700">แสดง</label>
-              <select id="rows" name="rows" className="border border-gray-300 rounded-md p-2">
+              <label htmlFor="rows" className="text-gray-700 dark:text-gray-300">แสดง</label>
+              <select id="rows" name="rows" className="border border-gray-300 dark:border-gray-700 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300">
                 <option value="5">5 แถว</option>
                 <option value="10">10 แถว</option>
                 <option value="15">15 แถว</option>
               </select>
-              <span className="text-gray-700">แถว</span>
+              <span className="text-gray-700 dark:text-gray-300">แถว</span>
             </div>
 
             <div className="flex items-center space-x-2">
-              <label htmlFor="date-filter" className="text-gray-700">วันที่</label>
-              <select id="date-filter" name="date-filter" className="border border-gray-300 rounded-md p-2">
+              <label htmlFor="date-filter" className="text-gray-700 dark:text-gray-300">วันที่</label>
+              <select id="date-filter" name="date-filter" className="border border-gray-300 dark:border-gray-700 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300">
                 <option value="today">วันนี้</option>
                 <option value="week">สัปดาห์นี้</option>
                 <option value="month">เดือนนี้</option>
@@ -51,8 +50,8 @@ const Revenue = () => {
 
           {/* Table */}
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm text-left text-gray-500">
-              <thead className="bg-gray-200 text-gray-700 uppercase">
+            <table className="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase">
                 <tr>
                   <th className="px-4 py-3">Transaction ID</th>
                   <th className="px-4 py-3">วันที่ชำระเงิน</th>
@@ -62,10 +61,10 @@ const Revenue = () => {
               </thead>
               <tbody>
                 {mockData.map((item, index) => (
-                  <tr key={index} className="border-b">
+                  <tr key={index} className="border-b border-gray-300 dark:border-gray-700">
                     <td className="px-4 py-3">{item.id}</td>
                     <td className="px-4 py-3">{item.date}</td>
-                    <td className={`px-4 py-3 ${item.amount < 0 ? 'text-red-500' : 'text-gray-700'}`}>
+                    <td className={`px-4 py-3 ${item.amount < 0 ? 'text-red-500' : 'text-gray-700 dark:text-gray-300'}`}>                    
                       {item.amount < 0 ? `-${Math.abs(item.amount).toLocaleString()}` : item.amount.toLocaleString()} คอยน์
                     </td>
                     <td className="px-4 py-3">
@@ -87,7 +86,7 @@ const Revenue = () => {
           <div className="flex items-center justify-end mt-6 mb-4">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              className="p-2 mx-2 rounded-full hover:bg-gray-300"
+              className="p-2 mx-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
               disabled={currentPage === 1}
             >
               <img
@@ -96,10 +95,10 @@ const Revenue = () => {
                 className="w-10 h-10"
               />
             </button>
-            <span className="text-gray-700">{currentPage} of {totalPages}</span>
+            <span className="text-gray-700 dark:text-gray-300">{currentPage} of {totalPages}</span>
             <button
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              className="p-2 mx-2 rounded-full hover:bg-gray-300"
+              className="p-2 mx-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
               disabled={currentPage === totalPages}
             >
               <img
@@ -119,11 +118,11 @@ const Revenue = () => {
             <div className="flex flex-col items-center ml-4">
               <button
                 onClick={() => navigate('/withdraw-money')} // Navigate ไปที่ WithdrawMoney
-                className="w-16 h-16 flex items-center justify-center bg-white border border-gray-300 rounded-full shadow-md hover:shadow-lg"
+                className="w-16 h-16 flex items-center justify-center bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-700 rounded-full shadow-md hover:shadow-lg"
               >
                 <img src={Images.Wallet} alt="Wallet Icon" className="w-8 h-8" />
               </button>
-              <span className="mt-2 text-sm text-gray-700">ถอนเงิน</span>
+              <span className="mt-2 text-sm text-gray-700 dark:text-gray-300">ถอนเงิน</span>
             </div>
           </div>
         </div>
