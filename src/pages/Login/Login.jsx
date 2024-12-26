@@ -194,15 +194,12 @@ export default function Login() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between text-sm">
-                  <label className="flex items-center">
-                    <input type="checkbox" className="mr-2" />
-                    Remember me
-                  </label>
-                  <Link to="/forgot-password" className={`hover:underline ${isDarkMode ? "text-purple-300" : "text-purple-500"}`}>
+                <div className="flex items-end text-sm">
+                  <Link to="/forgot-password" className={`ml-auto hover:underline ${isDarkMode ? "text-purple-300" : "text-purple-500"}`}>
                     Forgot Password?
                   </Link>
                 </div>
+
                 <button
                   type="submit"
                   className={`w-full py-2 rounded-lg hover:bg-opacity-90 transition duration-200 relative z-10 ${

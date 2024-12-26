@@ -54,7 +54,14 @@ import member5 from './images/follower/member5.png';
 import member6 from './images/follower/member6.png';
 import membericon from './icon/followerIcon/membericon.png';
 
- 
+import tickcircle from './images/verify/tickcircle.png';
+import cardverify from './images/verify/cardverify.png';
+import Ornament24 from "./images/verify/Ornament24.jpg";
+import Ornament28 from "./images/verify/Ornament28.jpg";
+import Ornament29 from "./images/verify/Ornament29.jpg";
+import Ornament30 from "./images/verify/Ornament30.jpg";
+
+
 const images = {
     // โลโก้และไอคอนทั่วไป
     logo,
@@ -128,6 +135,15 @@ const images = {
     member6, 
     // follower icon
     membericon ,
+
+     // verify images
+     tickcircle,
+     Ornament24,
+     Ornament28,
+     Ornament29,
+     Ornament30,
+     cardverify, 
+
 
 
 
