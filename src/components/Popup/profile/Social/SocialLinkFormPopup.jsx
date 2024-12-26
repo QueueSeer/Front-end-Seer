@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Button/BackButton";
 
 const SocialLinkFormPopup = ({ isOpen, onClose, onSave, name, url, title }) => {
   const [formName, setFormName] = useState(name || "");
@@ -57,12 +58,9 @@ const SocialLinkFormPopup = ({ isOpen, onClose, onSave, name, url, title }) => {
           </div>
         </div>
         <div className="flex justify-between">
-          <button
-            onClick={onClose}
-            className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400"
-          >
-            ย้อนกลับ
-          </button>
+          
+        <BackButton onClose={onClose} />
+
           <button
             onClick={handleSave}
             className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90"

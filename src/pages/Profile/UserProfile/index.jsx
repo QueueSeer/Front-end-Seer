@@ -5,6 +5,7 @@ import ContentUser from "./ContentUser";
 import AboutUser from "./AboutUser";
 import CategoryUser from "./CategoryUser";
 import SocialLinksManager from "./SocialLinksManager";
+import AccountPrompay from "./AccountPrompay";
 
 const Profile = () => {
   return (
@@ -17,28 +18,12 @@ const Profile = () => {
         <AboutUser />
 
         <CategoryUser />
-        
+
         <SocialLinksManager />
 
-        <div>
-          <h2 className="text-xl text-gray-800 font-semibold mb-4">
-            ข้อมูลบัญชีพร้อมเพย์
-          </h2>
-          <button className=" border-2 h-[90px]  px-[30px] py-[20px] rounded-[5px] w-[420px]">
-            <div className="flex flex-row gap-[20px] items-center">
-              <img
-                src={Images.WalletIcon}
-                alt="Starts Icon"
-                className="mr-3 w-8 h-8 items-center"
-              />
-              <div className="flex flex-col gap-[5px] items-start">
-                <div className="font-semibold text-black text-[18px]">
-                  บัญชีพร้อมเพย์
-                </div>
-              </div>
-            </div>
-          </button>
-        </div>
+        <AccountPrompay />
+
+      
       </div>
     </div>
   );

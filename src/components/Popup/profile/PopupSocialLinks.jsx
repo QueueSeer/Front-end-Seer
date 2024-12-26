@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Images from "../../../assets";
 import SocialLinkItem from "./Social/SocialLinkItem";
-import AddSocialLinkButton from "./Social/AddSocialLinkButton";
+import AddSocialLinkButton from "./Social/AddButton";
 import SocialLinkFormPopup from "./Social/SocialLinkFormPopup";
+import BackButton from "../Button/BackButton";
 
 const PopupSocialLinks = ({ isOpen, onClose }) => {
   const [socialLinks, setSocialLinks] = useState([
@@ -148,12 +149,7 @@ const PopupSocialLinks = ({ isOpen, onClose }) => {
 
         {!showFormPopup && (
           <div className="flex justify-end mt-6">
-            <button
-              onClick={onClose}
-              className="bg-primary text-white px-6 py-2 rounded-full hover:bg-primary/90"
-            >
-              ย้อนกลับ
-            </button>
+            <BackButton onClose={onClose} />
           </div>
         )}
       </div>

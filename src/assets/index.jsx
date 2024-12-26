@@ -28,7 +28,8 @@ import InstagramIcon from './icon/Profile/InstagramIcon.png'
 import XIcon from './icon/Profile/XIcon.png'
 import TiktokIcon from './icon/Profile/TiktokIcon.png'
 import PlusIcon from './icon/Profile/PlusIcon.png'
- 
+import ThaiqrIcon from './icon/Profile/ThaiqrIcon.png'
+
 
 
 
@@ -63,6 +64,7 @@ const images = {
     XIcon,
     TiktokIcon,
     PlusIcon,
+    ThaiqrIcon,
 
   };
   

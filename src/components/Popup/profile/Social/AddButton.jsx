@@ -1,6 +1,6 @@
 import React from "react";
 
-const AddSocialLinkButton = ({ icon, label, onClick }) => {
+const AddButton = ({ icon, label, onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -12,4 +12,4 @@ const AddSocialLinkButton = ({ icon, label, onClick }) => {
   );
 };
 
-export default AddSocialLinkButton;
+export default AddButton;

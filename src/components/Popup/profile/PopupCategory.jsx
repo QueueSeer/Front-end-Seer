@@ -38,12 +38,7 @@ const PopupCategory = ({ isOpen, onClose, selectedCategory, onSave }) => {
           <h2 className="text-[28px] font-semibold text-primary">
             เลือกหมวดหมู่ดูดวง
           </h2>
-          <button
-            onClick={onClose}
-            className="text-black hover:text-gray-700 focus:outline-none"
-          >
-            ✕
-          </button>
+          
         </div>
         <p className="text-sm text-gray-600 mb-[20px]">
           กรุณาเลือกหมวดหมู่ดูดวงที่ให้บริการ
