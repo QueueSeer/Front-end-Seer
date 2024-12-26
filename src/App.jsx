@@ -5,6 +5,7 @@ import Profile from "./pages/Profile/Profile";
 import NotificationDetail from "./pages/Notification/NotificationDetail"; // คอมโพเนนต์สำหรับแสดงรายละเอียดการแจ้งเตือน
 
 import './index.css';
+import Appointment from "./pages/Appointment/appointment";
 
 export default function App() {
   return (
@@ -22,6 +23,8 @@ export default function App() {
         <Route 
           path="/notification/:id" 
           element={<NotificationDetail />} />
+                <Route path="/appointment" element={<Appointment />} />
+
       </Routes>
     </Router>
   );
