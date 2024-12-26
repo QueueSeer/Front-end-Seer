@@ -35,9 +35,7 @@ export default function Fillter() {
 
   const toggleTag = (tag) => {
     setSelectedTags((prev) =>
-      prev.includes(tag)
-        ? prev.filter((t) => t !== tag)
-        : [...prev, tag]
+      prev.includes(tag) ? [] : [tag]
     );
   };
 
@@ -105,10 +103,10 @@ export default function Fillter() {
           >
             {step === 1 ? (
               <>
-                <h2 className="text-2xl font-bold mb-4 text-center">
+                <h2 className="text-2xl font-bold mb-4 pt-5 text-center">
                   เลือกศาสตร์ดูดวงที่สนใจของคุณ
                 </h2>
-                <p className="text-center mt-2 mb-6">
+                <p className="text-center mt-2 mb-6 ">
                   เลือกศาสตร์หมอดูที่คุณเชี่ยวชาญ
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
@@ -137,7 +135,7 @@ export default function Fillter() {
               </>
             ) : (
               <>
-                <h2 className="text-2xl font-bold mb-4 text-center">
+                <h2 className="text-2xl font-bold mb-4 pt-5 text-center">
                   เลือกเรื่องที่สนใจของคุณ
                 </h2>
                 <p className="text-center mt-2 mb-6">
