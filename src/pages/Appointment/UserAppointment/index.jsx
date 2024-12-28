@@ -1,6 +1,7 @@
 import React from "react";
 import HeaderAppointment from "./HeaderAppointment";
 import DateDropdown from "./DateDropdown";
+import AppointmentCard from "./AppointmentCard";
 
 const Appointment = () => {
   return (
@@ -9,6 +10,8 @@ const Appointment = () => {
       <div className="py-8 flex items-start space-y-0 flex-row space-x-[100px] ">
         <DateDropdown />
       </div>
+      <AppointmentCard/>
+      
     </div>
   );
 };

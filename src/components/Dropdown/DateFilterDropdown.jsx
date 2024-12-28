@@ -3,7 +3,14 @@ import dayjs from "dayjs"; // ใช้ dayjs เพื่อจัดการ�
 
 const DateFilterDropdown = ({
   onFilterChange,
-  options = ["วันนี้","พรุ่งนี้", "สัปดาห์นี้", "เดือนนี้", "ปีนี้"],
+  options = [
+    "ทั้งหมด",
+    "วันนี้",
+    "พรุ่งนี้",
+    "สัปดาห์นี้",
+    "เดือนนี้",
+    "ปีนี้",
+  ],
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(options[0]); // ค่าเริ่มต้นจาก options
   const [isOpen, setIsOpen] = useState(false);
@@ -30,8 +37,8 @@ const DateFilterDropdown = ({
         break;
 
       case "สัปดาห์นี้":
-        startDate = dayjs().startOf("week").toISOString();
-        endDate = dayjs().endOf("week").toISOString();
+        startDate = dayjs().startOf("isoWeek").toISOString();
+        endDate = dayjs().endOf("isoWeek").toISOString();
         break;
 
       case "เดือนนี้":
@@ -42,6 +49,11 @@ const DateFilterDropdown = ({
       case "ปีนี้":
         startDate = dayjs().startOf("year").toISOString();
         endDate = dayjs().endOf("year").toISOString();
+        break;
+
+      case "ทั้งหมด":
+        startDate = dayjs().startOf("day").toISOString();
+        endDate = null;
         break;
 
       default:
@@ -56,11 +68,11 @@ const DateFilterDropdown = ({
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left w-[180px]">
       {/* Dropdown Button */}
       <button
         onClick={toggleDropdown}
-        className="flex items-center justify-between w-full px-4 py-2 text-black border rounded-full border-purple-300 shadow-sm focus:outline-none"
+        className="flex items-center justify-between w-full px-6 py-2 text-black border rounded-full border-secondary2 shadow-sm focus:outline-none"
       >
         {selectedFilter}
         <span
@@ -74,12 +86,12 @@ const DateFilterDropdown = ({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 z-10 mt-2 bg-white border border-gray-200 rounded-md shadow-lg w-48">
+        <div className="absolute z-10 mt-2 bg-white border border-gray-200 rounded-md shadow-lg w-full">
           <ul className="py-1">
             {options.map((option, index) => (
               <li
                 key={index}
-                className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                className="px-6 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                 onClick={() => handleSelect(option)}
               >
                 {option}
