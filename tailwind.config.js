@@ -12,7 +12,7 @@ module.exports = {
         background: "#b2aac7",
       },
       fontFamily: {
-        sans: ['Noto Sans Thai', 'sans-serif'],
+        notosans: ['Noto Sans Thai', 'sans-serif'], // ฟอนต์ที่กำหนดเอง
       },
     },
   },
