@@ -1,6 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
+import Profile from "./pages/Profile/Profile";
+import NotificationDetail from "./pages/Notification/NotificationDetail"; // คอมโพเนนต์สำหรับแสดงรายละเอียดการแจ้งเตือน
+
+import './index.css';
 import Register from "./pages/Login/Register";
 import Fillter from "./pages/Login/Fillter";
 import ForgotPassword from "./pages/Login/ForgotPassword";
@@ -24,7 +28,18 @@ export default function App() {
         <Route path="/withdraw-money" element={<WithdrawMoney />} /> 
         <Route path="/proceed-withdraw" element={<ProceedWithdraw />} />
         <Route path="/revenue" element={<RevenuePage />} />
+        <Route path="/" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} />
+
         <Route path="/login" element={<Login />} />
+        <Route
+          path="/notifications"
+          element={<p className="p-4">หน้าการแจ้งเตือนทั้งหมด</p>}
+        />
+        {/* เส้นทางสำหรับรายละเอียดการแจ้งเตือน */}
+        <Route 
+          path="/notification/:id" 
+          element={<NotificationDetail />} />
         <Route path="/register" element={<Register />} />
         <Route path="/fillter" element={<Fillter />} />
         <Route path="/landing" element={<LandingPage />} />
