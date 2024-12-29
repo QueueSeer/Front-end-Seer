@@ -15,16 +15,16 @@ const Revenue = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
 
-  return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
-      {/* Main Content */}
-      <div className="flex flex-1 justify-end p-4">
-        <div className="bg-white dark:bg-gray-800 w-3/4 rounded-lg shadow-lg p-6">
-          <h1 className="text-xl font-bold text-purple-700 dark:text-purple-400 mb-2 flex items-center">
-            <img src={Images.Wallet} alt="Wallet Icon" className="w-6 h-6 mr-2" />
-            รายรับของฉัน
-          </h1>
-          <hr className="border-gray-300 dark:border-gray-700 mb-6" />
+ return (
+<div className="min-h-screen dark:bg-gray-900 flex justify-center items-start">
+    {/* Main Content */}
+    
+    <div className="bg-white dark:bg-gray-800 w-full lg:w-[105%] rounded-lg  p-6 pb-10">
+        <h1 className="text-xl font-bold text-purple-900 dark:text-purple-400 mb-4 flex items-center">
+          <img src={Images.Wallet} alt="Wallet Icon" className="w-6 h-6 mr-2" />
+          รายรับของฉัน
+        </h1>
+        <hr className="border-gray-300 dark:border-gray-700 mb-6" />
 
           {/* Filter Bar */}
           <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
@@ -127,7 +127,7 @@ const Revenue = () => {
           </div>
         </div>
       </div>
-    </div>
+ 
   );
 };
 

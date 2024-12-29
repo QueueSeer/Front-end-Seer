@@ -9,7 +9,7 @@ import AccountPrompay from "./AccountPrompay";
 
 const Profile = () => {
   return (
-    <div className="px-8 py-6 mx-auto bg-white border rounded-lg shadow-md">
+    <div className="px-8 py-6 mx-auto bg-white border rounded-lg ">
       <HeaderProfile />
 
       <ContentUser />

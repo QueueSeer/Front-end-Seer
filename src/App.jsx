@@ -3,13 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import NotificationDetail from "./pages/Notification/NotificationDetail"; // คอมโพเนนต์สำหรับแสดงรายละเอียดการแจ้งเตือน
-
 import './index.css';
 import Register from "./pages/Login/Register";
 import Fillter from "./pages/Login/Fillter";
 import ForgotPassword from "./pages/Login/ForgotPassword";
-
-import "./index.css";
 import RegisterMembership from "./pages/membership/RegisterMembership";
 import LandingPage from "./pages/Landingpage/Landing";
 import RevenuePage from "./pages/Revenue/Revunuepage"; 

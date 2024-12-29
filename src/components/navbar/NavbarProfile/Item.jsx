@@ -31,7 +31,7 @@ const menuItems = [
   {
     icon: Images.OutlineIcon,
     label: "รายรับของฉัน",
-    to: "/income", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/revenue", // กำหนดเส้นทางที่จะไปเมื่อคลิก
   },
   {
     icon: Images.Users_GroupIcon,
