@@ -3,7 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import Images from "../../assets";
-import Navbar from "../../components/navbar";
+import Navbarlogin from "../../components/navbar/Navbarlogin";
+
+
+
 
 const GOOGLE_CLIENT_ID = "482872878938-qln7jlcv0elrffnnaqd4qpqs43jh4ob9.apps.googleusercontent.com";
 
@@ -11,6 +14,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
+  const [emailError, setEmailError] = useState(""); // สำหรับอีเมล
+  const [passwordError, setPasswordError] = useState(""); // สำหรับรหัสผ่าน
+  
+  
 
   useEffect(() => {
     const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
@@ -24,11 +31,11 @@ export default function Login() {
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     const idToken = credentialResponse.credential;
-
+  
     try {
       const formData = new URLSearchParams();
       formData.append("credential", idToken);
-
+  
       const response = await axios.post(
         "https://backend.qseer.app/api/access/google/signin",
         formData,
@@ -38,14 +45,17 @@ export default function Login() {
           },
         }
       );
-
+  
       if (response.status === 200) {
         console.log("Login Successful:", response.data);
+        localStorage.setItem("token", response.data.token); // บันทึก token
+        navigate("/fillter"); // ย้ายไปยังหน้าฟิลเตอร์
       }
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
     }
   };
+  
 
   const handleGoogleLoginError = () => {
     alert("Google login failed. Please try again.");
@@ -53,19 +63,37 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setEmailError(""); // รีเซ็ตข้อความข้อผิดพลาดอีเมล
+    setPasswordError(""); // รีเซ็ตข้อความข้อผิดพลาดรหัสผ่าน
   
-    const email = document.getElementById("email").value.trim().toLowerCase(); // Normalize email
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
   
-    if (!email || !password) {
-      alert("กรุณากรอกอีเมลและรหัสผ่าน");
+    let hasError = false; // ใช้ตรวจสอบว่ามีข้อผิดพลาดหรือไม่
+  
+    // ตรวจสอบอีเมล
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // รูปแบบอีเมลที่ถูกต้อง
+    if (!email) {
+      setEmailError("กรุณากรอกอีเมล");
+      hasError = true; // ตั้งค่าว่ามีข้อผิดพลาด
+    } else if (!emailRegex.test(email)) {
+      setEmailError("กรุณากรอกอีเมลให้ถูกต้อง");
+      hasError = true;
+    }
+  
+    // ตรวจสอบรหัสผ่าน
+    if (!password) {
+      setPasswordError("กรุณากรอกรหัสผ่าน");
+      hasError = true;
+    }
+  
+    // ถ้ามีข้อผิดพลาด ไม่ดำเนินการต่อ
+    if (hasError) {
       return;
     }
   
+    // ถ้าข้อมูลถูกต้อง
     try {
-      console.log("Attempting login with:", { email, password });
-  
-      // Make the login request
       const response = await axios.post(
         "https://backend.qseer.app/api/access/login",
         { email, password },
@@ -74,29 +102,21 @@ export default function Login() {
   
       if (response.status === 200) {
         console.log("Login Successful:", response.data);
-        localStorage.setItem("token", response.data.token); // Save token to localStorage
-        alert("เข้าสู่ระบบสำเร็จ!");
-        navigate("/fillter"); // Redirect to the desired page
+        localStorage.setItem("token", response.data.token); // เก็บ token
+        navigate("/fillter"); // ไปที่หน้า fillter
       }
     } catch (error) {
-      // Handle different error scenarios
-      if (error.response) {
-        console.error("Login failed:", error.response.data);
-        const errorMessage =
-          error.response.data.detail || "เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบข้อมูลของคุณ";
-        alert(errorMessage);
-      } else {
-        console.error("Unexpected error:", error.message);
-        alert("เกิดข้อผิดพลาด โปรดลองอีกครั้ง");
-      }
+      console.error("Login error:", error.response?.data || error.message);
     }
   };
+  
+  
   
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <div className={isDarkMode ? "dark" : ""}>
-        <Navbar />
+      <Navbarlogin />
         <div
           className={`flex h-screen font-notosans lg:flex-row flex-col ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-black"}`}
         >
@@ -154,45 +174,66 @@ export default function Login() {
                 เข้าสู่ระบบ
               </h2>
               <form className="space-y-4" onSubmit={handleLogin}>
-                {/* Email Field */}
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                    <img src={Images.letterIcon} alt="Email Icon" className="w-5 h-5" />
-                  </span>
-                  <input
-                    type="email"
-                    id="email"
-                    placeholder="Email"
-                    className={`w-full pl-12 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                      isDarkMode ? "bg-gray-700 border-gray-600 focus:ring-purple-400" : "border-gray-300 focus:ring-purple-600"
-                    }`}
-                  />
+           {/* Email Field */}
+                <div className="mb-6">
+                  <div className="relative flex items-center">
+                    {/* ไอคอน */}
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2">
+                      <img src={Images.letterIcon} alt="Email Icon" className="w-5 h-5" />
+                    </span>
+                    {/* ช่องกรอกอีเมล */}
+                    <input
+                      type="text"
+                      id="email"
+                      placeholder="Email"
+                      className={`w-full pl-12 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                        isDarkMode
+                          ? "bg-gray-700 text-white border-gray-600 focus:ring-purple-400"
+                          : "bg-gray-50 text-black border-gray-300 focus:ring-purple-600"
+                      }`}
+                    />
+                  </div>
+                  {/* ข้อความข้อผิดพลาดอีเมล */}
+                  {emailError && <p className="text-red-500 text-sm mt-1 pl-12">{emailError}</p>}
                 </div>
 
                 {/* Password Field */}
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                    <img src={Images.keyIcon} alt="Password Icon" className="w-5 h-5" />
-                  </span>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    placeholder="Password"
-                    className={`w-full pl-12 pr-12 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                      isDarkMode ? "bg-gray-700 border-gray-600 focus:ring-purple-400" : "border-gray-300 focus:ring-purple-600"
-                    }`}
-                  />
-                  <span
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    <img
-                      src={showPassword ? Images.eyeopenIcon : Images.eyeIcon}
-                      alt="Toggle Password Visibility"
-                      className="w-5 h-5"
+                <div className="mb-6">
+                  <div className="relative flex items-center">
+                    {/* ไอคอน */}
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2">
+                      <img src={Images.keyIcon} alt="Password Icon" className="w-5 h-5" />
+                    </span>
+                    {/* ช่องกรอกรหัสผ่าน */}
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      placeholder="Password"
+                      className={`w-full pl-12 pr-12 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                        isDarkMode
+                          ? "bg-gray-700 text-white border-gray-600 focus:ring-purple-400"
+                          : "bg-gray-50 text-black border-gray-300 focus:ring-purple-600"
+                      }`}
                     />
-                  </span>
+                    {/* ไอคอน toggle password */}
+                    <span
+                      className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <img
+                        src={showPassword ? Images.eyeopenIcon : Images.eyeIcon}
+                        alt="Toggle Password Visibility"
+                        className="w-5 h-5"
+                      />
+                    </span>
+                  </div>
+                  {/* ข้อความข้อผิดพลาดรหัสผ่าน */}
+                  {passwordError && <p className="text-red-500 text-sm mt-1 pl-12">{passwordError}</p>}
                 </div>
+
+
+
+
 
                 <div className="flex items-end text-sm">
                   <Link to="/forgot-password" className={`ml-auto hover:underline ${isDarkMode ? "text-purple-300" : "text-purple-500"}`}>

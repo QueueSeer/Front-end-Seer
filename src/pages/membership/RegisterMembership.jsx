@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Fillterbar from "../../components/fillterbar";
 import Images from "../../assets";
@@ -16,7 +16,17 @@ const RegisterMembership = () => {
   });
 
   const [errors, setErrors] = useState({}); // เก็บสถานะ error ของฟอร์ม
-  const [verificationCode, setVerificationCode] = useState(["", "", "", ""]); // เก็บรหัสยืนยัน
+  const [showPopup, setShowPopup] = useState(false); // สำหรับควบคุมการแสดง Pop-up
+
+  useEffect(() => {
+    if (currentStep === 2) {
+      // แสดง Pop-up หลังจาก 3 วินาที
+      const timer = setTimeout(() => {
+        setShowPopup(true);
+      }, 3000);
+      return () => clearTimeout(timer); // ล้าง Timer เมื่อ Component ถูก Unmount
+    }
+  }, [currentStep]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,19 +60,9 @@ const RegisterMembership = () => {
     setCurrentStep((prev) => Math.max(1, prev - 1));
   };
 
-  const handleVerificationChange = (e, index) => {
-    const updatedCode = [...verificationCode];
-    updatedCode[index] = e.target.value;
-    setVerificationCode(updatedCode);
-  };
-
-  const handleVerificationSubmit = () => {
-    const isCodeComplete = verificationCode.every((digit) => digit.trim() !== "");
-    if (isCodeComplete) {
-      setCurrentStep(3);
-    } else {
-      alert("กรุณากรอกโค้ดให้ครบถ้วน");
-    }
+  const closePopupAndGoToProfile = () => {
+    setShowPopup(false); // ซ่อน Pop-up
+    navigate("/profile"); // ไปหน้า Profile
   };
 
   return (
@@ -105,14 +105,13 @@ const RegisterMembership = () => {
           </div>
         </div>
 
-        {/* Form Section */}
+        {/* Step 1 */}
         {currentStep === 1 && (
           <div className="bg-white w-full max-w-lg p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold text-gray-800 mb-6">
               ข้อมูลส่วนตัว
             </h2>
             <form className="space-y-4">
-              {/* ชื่อ และ นามสกุล */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -154,7 +153,6 @@ const RegisterMembership = () => {
                 </div>
               </div>
 
-              {/* วัน/เดือน/ปี */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   วัน/เดือน/ปี *
@@ -174,7 +172,6 @@ const RegisterMembership = () => {
                 )}
               </div>
 
-              {/* อีเมล */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   อีเมล *
@@ -195,7 +192,6 @@ const RegisterMembership = () => {
                 )}
               </div>
 
-              {/* หมายเลขโทรศัพท์ */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   หมายเลขโทรศัพท์ *
@@ -216,7 +212,6 @@ const RegisterMembership = () => {
                 )}
               </div>
 
-              {/* Checkbox Agreement */}
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -238,46 +233,43 @@ const RegisterMembership = () => {
           </div>
         )}
 
-{currentStep === 2 && (
-  <div className="bg-white w-full max-w-md p-6 sm:p-8 rounded-lg shadow-md text-center">
-    <img src={Images.iconMarbel} alt="Icon" className="w-15 h-15 mx-auto mb-4" />
-    <h2 className="text-lg font-semibold text-gray-800 mb-2">
-      กรุณาตรวจสอบอีเมลของคุณ
-    </h2>
-    <p className="text-sm text-gray-600 mb-6">
-    คลิกปุ่มยืนยันในอีเมล ปุ่มนี้จะหมดอายุภายใน 24 ชั่วโมง
-    </p>
-    <p className="text-sm text-gray-600 mt-4">
-      ไม่ได้รับอีเมลล์ใช่หรือไม่?{" "}
-      <span
-        className="text-purple-500 underline cursor-pointer"
-        onClick={() => alert("ส่งอีกครั้ง")}
-      >
-        ส่งอีกครั้ง
-      </span>
-    </p>
-  </div>
-)}
-
-
-        {currentStep === 3 && (
-          <div className="bg-white w-full max-w-md p-8 rounded-lg shadow-md text-center">
-            <img src={Images.iconTickCircle} alt="Icon" className="w-15 h-15 mx-auto mb-4" />
+        {/* Step 2 */}
+        {currentStep === 2 && (
+          <div className="bg-white w-full max-w-md p-6 sm:p-8 rounded-lg shadow-md text-center">
+            <img
+              src={Images.iconMarbel}
+              alt="Icon"
+              className="w-15 h-15 mx-auto mb-4"
+            />
             <h2 className="text-lg font-semibold text-gray-800 mb-2">
-              สมัครใช้งานเสร็จสิ้น!
+              กรุณาตรวจสอบอีเมลของคุณ
             </h2>
             <p className="text-sm text-gray-600 mb-6">
-              บัญชีของคุณพร้อมใช้งานแล้ว
+              คลิกปุ่มยืนยันในอีเมล ปุ่มนี้จะหมดอายุภายใน 24 ชั่วโมง
             </p>
-            <button
-              onClick={() => navigate("/home")}
-              className="w-full bg-purple-500 text-white py-2 rounded-lg font-medium hover:bg-purple-600 transition"
-            >
-              ไปหน้าตั้งค่า
-            </button>
           </div>
         )}
 
+        {/* Pop-up */}
+        {showPopup && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+              <h2 className="text-lg font-bold text-gray-800 mb-4">
+                สมัครสมาชิกสำเร็จ!
+              </h2>
+              <p className="text-sm text-gray-600 mb-6">
+                โปรดเข้าสู่ระบบเพื่อเริ่มต้นใช้งาน
+              </p>
+              <button
+                onClick={closePopupAndGoToProfile}
+                className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition"
+              >
+                ไปหน้าโปรไฟล์
+              </button>
+            </div>
+          </div>
+        )}
+    
 {currentStep === 1 && (
   <div className="flex justify-end w-full max-w-lg mt-6 gap-4">
     <button

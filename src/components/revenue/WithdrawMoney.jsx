@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Images from "../../assets";
 import Navbar from "../../components/navbar"; 
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import Sidebar from "../../components/Sidebar"; // เรียกใช้ Sidebar
 
 const WithdrawMoney = () => {
   const [selectedAmount, setSelectedAmount] = useState(0);
@@ -22,13 +23,18 @@ const WithdrawMoney = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
-      {/* Navbar Component */}
+    <div className="min-h-screen  dark:bg-gray-900 flex flex-col">
+      {/* Navbar */}
       <Navbar />
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
-        <div className="flex flex-1 justify-end p-4 ml-5">
-          <div className="bg-white dark:bg-gray-800 w-full sm:w-3/4 rounded-lg shadow-lg p-6 ml-5">
-            <h1 className="text-xl font-bold text-purple-700 dark:text-purple-400 mb-2 flex items-center ml-5">
+      {/* Layout */}
+      <div className="flex flex-1 px-12 pt-12 gap-14">
+        {/* Sidebar */}
+        <div className="hidden lg:block w-72">
+        <Sidebar active="รายรับของฉัน" /> {/* กำหนด Active Item */}
+        </div>
+        {/* Main Content */}
+        <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200  p-6">
+            <h1 className="text-xl font-bold text-purple-900 dark:text-purple-400 mb-2 flex items-center ml-5">
               <img src={Images.Wallet} alt="Wallet Icon" className="w-6 h-6 mr-2" />
               ถอนเงิน
             </h1>
@@ -103,7 +109,7 @@ const WithdrawMoney = () => {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 };
 

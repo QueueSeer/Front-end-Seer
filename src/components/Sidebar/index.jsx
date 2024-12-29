@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
-import SidebarItem from "./item/SidebarItem";
-import menuItems from "./item/MenuItems";
-import { useLocation } from "react-router-dom"; // เพิ่ม useLocation
+import SidebarItem from "./item/SidebarItem"; // Component สำหรับแสดงแต่ละเมนู
+import menuItems from "./item/MenuItems"; // รายการเมนู
+import { useLocation } from "react-router-dom"; // ใช้ตรวจสอบ URL ปัจจุบัน
 
 const Sidebar = () => {
-  const location = useLocation(); // ใช้ location เพื่อตรวจสอบ URL ปัจจุบัน
+  const location = useLocation(); // ตรวจจับ URL ปัจจุบัน
   const [activeIndex, setActiveIndex] = useState(0);
 
   // อัปเดต activeIndex ตาม URL ปัจจุบัน
   useEffect(() => {
-    const currentIndex = menuItems.findIndex(
-      (item) => item.href === location.pathname
+    const currentIndex = menuItems.findIndex((item) =>
+      Array.isArray(item.href)
+        ? item.href.includes(location.pathname) // รองรับ href เป็น Array
+        : item.href === location.pathname
     );
     if (currentIndex !== -1) {
       setActiveIndex(currentIndex);
     }
-  }, [location.pathname]); // ทำงานเมื่อ URL เปลี่ยน
+  }, [location.pathname]); // ทำงานทุกครั้งที่ URL เปลี่ยน
 
   return (
     <div className="p-3 w-full rounded-lg border border-gray-200 h-screen flex flex-col justify-between">
@@ -25,9 +27,9 @@ const Sidebar = () => {
             key={index}
             icon={item.icon}
             text={item.text}
-            href={item.href}
-            isActive={activeIndex === index}
-            onClick={() => setActiveIndex(index)}
+            href={Array.isArray(item.href) ? item.href[0] : item.href} // ใช้ href แรกใน Array
+            isActive={activeIndex === index} // ส่ง isActive ไปให้ SidebarItem
+            onClick={() => setActiveIndex(index)} // สำหรับเปลี่ยน Active เมื่อคลิก
           />
         ))}
       </ul>

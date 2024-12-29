@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Images from "../../assets";
-import Navbar from "../../components/navbar"; // เรียกใช้ path ที่ถูกต้อง
+import Navbarlogin from "../../components/navbar/Navbarlogin";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 export default function Register() {
@@ -133,7 +133,7 @@ export default function Register() {
   return (
     <GoogleOAuthProvider clientId="482872878938-qln7jlcv0elrffnnaqd4qpqs43jh4ob9.apps.googleusercontent.com">
       <div className="dark:bg-gray-800 dark:text-white">
-        <Navbar />
+             <Navbarlogin />
 
         {/* Loading Overlay */}
         {isLoading && (
@@ -324,32 +324,40 @@ export default function Register() {
                 </button>
               </form>
 
-              <div className="flex items-center my-6">
-                <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
-                <span className="mx-4 text-gray-500 dark:text-gray-300">OR Sign in with</span>
-                <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
-              </div>
+              <div className="flex flex-col items-center my-6">
+                  {/* เส้นคั่น */}
+                  <div className="flex items-center w-full">
+                    <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                    <span className="mx-4 text-gray-500 dark:text-gray-300">OR Sign in with</span>
+                    <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                  </div>
 
-                                  <GoogleLogin
-                      onSuccess={handleGoogleLogin}
-                      onError={() => {
-                        alert("การเข้าสู่ระบบด้วย Google ล้มเหลว");
-                      }}
-                      render={(renderProps) => (
-                        <button
-                          onClick={renderProps.onClick}
-                          disabled={renderProps.disabled}
-                          className="flex items-center justify-center w-full py-3 border rounded-lg transition duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white"
-                        >
-                          <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                            alt="Google Icon"
-                            className="w-5 h-5 mr-3"
-                          />
-                          Sign in with Google
-                        </button>
-                      )}
-                    />
+                  {/* ส่วนที่ควบคุมตำแหน่งของปุ่ม */}
+                    <div className="w-full flex justify-center mt-5">
+                      <GoogleLogin
+                        onSuccess={handleGoogleLogin}
+                        onError={() => {
+                          alert("การเข้าสู่ระบบด้วย Google ล้มเหลว");
+                        }}
+                        render={(renderProps) => (
+                          <button
+                            onClick={renderProps.onClick}
+                            disabled={renderProps.disabled}
+                            className="flex items-center justify-center w-full max-w-sm py-3 border rounded-lg transition duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white"
+                          >
+                            <img
+                              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                              alt="Google Icon"
+                              className="w-5 h-5 mr-3"
+                            />
+                            Sign in with Google
+                          </button>
+                        )}
+                      />
+                    </div>
+                  </div>
+
+
 
             </div>
           </div>
