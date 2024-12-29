@@ -3,7 +3,7 @@ import React from "react";
 import Navbar from "../../components/navbar"; // เรียกใช้ path ที่ถูกต้อง
 import Sidebar from "../../components/Sidebar"; // เรียกใช้ path ที่ถูกต้อง
 
-import UserAppointment from "./UserAppointment";
+import UserAppointment from "./CardAppointment";
 
 export default function Appointment() {
   return (
