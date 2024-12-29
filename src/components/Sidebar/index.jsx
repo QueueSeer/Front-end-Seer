@@ -9,8 +9,10 @@ const Sidebar = () => {
 
   // อัปเดต activeIndex ตาม URL ปัจจุบัน
   useEffect(() => {
-    const currentIndex = menuItems.findIndex(
-      (item) => item.href === location.pathname
+    const currentIndex = menuItems.findIndex((item) =>
+      Array.isArray(item.href)
+        ? item.href.includes(location.pathname) // รองรับ href เป็น Array
+        : item.href === location.pathname
     );
     if (currentIndex !== -1) {
       setActiveIndex(currentIndex);
@@ -25,7 +27,7 @@ const Sidebar = () => {
             key={index}
             icon={item.icon}
             text={item.text}
-            href={item.href}
+            href={Array.isArray(item.href) ? item.href[0] : item.href} // ใช้ href แรกใน Array
             isActive={activeIndex === index} // ส่ง isActive ไปให้ SidebarItem
             onClick={() => setActiveIndex(index)} // สำหรับเปลี่ยน Active เมื่อคลิก
           />

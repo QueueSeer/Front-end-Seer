@@ -20,10 +20,11 @@ const Revenue = () => {
     {/* Main Content */}
     
     <div className="bg-white dark:bg-gray-800 w-full lg:w-[105%] rounded-lg  p-6 pb-10">
-        <h1 className="text-xl font-bold text-purple-900 dark:text-purple-400 mb-4 flex items-center">
+    <h1 className="text-xl font-bold text-[#65558F] dark:text-purple-400 mb-4 flex items-center">
           <img src={Images.Wallet} alt="Wallet Icon" className="w-6 h-6 mr-2" />
           รายรับของฉัน
         </h1>
+
         <hr className="border-gray-300 dark:border-gray-700 mb-6" />
 
           {/* Filter Bar */}
