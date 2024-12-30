@@ -5,7 +5,7 @@ const ReviewHeader = () => {
   return (
     <div className="mb-6">
       <div className="flex items-center space-x-2 mb-4">
-        <img src={Images.StarYellow} alt="Star Icon" className="w-6 h-6" />
+        <img src={Images.Star} alt="Star Icon" className="w-6 h-6" />
         <h1 className="text-2xl font-bold text-[#65558F]">จัดการรีวิว</h1>
       </div>
       <div className="flex items-center justify-between">
