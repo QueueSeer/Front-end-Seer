@@ -89,6 +89,13 @@ import Ornament28 from "./images/verify/Ornament28.jpg";
 import Ornament29 from "./images/verify/Ornament29.jpg";
 import Ornament30 from "./images/verify/Ornament30.jpg";
 
+import ArrowDown from './icon/Reviewicon/ArrowDown.png';
+import SortFromBottomToTop from './icon/Reviewicon/SortFromBottomToTop.png';
+import Star from './icon/Reviewicon/Star.png';
+import Starcolor from './icon/Reviewicon/Starcolor.png';
+import StarYellow from './icon/Reviewicon/StarYellow.png';
+
+
 
 const images = {
     // โลโก้และไอคอนทั่วไป
@@ -196,6 +203,14 @@ const images = {
      Ornament29,
      Ornament30,
      cardverify, 
+
+       // Reviewicon 
+
+       ArrowDown,
+      SortFromBottomToTop,
+      Star,
+       Starcolor,
+      StarYellow,
 
 
 
