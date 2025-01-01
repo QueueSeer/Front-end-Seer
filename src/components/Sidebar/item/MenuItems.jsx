@@ -9,7 +9,7 @@ const menuItems = [
   { icon: Images.Clock_CircleIcon, text: "ตารางเวลา", href: "/" },
   { icon: Images.OutlineIcon, text: "รายการของฉัน", href: ["/revenue", "/withdraw-money"] }, 
   { icon: Images.Users_GroupIcon, text: "ผู้ติดตาม", href: "/follower" },
-  { icon: Images.Star_Icon, text: "จัดการรีวิว", href: "/" },
+  { icon: Images.Star_Icon, text: "จัดการรีวิว", href: "/reviews" },
 ];
 
 export default menuItems;
