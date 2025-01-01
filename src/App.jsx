@@ -14,7 +14,7 @@ import WithdrawMoney from "./components/revenue/WithdrawMoney";
 import ProceedWithdraw from "./components/revenue/ProceedWithdraw";
 import FollowerPage from "./pages/followerpage/FollowerPage";
 import EmailVerification from "./pages/membership/EmailVerification";
-import ReviewPage from './pages/Review/ReviewPage.jsx';
+import Reviewpage from './pages/Review/Reviewpage.jsx';
 
 export default function App() {
   return (
@@ -35,7 +35,7 @@ export default function App() {
         <Route path="/follower" element={<FollowerPage />} />
 
         {/* เส้นทางสำหรับหน้า Review */}
-        <Route path="/reviews" element={<ReviewPage />} />
+        <Route path="/reviews" element={<Reviewpage />} />
 
         {/* เส้นทางสำหรับ Notification */}
         <Route path="/notifications" element={<p className="p-4">หน้าการแจ้งเตือนทั้งหมด</p>} />
