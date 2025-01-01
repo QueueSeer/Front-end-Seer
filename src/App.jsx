@@ -14,7 +14,7 @@ import WithdrawMoney from "./components/revenue/WithdrawMoney";
 import ProceedWithdraw from "./components/revenue/ProceedWithdraw";
 import FollowerPage from "./pages/followerpage/FollowerPage";
 import EmailVerification from "./pages/membership/EmailVerification";
-import ReviewPage from "./pages/Review/ReviewPage";
+import ReviewPage from './pages/Review/ReviewPage.jsx';
 
 export default function App() {
   return (

@@ -1,10 +1,10 @@
 import React from "react";
 
-import Navbar from "../../components/navbar"; // เรียกใช้ Navbar
-import Sidebar from "../../components/Sidebar"; // เรียกใช้ Sidebar
-import ReviewHeader from "../../components/Reviewcomponent/ReviewHeader"; // ตรวจสอบ Path ให้ถูกต้อง
-import ReviewFilter from "../../components/Reviewcomponent/ReviewFilter"; // ตรวจสอบ Path ให้ถูกต้อง
-import ReviewList from "../../components/Reviewcomponent/ReviewList"; // ตรวจสอบ Path ให้ถูกต้อง
+import Navbar from "../../components/navbar"; 
+import Sidebar from "../../components/Sidebar"; 
+import ReviewHeader from "../../components/Reviewcomponent/ReviewHeader"; 
+import ReviewFilter from "../../components/Reviewcomponent/ReviewFilter"; 
+import ReviewList from "../../components/Reviewcomponent/ReviewList"; 
 
 const ReviewPage = () => {
   return (
