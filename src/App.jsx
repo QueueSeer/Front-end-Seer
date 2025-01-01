@@ -20,8 +20,8 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* เส้นทางสำหรับหน้า Login */}
-        <Route path="/" element={<ReviewPage />} />
+       
+        <Route path="/" element={<Login/>} />
 
         {/* เส้นทางสำหรับหน้า Revenue */}
         <Route path="/revenue" element={<RevenuePage />} />
@@ -43,6 +43,7 @@ export default function App() {
 
         {/* เส้นทางสำหรับฟอร์มต่าง ๆ */}
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/fillter" element={<Fillter />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register-membership" element={<RegisterMembership />} />
