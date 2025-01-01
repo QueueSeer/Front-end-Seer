@@ -16,7 +16,7 @@ const ReviewPage = () => {
           <Sidebar />
         </div>
         {/* Main Content */}
-        <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <div className="flex-1 bg-white dark:bg-gray-800  rounded-lg border border-gray-200 rounded-lg shadow-lg p-6">
           <ReviewHeader />
           <ReviewFilter />
           <ReviewList />

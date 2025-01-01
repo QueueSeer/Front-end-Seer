@@ -1,24 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
+import Images from "../../assets"; // ไอคอนสำหรับ Sort
 
 const ReviewFilter = () => {
   const stars = [5, 4, 3, 2, 1];
+  const [activeFilter, setActiveFilter] = useState("ทั้งหมด"); // จัดการสถานะปุ่มที่ถูกเลือก
 
   return (
-    <div className="flex items-center space-x-4 mb-6">
-      <button className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg shadow-sm">
+    <div className="flex items-center flex-wrap gap-4 mb-6">
+      {/* ปุ่ม "ทั้งหมด" */}
+      <button
+        onClick={() => setActiveFilter("ทั้งหมด")} // อัปเดต state เมื่อคลิก
+        className={`px-5 py-2 font-medium rounded-full border ${
+          activeFilter === "ทั้งหมด"
+            ? "border-[#FAA91A] text-[#FAA91A]"
+            : "border-gray-300 text-gray-700 hover:border-[#FAA91A] hover:text-[#FAA91A]"
+        } focus:outline-none`}
+      >
         ทั้งหมด
       </button>
+
+      {/* ปุ่มสำหรับตัวกรองดาว */}
       {stars.map((star) => (
         <button
           key={star}
-          className="flex items-center px-4 py-2 bg-gray-100 hover:bg-purple-100 hover:text-purple-700 rounded-lg shadow-sm"
+          onClick={() => setActiveFilter(`${star} ดาว`)} 
+          className={`px-5 py-2 font-medium rounded-full border ${
+            activeFilter === `${star} ดาว`
+              ? "border-[#FAA91A] text-[#FAA91A]"
+              : "border-gray-300 text-gray-700 hover:border-[#FAA91A] hover:text-[#FAA91A]"
+          } focus:outline-none`}
         >
-          <span>{star} ดาว</span>
+          {star} ดาว
         </button>
       ))}
-      <button className="ml-auto flex items-center px-4 py-2 bg-gray-100 hover:bg-purple-100 hover:text-purple-700 rounded-lg shadow-sm">
-        เรียงจากใหม่ไปเก่า
-      </button>
+
+      {/* ปุ่ม Sorting */}
+      <div
+        onClick={() => console.log("Sorting triggered")} 
+        className="ml-auto flex items-center text-[#65558F] cursor-pointer hover:text-purple-700"
+      >
+        <span className="mr-1">เรียงจากใหม่ไปเก่า</span>
+        <img
+          src={Images.SortFromBottomToTop}
+          alt="Sort Icon"
+          className="w-5 h-5"
+        />
+      </div>
     </div>
   );
 };
