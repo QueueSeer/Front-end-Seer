@@ -15,15 +15,14 @@ const ReportReviewPopup = ({ review, onClose }) => {
     "อคติเชิงลบ: มีอคติโดยไม่มีเหตุผล",
   ];
 
-  // Enable the "Report" button only if at least one reason is selected or additional details are provided
   const isReportButtonEnabled =
     selectedReasons.length > 0 || additionalDetails.trim().length > 0;
 
   const handleReasonChange = (reason) => {
     setSelectedReasons((prev) =>
       prev.includes(reason)
-        ? prev.filter((r) => r !== reason) // Remove if already selected
-        : [...prev, reason] // Add if not selected
+        ? prev.filter((r) => r !== reason)
+        : [...prev, reason]
     );
   };
 
@@ -33,20 +32,20 @@ const ReportReviewPopup = ({ review, onClose }) => {
       console.log("Selected Reasons:", selectedReasons);
       console.log("Additional Details:", additionalDetails);
 
-      setConfirmationVisible(true); // Show confirmation popup
+      setConfirmationVisible(true);
     }
   };
 
   const handleCloseConfirmation = () => {
     setConfirmationVisible(false);
-    onClose(); // Close the main popup
+    onClose();
   };
 
   return (
     <>
       {/* Main Report Popup */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg relative">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+        <div className="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg relative">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -100,7 +99,7 @@ const ReportReviewPopup = ({ review, onClose }) => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                disabled={!isReportButtonEnabled} // Disable button if criteria are not met
+                disabled={!isReportButtonEnabled}
                 className={`px-4 py-2 rounded-lg text-sm ${
                   isReportButtonEnabled
                     ? "bg-[#65558F] text-white"

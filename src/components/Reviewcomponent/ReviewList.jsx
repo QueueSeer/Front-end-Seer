@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import Images from "../../assets";
-import Pagination from "../Reviewcomponent/Pagination"; // Import the Pagination component
-import ReportReviewPopup from "../Reviewcomponent/ReportReviewPopup"; // Import the ReportReviewPopup component
+import Pagination from "../Reviewcomponent/Pagination"; 
+import ReportReviewPopup from "../Reviewcomponent/ReportReviewPopup";
 
 const ReviewList = () => {
-  const [currentPage, setCurrentPage] = useState(1); // Manage current page state
-  const [isReportOpen, setIsReportOpen] = useState(false); // State for opening the report modal
-  const [selectedReview, setSelectedReview] = useState(null); // State to track the selected review for reporting
-  const totalPages = 3; // Example: Set total pages
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [selectedReview, setSelectedReview] = useState(null);
+  const totalPages = 3;
+
   const reviews = [
     {
       id: 1,
@@ -44,25 +45,25 @@ const ReviewList = () => {
   ];
 
   const handleReportClick = (review) => {
-    setSelectedReview(review); // Set the selected review
-    setIsReportOpen(true); // Open the modal
+    setSelectedReview(review);
+    setIsReportOpen(true);
   };
 
   const handleReportClose = () => {
-    setIsReportOpen(false); // Close the modal
-    setSelectedReview(null); // Clear the selected review
+    setIsReportOpen(false);
+    setSelectedReview(null);
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 px-4 md:px-8 lg:px-12">
       {/* Map over reviews */}
       {reviews.map((review) => (
         <div
           key={review.id}
-          className="p-6 bg-white rounded-lg border border-gray-300 shadow-sm"
+          className="p-4 sm:p-6 bg-white rounded-lg border border-gray-300 shadow-sm"
         >
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+            <div className="flex items-start space-x-4">
               <img
                 src={Images.member1}
                 alt={review.name}
@@ -93,10 +94,10 @@ const ReviewList = () => {
           <hr className="my-4 border-t border-gray-200" />
           <p className="text-gray-700">{review.text}</p>
           {/* Report Button */}
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-2">
             <button
               onClick={() => handleReportClick(review)}
-              className="text-red-600 hover:underline"
+              className="text-red-600 hover:underline text-sm"
             >
               รายงาน
             </button>
