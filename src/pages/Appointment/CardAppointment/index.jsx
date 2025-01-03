@@ -1,55 +1,81 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HeaderAppointment from "./HeaderAppointment";
 import DateDropdown from "./DateDropdown";
 import AppointmentCard from "./AppointmentCard";
 
+// ฟังก์ชันจัดรูปแบบวันที่
+const formatDate = (isoDate) => {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return new Date(isoDate).toLocaleDateString("th-TH", options); // รูปแบบ: 16 กันยายน 2564
+};
+
+// ฟังก์ชันจัดรูปแบบเวลา
+const formatTime = (isoDate) => {
+  const options = { hour: "2-digit", minute: "2-digit" };
+  return new Date(isoDate).toLocaleTimeString("th-TH", options); // รูปแบบ: 05:43 น.
+};
+
+
 const Appointment = () => {
-  const [appointments, setAppointments] = useState([
+  const navigate = useNavigate();
+
+  // สถานะสำหรับจัดการการคัดลอก
+  const [copiedCode, setCopiedCode] = useState("");
+
+  // ข้อมูล Appointment
+  const [appointments] = useState([
     {
       id: 1,
       icon: "/path/to/icon1.png",
       name: "สุรางคนางค์ เกตุยั่งยืนวงศ์",
-      birthdate: "1990-04-08",
-      date: "2024-09-10",
-      time: "2024-09-10T10:06:38.448Z",
+      birthdate: "1990-04-08T04:45:25.448Z",
+      dateappointment: "2024-09-10T10:06:38.448Z",
       packageName: "แพ็กเกจความรัก",
+      type_package: "Questions",
+      QuestionsNumber: 1,
       code: "4QCFR",
+      status_service: "รอเข้ารับบริการ",
+      email: "25654@gmail.com",
     },
     {
       id: 2,
       icon: "/path/to/icon2.png",
       name: "สมชาย ใจดี",
-      birthdate: "1985-12-01",
-      date: "2024-09-11",
-      time: "2024-09-11T10:06:38.448Z",
+      birthdate: "1985-12-01T04:45:25.448Z",
+      dateappointment: "2024-09-11T10:06:38.448Z",
       packageName: "แพ็กเกจสุขภาพ",
+      type_package: "Questions",
+      QuestionsNumber: 2,
       code: "7XYZB",
+      status_service: "บริการสำเร็จ",
+      email: "25655@gmail.com",
     },
     {
       id: 3,
       icon: "/path/to/icon2.png",
-      name: "สมชาย ใจดี",
-      birthdate: "1985-12-01",
-      date: "2024-09-11",
-      time: "2024-09-11T10:06:38.448Z",
+      name: "สมชาย ฝึกใจดี",
+      birthdate: "1985-12-01T04:45:25.448Z",
+      dateappointment: "2024-09-11T10:06:38.448Z",
       packageName: "แพ็กเกจสุขภาพ",
+      type_package: "Call",
+      QuestionsNumber: 0,
       code: "7XYZB",
+      status_service: "ยกเลิกบริการ",
+      email: "25655@gmail.com",
     },
   ]);
 
-  const [copiedId, setCopiedId] = useState(null); // ใช้เก็บ ID ของ Appointment ที่ถูกคัดลอก
-
-  const handleUpdateAppointment = (id, field, value) => {
-    setAppointments((prev) =>
-      prev.map((appointment) =>
-        appointment.id === id ? { ...appointment, [field]: value } : appointment
-      )
-    );
+  // ฟังก์ชันสำหรับจัดการการคลิกบน Card
+  const handleCardClick = (id) => {
+    const appointment = appointments.find((a) => a.id === id); // หา appointment ที่ตรงกับ id
+    navigate(`/appointment/${id}`, { state: appointment }); // ส่งข้อมูลผ่าน state
   };
 
-  const handleCopy = (id) => {
-    setCopiedId(id); // เปลี่ยนเป็น id ของ Appointment ที่ถูกคัดลอก
-    setTimeout(() => setCopiedId(null), 30000); // รีเซ็ตหลังจาก 2 วินาที
+  // ฟังก์ชันสำหรับจัดการการคัดลอก
+  const handleCopy = (code) => {
+    setCopiedCode(code); // อัปเดตสถานะการคัดลอก
+    setTimeout(() => setCopiedCode(""), 15000); // ล้างสถานะหลัง 2 วินาที
   };
 
   return (
@@ -58,33 +84,27 @@ const Appointment = () => {
       <div className="py-8 flex items-start space-y-0 flex-row space-x-[100px]">
         <DateDropdown />
       </div>
-      {/* แสดง AppointmentCard หลายใบ */}
       <div className="space-y-4">
         {appointments.map((appointment) => (
-          <AppointmentCard
+          <div
             key={appointment.id}
-            icon={appointment.icon}
-            name={appointment.name}
-            birthdate={appointment.birthdate}
-            date={appointment.date}
-            time={appointment.time}
-            packageName={appointment.packageName}
-            code={appointment.code}
-            onNameChange={(value) =>
-              handleUpdateAppointment(appointment.id, "name", value)
-            }
-            onBirthdateChange={(value) =>
-              handleUpdateAppointment(appointment.id, "birthdate", value)
-            }
-            onDateChange={(value) =>
-              handleUpdateAppointment(appointment.id, "date", value)
-            }
-            onTimeChange={(value) =>
-              handleUpdateAppointment(appointment.id, "time", value)
-            }
-            isCopied={copiedId === appointment.id} // ตรวจสอบว่า Appointment นี้ถูกคัดลอกหรือไม่
-            onCopy={() => handleCopy(appointment.id)} // เรียก handleCopy เมื่อคลิกคัดลอก
-          />
+            onClick={() => handleCardClick(appointment.id)} // คลิกบน Card
+          >
+            <AppointmentCard
+              key={appointment.id}
+              icon={appointment.icon}
+              name={appointment.name}
+              birthdate={formatDate(appointment.birthdate)} // แสดงวันที่
+              birthtime={formatTime(appointment.birthdate)} // แสดงเวลาเกิด
+              date={formatDate(appointment.dateappointment)} // แสดงวันที่นัดหมาย
+              time={formatTime(appointment.dateappointment)} // แสดงเวลานัดหมาย
+              packageName={appointment.packageName}
+              code={appointment.code}
+              email={appointment.email}
+              isCopied={copiedCode === appointment.code} // ตรวจสอบสถานะการคัดลอก
+              onCopy={() => handleCopy(appointment.code)} // จัดการการคัดลอก
+            />
+          </div>
         ))}
       </div>
     </div>

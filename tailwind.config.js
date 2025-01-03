@@ -10,6 +10,8 @@ module.exports = {
         secondary: "#65558F",
         secondary2: "#420F75",
         background: "#b2aac7",
+        cancel: "#800020",
+        bordercancel:"#990033",
       },
       fontFamily: {
         sans: ['Noto Sans Thai', 'sans-serif'],

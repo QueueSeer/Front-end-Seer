@@ -4,6 +4,7 @@ import DateInfo from "../../../components/Appointment/DateInfo";
 import CopyButton from "../../../components/Appointment/CopyButton";
 import DetailsButton from "../../../components/Appointment/DetailsButton";
 
+
 const AppointmentCard = ({
   icon,
   name,
@@ -12,6 +13,7 @@ const AppointmentCard = ({
   time,
   packageName,
   code,
+  email,
   onNameChange,
   onBirthdateChange,
   onDateChange,
@@ -20,28 +22,31 @@ const AppointmentCard = ({
   onCopy,
 }) => {
   return (
-    <button className="flex items-center justify-between rounded-full bg-secondary shadow-md w-full mx-auto px-[40px] py-[12px]">
+    <div
+      className="flex items-center justify-between rounded-full bg-secondary shadow-md w-full mx-auto px-[40px] py-[12px] cursor-pointer"
+      onClick={() => console.log("Card clicked")}
+    >
       {/* Section 1: ข้อมูลไอคอนและชื่อ */}
       <ProfileInfo
         icon={icon}
         name={name}
-        birthdate={birthdate}
+        birthdate={birthdate} // ใช้ฟังก์ชันจัดรูปแบบ
         onNameChange={onNameChange}
         onBirthdateChange={onBirthdateChange}
       />
 
       {/* Section 2: วันที่และเวลา */}
       <DateInfo
-        date={date}
-        time={time}
+        date={date} // ใช้ฟังก์ชันจัดรูปแบบ
+        time={time} // ใช้ฟังก์ชันจัดรูปแบบ
         onDateChange={onDateChange}
         onTimeChange={onTimeChange}
       />
 
       {/* Section 3: แพ็กเกจและปุ่ม */}
       <div className="hidden xl:flex items-center space-x-10">
-        <div className="flex flex-col space-y-[4px]">
-          <p className="text-sm text-white">{packageName}</p>
+        <div className="flex flex-col space-y-[4px] items-center">
+          <p className="text-[16px] font-regular text-white">{packageName}</p>
           <CopyButton text={code} isCopied={isCopied} onCopy={onCopy} />
         </div>
         <DetailsButton />
@@ -64,7 +69,7 @@ const AppointmentCard = ({
           />
         </svg>
       </div>
-    </button>
+    </div>
   );
 };
 

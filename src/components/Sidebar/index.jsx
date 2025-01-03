@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from "react";
 import SidebarItem from "./item/SidebarItem";
 import menuItems from "./item/MenuItems";
-import { useLocation } from "react-router-dom"; // เพิ่ม useLocation
+import { useLocation } from "react-router-dom";
 
-const Sidebar = () => {
-  const location = useLocation(); // ใช้ location เพื่อตรวจสอบ URL ปัจจุบัน
+const Sidebar = ({ activeOverride = null }) => {
+  const location = useLocation();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // อัปเดต activeIndex ตาม URL ปัจจุบัน
   useEffect(() => {
-    const currentIndex = menuItems.findIndex(
-      (item) => item.href === location.pathname
-    );
-    if (currentIndex !== -1) {
-      setActiveIndex(currentIndex);
+    // หาก activeOverride ถูกส่งมา ให้ใช้ค่า Override แทน URL
+    if (activeOverride !== null) {
+      setActiveIndex(activeOverride);
+    } else {
+      // กำหนด activeIndex จาก URL
+      const currentIndex = menuItems.findIndex(
+        (item) => item.href === location.pathname
+      );
+      if (currentIndex !== -1) {
+        setActiveIndex(currentIndex);
+      }
     }
-  }, [location.pathname]); // ทำงานเมื่อ URL เปลี่ยน
+  }, [location.pathname, activeOverride]);
 
   return (
     <div className="p-3 w-full rounded-lg border border-gray-200 h-screen flex flex-col justify-between">
-      <ul className="space-y-2 ">
+      <ul className="space-y-2">
         {menuItems.map((item, index) => (
           <SidebarItem
             key={index}
