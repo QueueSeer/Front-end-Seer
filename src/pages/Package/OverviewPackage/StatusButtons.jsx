@@ -13,11 +13,11 @@ const StatusButtons = () => {
   ];
 
   return (
-    <div className="flex space-x-6 pt-10 justify-center items-center">
+    <div className="flex flex-wrap gap-4 pt-10 justify-center items-center">
       {pages.map((page) => (
         <Link to={page.path} key={page.id}>
           <button
-            className={`py-2 w-[150px] rounded-full shadow focus:outline-none ${
+            className={`py-2 lg:w-[150px] px-4 rounded-full shadow focus:outline-none ${
               location.pathname === page.path
                 ? "bg-secondary2 text-white"
                 : "bg-gray-200 text-gray-600 hover:bg-gray-300"
