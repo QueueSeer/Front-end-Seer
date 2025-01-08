@@ -3,7 +3,7 @@ import Images from "../../../assets";
 const menuItems = [
   { icon: Images.UserIcon, text: "โปรไฟล์", href: "/profile" },
   { icon: Images.calendarIcon, text: "จองคิว", href: "/appointment" },
-  { icon: Images.BoxIcon, text: "แพ็กเกจ", href: "/" },
+  { icon: Images.BoxIcon, text: "แพ็กเกจ", href: "/package" },
   { icon: Images.BoltIcon, text: "ดูดวงทันที", href: "/" },
   { icon: Images.SledgehammerIcon, text: "ประมูล", href: "/" },
   { icon: Images.Clock_CircleIcon, text: "ตารางเวลา", href: "/" },

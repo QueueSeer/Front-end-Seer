@@ -3,7 +3,7 @@ import React from "react";
 import Navbar from "../../components/navbar"; // เรียกใช้ path ที่ถูกต้อง
 import Sidebar from "../../components/Sidebar"; // เรียกใช้ path ที่ถูกต้อง
 
-import UserAppointment from "./CardAppointment";
+import CardAppointment from "./CardAppointment";
 
 export default function Appointment() {
   return (
@@ -16,7 +16,7 @@ export default function Appointment() {
         </div>
         {/* คอลัมน์ที่ 2 ใช้พื้นที่ที่เหลือ */}
         <div className="flex-1 pb-10">
-          <UserAppointment/>
+          <CardAppointment/>
 
         </div>
       </div>

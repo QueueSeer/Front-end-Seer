@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SidebarItem = ({ icon, text, href, isActive, onClick }) => {
+const SidebarItem = React.memo(({ icon, text, href, isActive }) => {
   return (
     <li>
       <Link
-        to={href} // ใช้ to แทน href
-        onClick={onClick} // อัปเดต Active State
+        to={href}
         className={`flex items-center p-3 rounded-md cursor-pointer font-medium  ${
           isActive
             ? "bg-background"
@@ -18,6 +17,6 @@ const SidebarItem = ({ icon, text, href, isActive, onClick }) => {
       </Link>
     </li>
   );
-};
+});
 
 export default SidebarItem;

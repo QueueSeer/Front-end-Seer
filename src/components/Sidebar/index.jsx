@@ -1,25 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import SidebarItem from "./item/SidebarItem";
 import menuItems from "./item/MenuItems";
 import { useLocation } from "react-router-dom";
 
 const Sidebar = ({ activeOverride = null }) => {
   const location = useLocation();
-  const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    // หาก activeOverride ถูกส่งมา ให้ใช้ค่า Override แทน URL
+  // คำนวณค่า activeIndex โดยใช้ useMemo เพื่อไม่ให้คำนวณใหม่ทุกครั้ง
+  const activeIndex = useMemo(() => {
     if (activeOverride !== null) {
-      setActiveIndex(activeOverride);
-    } else {
-      // กำหนด activeIndex จาก URL
-      const currentIndex = menuItems.findIndex(
-        (item) => item.href === location.pathname
-      );
-      if (currentIndex !== -1) {
-        setActiveIndex(currentIndex);
-      }
+      return activeOverride;
     }
+    const currentIndex = menuItems.findIndex((item) => item.href === location.pathname);
+    return currentIndex !== -1 ? currentIndex : 0; // เริ่มต้นที่ 0 ถ้าไม่พบ URL
   }, [location.pathname, activeOverride]);
 
   return (
@@ -32,7 +25,6 @@ const Sidebar = ({ activeOverride = null }) => {
             text={item.text}
             href={item.href}
             isActive={activeIndex === index}
-            onClick={() => setActiveIndex(index)}
           />
         ))}
       </ul>

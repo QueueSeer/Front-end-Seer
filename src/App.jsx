@@ -6,8 +6,11 @@ import NotificationDetail from "./pages/Notification/NotificationDetail"; // ค
 import Appointment from "./pages/Appointment/Appointment";
 import DetailsAppointment from "./pages/Appointment/DetailsAppointment";
 
-
 import "./index.css";
+import Package from "./pages/Package";
+import Drafted from "./pages/Package/DraftPackage/Drafted";
+import Published from "./pages/Package/DraftPackage/Published";
+import HiddenPackage from "./pages/Package/DraftPackage/HiddenPackage";
 export default function App() {
   return (
     <Router>
@@ -24,6 +27,11 @@ export default function App() {
         <Route path="/notification/:id" element={<NotificationDetail />} />
         <Route path="/appointment" element={<Appointment />} />
         <Route path="/appointment/:id" element={<DetailsAppointment />} />
+        <Route path="/package" element={<Package />} />
+        <Route path="/package/drafted" element={<Drafted />} />
+        <Route path="/package/published" element={<Published />} />
+        <Route path="/package/hiddenPackage" element={<HiddenPackage />} />
+
 
       </Routes>
     </Router>
