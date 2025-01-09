@@ -1,6 +1,6 @@
 import Images from "../../../assets";
 
-const menuItems = [
+const MenuItems = [
   { icon: Images.UserIcon, text: "โปรไฟล์", href: "/profile" },
   { icon: Images.calendarIcon, text: "จองคิว", href: "/" },
   { icon: Images.BoxIcon, text: "แพ็กเกจ", href: "/" },
@@ -12,4 +12,4 @@ const menuItems = [
   { icon: Images.Star_Icon, text: "จัดการรีวิว", href: "/reviews" },
 ];
 
-export default menuItems;
+export default MenuItems;

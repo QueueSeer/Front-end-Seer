@@ -17,6 +17,8 @@ import Users_GroupIcon from './icon/Navbar/Users_GroupIcon.png'
 import LogoutIcon from './icon/Navbar/LogoutIcon.png'
 import bellClickIcon from './icon/Navbar/bellClickIcon.png'
 import UserIcon from './icon/Navbar/UserIcon.png'
+import Logout from './icon/Navbar/Logout.png'
+
 import StarsIcon from './icon/Profile/StarsIcon.png'
 import LinkIcon from './icon/Profile/LinkMinimalisticIcon.png'
 import WalletIcon from './icon/Profile/WalletIcon.png'
@@ -129,6 +131,7 @@ const images = {
     TiktokIcon,
     PlusIcon,
     ThaiqrIcon,
+    Logout,
 
     
     // ไอคอนสำหรับ Membership
