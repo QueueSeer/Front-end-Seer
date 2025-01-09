@@ -6,7 +6,7 @@ const MenuItems = [
   { icon: Images.BoxIcon, text: "แพ็กเกจ", href: "/" },
   { icon: Images.BoltIcon, text: "ดูดวงทันที", href: "/" },
   { icon: Images.SledgehammerIcon, text: "ประมูล", href: "/" },
-  { icon: Images.Clock_CircleIcon, text: "ตารางเวลา", href: "/" },
+  { icon: Images.Clock_CircleIcon, text: "ตารางเวลา", href: "/timetable" },
   { icon: Images.OutlineIcon, text: "รายการของฉัน", href: ["/revenue", "/withdraw-money"] }, 
   { icon: Images.Users_GroupIcon, text: "ผู้ติดตาม", href: "/follower" },
   { icon: Images.Star_Icon, text: "จัดการรีวิว", href: "/reviews" },

@@ -14,14 +14,15 @@ import WithdrawMoney from "./components/revenue/WithdrawMoney";
 import ProceedWithdraw from "./components/revenue/ProceedWithdraw";
 import FollowerPage from "./pages/followerpage/FollowerPage";
 import EmailVerification from "./pages/membership/EmailVerification";
-import Reviewpage from './pages/Review/Reviewpage.jsx';
+import Reviewpage from "./pages/Review/Reviewpage.jsx";
+import Timetable from "./pages/Timetable/timetable.jsx"; 
 
 export default function App() {
   return (
     <Router>
       <Routes>
-       
-        <Route path="/" element={<Login/>} />
+        {/* เส้นทางสำหรับหน้า Login */}
+        <Route path="/" element={<Profile />} />
 
         {/* เส้นทางสำหรับหน้า Revenue */}
         <Route path="/revenue" element={<RevenuePage />} />
@@ -51,6 +52,9 @@ export default function App() {
 
         {/* เส้นทางสำหรับหน้า LandingPage */}
         <Route path="/landing" element={<LandingPage />} />
+
+        {/* เส้นทางสำหรับหน้า Timetable */}
+        <Route path="/timetable" element={<Timetable />} /> {/* Updated `Timetable` */}
       </Routes>
     </Router>
   );

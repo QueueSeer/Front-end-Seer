@@ -97,6 +97,9 @@ import Star from './icon/Reviewicon/Star.png';
 import Starcolor from './icon/Reviewicon/Starcolor.png';
 import StarYellow from './icon/Reviewicon/StarYellow.png';
 
+import calendartimetable from './icon/timetable/calendartimetable.png';
+import nextstep from './icon/timetable/nextstep.png';
+
 
 
 const images = {
@@ -214,6 +217,10 @@ const images = {
       Star,
        Starcolor,
       StarYellow,
+
+       // timetable 
+      calendartimetable,
+      nextstep, 
 
 
 
