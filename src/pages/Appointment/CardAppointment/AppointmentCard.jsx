@@ -23,7 +23,7 @@ const AppointmentCard = ({
 }) => {
   return (
     <div
-      className="flex items-center justify-between rounded-full bg-secondary shadow-md w-full mx-auto px-[40px] py-[12px] cursor-pointer"
+      className="flex items-center justify-between rounded-[15px] bg-primary shadow-md w-full mx-auto px-[40px] py-[12px] cursor-pointer"
       onClick={() => console.log("Card clicked")}
     >
       {/* Section 1: ข้อมูลไอคอนและชื่อ */}

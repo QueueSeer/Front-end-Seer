@@ -12,7 +12,7 @@ const ProfileInfo = ({ icon, name, birthdate }) => {
       {/* ชื่อและวันเกิด */}
       <div className="flex flex-col justify-start text-left space-y-2">
         <p className="text-[18px] font-semibold text-white">{name}</p>
-        <p className="text-[14px] text-white opacity-80">{birthdate}</p>
+        <p className="text-[16px] text-white opacity-80">{birthdate}</p>
       </div>
     </div>
   );

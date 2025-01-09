@@ -60,7 +60,7 @@ const Appointment = () => {
       packageName: "แพ็กเกจสุขภาพ",
       type_package: "Call",
       QuestionsNumber: 0,
-      code: "7XYZB",
+      code: "7XY4B",
       status_service: "ยกเลิกบริการ",
       email: "25655@gmail.com",
     },
@@ -84,7 +84,7 @@ const Appointment = () => {
       <div className="py-8 flex items-start space-y-0 flex-row space-x-[100px]">
         <DateDropdown />
       </div>
-      <div className="space-y-4">
+      <div className="space-y-5">
         {appointments.map((appointment) => (
           <div
             key={appointment.id}
