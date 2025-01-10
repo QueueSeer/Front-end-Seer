@@ -14,6 +14,7 @@ const timetable = () => {
       <div className="hidden lg:block w-72">
         <Sidebar />
       </div>
+      
       {/* Main Content */}
       <div className="flex-1 bg-white dark:bg-gray-800  rounded-lg border border-gray-200 rounded-lg shadow-lg p-6">
           < CalendarHeader />

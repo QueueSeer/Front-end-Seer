@@ -1,61 +1,41 @@
 import { useState } from "react";
 import Images from "../../assets";
 
-const CalendarHeader = ({
-  months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
-  years = ["2566", "2567", "2568"],
-  selectedMonth,
-  selectedYear,
-  onDateChange,
-}) => {
-  const [currentMonth, setCurrentMonth] = useState(selectedMonth || "ตุลาคม");
-  const [currentYear, setCurrentYear] = useState(selectedYear || "2567");
-  const [isTodayChecked, setIsTodayChecked] = useState(false);
-  const [isWeekChecked, setIsWeekChecked] = useState(true);
+const CalendarHeader = () => {
+  const [currentMonth, setCurrentMonth] = useState("ตุลาคม");
+  const [currentYear, setCurrentYear] = useState("2567");
+  const [selectedDate, setSelectedDate] = useState(9);
 
   const days = ["จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส.", "อา."];
 
-  const handleToggleToday = () => {
-    setIsTodayChecked(!isTodayChecked);
-  };
+  // วันที่ในสัปดาห์ (เริ่มต้นตรงกับวันแรกของสัปดาห์)
+  const startDate = 7; // วันที่ 7 ตรงกับวันจันทร์
+  const weekDates = Array.from({ length: 7 }, (_, index) => startDate + index);
 
-  const handleToggleWeek = () => {
-    setIsWeekChecked(!isWeekChecked);
-  };
-
-  const handleMonthChange = (event) => {
-    const selectedMonth = event.target.value;
-    setCurrentMonth(selectedMonth);
-    onDateChange && onDateChange({ month: selectedMonth, year: currentYear });
-  };
-
-  const handleYearChange = (event) => {
-    const selectedYear = event.target.value;
-    setCurrentYear(selectedYear);
-    onDateChange && onDateChange({ month: currentMonth, year: selectedYear });
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
   };
 
   return (
     <div className="mb-6">
+    {/* Header Section */}
+    <div className="flex items-center space-x-2 mb-4">
+      <img src={Images.Clock_CircleIcon} alt="Star Icon" className="w-6 h-6" />
+      <h1 className="text-xl sm:text-2xl font-bold text-[#65558F]">ตารางเวลา</h1>
+    </div>
+
+    {/* Divider Under Header */}
+    <hr className="border-t border-gray-300 mb-4" />
+    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-md">
       {/* Header Section */}
-      <div className="flex items-center space-x-2 mb-4">
-        <img src={Images.Clock_CircleIcon} alt=" Clock_CircleIcon" className="w-6 h-6" />
-        <h1 className="text-xl sm:text-2xl font-bold text-[#65558F]">ตารางเวลา</h1>
-      </div>
-
-      {/* Divider Under Header */}
-      <hr className="border-t border-gray-300 mb-4" />
-
-    <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
-      {/* Month and Year Selection */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 mx-auto">
           <select
             value={currentMonth}
-            onChange={handleMonthChange}
-            className="border rounded px-2 py-1 text-gray-700"
+            onChange={(e) => setCurrentMonth(e.target.value)}
+            className="border-none bg-transparent text-[#615E83] text-lg font-semibold focus:outline-none"
           >
-            {months.map((month, index) => (
+            {["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"].map((month, index) => (
               <option key={index} value={month}>
                 {month}
               </option>
@@ -63,64 +43,57 @@ const CalendarHeader = ({
           </select>
           <select
             value={currentYear}
-            onChange={handleYearChange}
-            className="border rounded px-2 py-1 text-gray-700"
+            onChange={(e) => setCurrentYear(e.target.value)}
+            className="border-none bg-transparent text-[#615E83] text-lg font-semibold focus:outline-none"
           >
-            {years.map((year, index) => (
+            {["2566", "2567", "2568"].map((year, index) => (
               <option key={index} value={year}>
                 {year}
               </option>
             ))}
           </select>
+          <img
+            src={Images.calendartimetable}
+            alt="Calendar Icon"
+            className="w-6 h-6 cursor-pointer"
+          />
         </div>
-        <div className="flex items-center gap-2">
-          <img src={Images.calendartimetable} alt="Calendar Icon" className="w-6 h-6 text-purple-500" />
-        </div>
+        <img
+          src={Images.nextstep}
+          alt="Next Icon"
+          className="w-6 h-6 cursor-pointer"
+        />
       </div>
 
       {/* Days and Dates */}
-      <div className="grid grid-cols-7 text-center gap-2">
+      <div className="grid grid-cols-7 text-center mt-4">
+        {/* Days */}
         {days.map((day, index) => (
-          <div key={index} className="text-gray-500">
+          <div key={index} className="text-[#8677A7] text-sm font-medium flex items-center justify-center h-10">
             {day}
           </div>
         ))}
-        {Array.from({ length: 31 }).map((_, index) => (
+
+        {/* Dates */}
+        {weekDates.map((date, index) => (
           <div
             key={index}
-            className={`${
-              index === 8 ? "bg-purple-500 text-white rounded-full" : "text-gray-800"
-            } p-2`}
+            onClick={() => handleDateClick(date)}
+            className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full ${
+              date === selectedDate ? "border-2 border-[#420F75] text-[#420F75] font-semibold" : "text-gray-800"
+            }`}
+            style={{
+              gridColumnStart: index + 1, // จัดตำแหน่งวันที่ให้ตรงกับวัน
+              marginTop: "-8px", // ขยับวันที่ให้ลงมาตรงกับวัน
+            }}
           >
-            {index + 1}
+            {date > 31 ? date - 31 : date} {/* จัดการกรณีวันที่เกิน 31 */}
           </div>
         ))}
-      </div>
-
-      {/* Toggles */}
-      <div className="flex items-center gap-4 mt-4">
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={isTodayChecked}
-            onChange={handleToggleToday}
-            className="form-checkbox rounded"
-          />
-          <span className="text-gray-700">ใช้เฉพาะวันนี้</span>
-        </label>
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={isWeekChecked}
-            onChange={handleToggleWeek}
-            className="form-checkbox rounded"
-          />
-          <span className="text-gray-700">ใช้ทั้งสัปดาห์</span>
-        </label>
       </div>
     </div>
     </div>
   );
 };
 
-export default CalendarHeader; 
+export default CalendarHeader;
