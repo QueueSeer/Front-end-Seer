@@ -79,8 +79,8 @@ const CalendarHeader = () => {
           <div
             key={index}
             onClick={() => handleDateClick(date)}
-            className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full ${
-              date === selectedDate ? "border-2 border-[#420F75] text-[#420F75] font-semibold" : "text-gray-800"
+            className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full ml-12 pt-2 ${
+              date === selectedDate ? "border-2 border-[#420F75] text-[#420F75] font-semibold mb-5" : "text-gray-800"
             }`}
             style={{
               gridColumnStart: index + 1, // จัดตำแหน่งวันที่ให้ตรงกับวัน
