@@ -99,6 +99,7 @@ import StarYellow from './icon/Reviewicon/StarYellow.png';
 
 import calendartimetable from './icon/timetable/calendartimetable.png';
 import nextstep from './icon/timetable/nextstep.png';
+import backtostep from './icon/timetable/backtostep.png';
 
 
 
@@ -221,6 +222,7 @@ const images = {
        // timetable 
       calendartimetable,
       nextstep, 
+      backtostep,
 
 
 
