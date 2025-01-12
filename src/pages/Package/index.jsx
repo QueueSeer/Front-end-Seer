@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
 import Layout from "./OverviewPackage/Layout";
 import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
+import PackageCard from "../../components/Card/PackageCard";
+import PackageContext from "./OverviewPackage/PackageContext"; // Import the PackageContext data
 
 const Package = () => {
+  const navigate = useNavigate(); // ใช้ useNavigate เพื่อใช้ navigate
   const [price, setPrice] = useState(""); // เก็บค่าราคา
   const [priceError, setPriceError] = useState(""); // ข้อความแจ้งเตือนสำหรับราคา
 
@@ -17,6 +21,7 @@ const Package = () => {
   const [details, setDetails] = useState(""); // เก็บรายละเอียดแพคเกจ
 
   const [savedData, setSavedData] = useState(null); // เก็บข้อมูลที่บันทึกแล้ว
+
   const handleInputChange = (e, setValue, setError, fieldName) => {
     let value = e.target.value;
 
@@ -78,30 +83,45 @@ const Package = () => {
   };
 
   const handleSave = () => {
+    // หาค่า id ล่าสุดใน PackageContext
+    const lastId = PackageContext.length > 0 ? Math.max(...PackageContext.map(pkg => pkg.id)) : 0;
+    const newId = lastId + 1; // เพิ่ม 1 จาก id ล่าสุด
+
     // เก็บข้อมูลทั้งหมดใน state savedData
-    setSavedData({
-      packageName,
-      time,
-      price,
-      channel,
-      selectedCategory,
-      questionCount,
-      details,
-    });
+    const newPackage = {
+      id: newId, // เพิ่ม id ใหม่
+      status: "draft", // Always set the status to "draft"
+      title: packageName,
+      fortuneTeller: "หมอดูออม 1", // Static value for now, you can change it if needed
+      rating: 5, // Static value for now, you can change it if needed
+      reviews: 1300, // Static value for now
+      price: price,
+      callTime: time + " นาที", // Combine time with "นาที"
+      packageType: channel,
+    };
+
+    // Add the new package to the PackageContext
+    PackageContext.push(newPackage); // You should ideally manage this with a state or context
+
+    // Update saved data for preview
+    setSavedData(newPackage);
+
+    // Navigate to /package/drafted
+    navigate("/package/drafted"); // ทำการนำทางไปหน้า /package/drafted
   };
 
   return (
     <Layout>
-      <div className="pt-8 flex ">
+      <div className=" flex ">
         {/* Left Column */}
         <div className="flex-1 pr-8 pl-2 mr-4 space-y-6">
+          {/* ชื่อแพคเกจ */}
           <div className="mb-4">
-            <label
-              htmlFor="package-name"
+            <div
               className="block text-gray-700 font-medium mb-2"
             >
               ชื่อแพคเกจ
-            </label>
+            </div>
             <input
               id="package-name"
               type="text"
@@ -111,13 +131,15 @@ const Package = () => {
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring focus:ring-purple-200 focus:outline-none"
             />
           </div>
+
+          {/* เวลาที่ใช้ */}
           <div className="mb-4">
-            <label
-              htmlFor="time"
+            <div
+              
               className="block text-gray-700 font-medium mb-2"
             >
               เวลาที่ใช้ (นาที)
-            </label>
+            </div>
             <input
               id="time"
               type="number"
@@ -128,18 +150,19 @@ const Package = () => {
                 timeError ? "border-red-500" : "border-gray-300"
               }`}
             />
-            {/* แสดงข้อความแจ้งเตือน */}
             {timeError && (
               <p className="text-red-500 text-sm mt-1">{timeError}</p>
             )}
           </div>
+
+          {/* ราคา */}
           <div className="mb-4">
-            <label
-              htmlFor="price"
+            <div
+              
               className="block text-gray-700 font-medium mb-2"
             >
               ราคา (Coin)
-            </label>
+            </div>
             <input
               id="price"
               type="number"
@@ -150,28 +173,24 @@ const Package = () => {
                 priceError ? "border-red-500" : "border-gray-300"
               }`}
             />
-            {/* แสดงข้อความแจ้งเตือน */}
             {priceError && (
               <p className="text-red-500 text-sm mt-1">{priceError}</p>
             )}
           </div>
+
+          {/* รูปแบบดูดวง */}
           <div className="mb-4">
-            <label
-              htmlFor="type"
+            <div
               className="block text-gray-700 font-medium mb-2"
             >
               รูปแบบดูดวง
-            </label>
+            </div>
             <ChannelSelectDropdown onChannelChange={setChannel} />
           </div>
 
+          {/* หมวดหมู่ */}
           <div className="mb-4">
-            <label
-              htmlFor="type"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              หมวดหมู่
-            </label>
+            <div className="block text-gray-700 font-medium mb-2">หมวดหมู่</div>
             <div className="flex flex-wrap gap-2">
               {categories.map((category) => (
                 <button
@@ -189,62 +208,38 @@ const Package = () => {
             </div>
           </div>
 
+          {/* จำนวนคำถาม */}
           <div className="mb-4">
-            <label
-              htmlFor="type"
-              className="block text-gray-700 font-medium mb-2"
-            >
+            <div className="block text-gray-700 font-medium mb-2">
               จำนวนคำถาม
-            </label>
+            </div>
             <QuestionCountDropdown onQuestionCountChange={setQuestionCount} />
           </div>
         </div>
 
         {/* Right Column */}
         <div className="w-1/3 p-6">
-          <div className="mb-4">
-            <img
-              src="https://via.placeholder.com/300"
-              alt="Tarot cards"
-              className="w-full h-[200px] rounded-lg mb-4"
-            />
-            <span className="bg-purple-200 text-purple-700 text-xs font-medium px-2 py-1 rounded-full">
-              ดูดวงไพ่ยิปซี
-            </span>
-          </div>
-          <h3 className="text-gray-800 text-lg font-semibold mb-2">
-            ความรักอยู่ที่ไหน
-          </h3>
-          <p className="text-gray-600 text-sm mb-2">
-            <span className="text-purple-700 font-medium">หมอดูแพรี่ 1</span>
-          </p>
-          <p className="text-yellow-500 text-sm mb-2">
-            4.0 ★★★★★ <span className="text-gray-600">(935 reviews)</span>
-          </p>
-          <p className="text-purple-700 text-2xl font-bold mb-4">99 Coins</p>
-          <div className="flex items-center text-gray-600 text-sm mb-4">
-            <svg
-              className="w-5 h-5 mr-1 text-gray-400"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 12h6m-6 0a6 6 0 110-12 6 6 0 010 12zm6 0H9m3-3v3m-3-3v3m3-3v3"
-              />
-            </svg>
-            15 นาที
-          </div>
+          <PackageCard
+            imageSrc="https://via.placeholder.com/300x300"
+            title={packageName} // แสดงชื่อแพ็กเกจที่กรอก
+            fortuneTeller="หมอดูออม 1"
+            imageProfile="https://via.placeholder.com/300x300"
+            Category="ไพ่ยิปซี" // แสดงหมวดหมู่ที่เลือก
+            rating={5}
+            reviews={1300}
+            price={price} // แสดงราคาที่กรอก
+            callTime={time + " นาที"} // แสดงเวลาที่ใช้
+            packageType={channel} // แสดงช่องทางที่เลือก
+            status="draft" // สถานะ: "ร่างแล้ว"
+          />
         </div>
       </div>
+
+      {/* รายละเอียดแพ็กเกจ */}
       <div className="pl-2 my-4">
-        <label htmlFor="type" className="block text-gray-700 font-medium mb-2">
+        <div className="block text-gray-700 font-medium mb-2">
           รายละเอียดแพ็กเกจ
-        </label>
+        </div>
         <form className="text-[16px]">
           <textarea
             className="w-full h-[225px] pt-4 px-6 border border-zinc-300 rounded-md resize-none"
@@ -253,6 +248,8 @@ const Package = () => {
           />
         </form>
       </div>
+
+      {/* บันทึกข้อมูล */}
       <div className="flex justify-end">
         <button
           className="bg-primary text-white py-2 px-14 rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"

@@ -29,6 +29,9 @@ import XIcon from './icon/Profile/XIcon.png'
 import TiktokIcon from './icon/Profile/TiktokIcon.png'
 import PlusIcon from './icon/Profile/PlusIcon.png'
 import ThaiqrIcon from './icon/Profile/ThaiqrIcon.png'
+import CallIcon from './icon/Package/CallIcon.png'
+import MessageIcon from './icon/Package/MessageIcon.png'
+import VideoIcon from './icon/Package/VideoIcon.png'
 
 
 
@@ -65,6 +68,9 @@ const images = {
     TiktokIcon,
     PlusIcon,
     ThaiqrIcon,
+    CallIcon,
+    VideoIcon,
+    MessageIcon,
 
   };
   

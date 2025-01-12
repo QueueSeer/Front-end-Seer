@@ -13,7 +13,7 @@ const StatusButtons = () => {
   ];
 
   return (
-    <div className="flex flex-wrap gap-4 pt-10 justify-center items-center">
+    <div className="flex flex-wrap gap-4 pt-10 justify-center items-center pb-8">
       {pages.map((page) => (
         <Link to={page.path} key={page.id}>
           <button
