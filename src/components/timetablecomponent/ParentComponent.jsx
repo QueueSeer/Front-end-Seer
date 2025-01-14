@@ -1,32 +1,20 @@
 import { useState } from "react";
-import dayjs from "dayjs";
-import FormSection from "./FormSection";
-import TimeSlots from "./TimeSlots";
+import ToggleSwitch from "./ToggleSwitch";
+import CalendarHeader from "./CalendarHeader";
 
 const ParentComponent = () => {
-  const [formData, setFormData] = useState({
-    startTime: dayjs("09:00", "HH:mm"),
-    endTime: dayjs("18:00", "HH:mm"),
-    packageDuration: 10, // in minutes
-    breakTime: 10, // in minutes
-    maxSlots: 3,
-    lunchBreak: {
-      start: dayjs("12:00", "HH:mm"),
-      end: dayjs("13:00", "HH:mm"),
-    },
-  });
-
-  const handleFormChange = (updatedData) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      ...updatedData,
-    }));
-  };
+  const [toggleMode, setToggleMode] = useState(0);
 
   return (
     <div>
-      <FormSection onChange={handleFormChange} />
-      <TimeSlots formData={formData} />
+      <ToggleSwitch
+        options={[
+          { label: "เฉพาะวันนี้" },
+          { label: "ทั้งสัปดาห์" },
+        ]}
+        onChange={(index) => setToggleMode(index)}
+      />
+      <CalendarHeader toggleMode={toggleMode} />
     </div>
   );
 };

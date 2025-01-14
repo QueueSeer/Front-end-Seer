@@ -109,51 +109,54 @@ const CalendarHeader = () => {
               </div>
             ))}
 
-            {/* Display Dates */}
-            {!showFullCalendar
-              ? // แสดงเฉพาะสัปดาห์
-                weekDates.map((date, index) => (
+       {/* Display Dates */}
+          {!showFullCalendar
+            ? // แสดงเฉพาะสัปดาห์
+              weekDates.map((date, index) => (
+                <div
+                  key={index}
+                  onClick={() => setSelectedDate(date)}
+                  className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full ml-12 ${
+                    toggleOption === 0 && date.isSame(selectedDate, "day")
+                      ? "border-2 border-[#420F75] text-[#420F75] font-semibold" // ล้อมรอบเฉพาะวันที่เลือก
+                      : toggleOption === 1 && weekDates.some((d) => d.isSame(date, "day"))
+                      ? "bg-purple-100 border-2 border-[#420F75] text-[#420F75] font-semibold" // ล้อมรอบทั้งสัปดาห์
+                      : "text-gray-800"
+                  }`}
+                  style={{
+                    marginTop: "4px", // ขยับวงกลมลงเล็กน้อย
+                    lineHeight: "2.2rem", // ปรับตำแหน่งตัวเลขให้อยู่กึ่งกลางวงกลม
+                  }}
+                >
+                  {date.date()}
+                </div>
+              ))
+            : // แสดงทั้งเดือน
+              [
+                // ช่องว่างก่อนวันที่ 1 ของเดือน
+                ...Array.from({ length: firstDayOfMonth }, (_, index) => (
+                  <div key={`empty-${index}`} className="w-10 h-10"></div>
+                )),
+                // วันที่ในเดือน
+                ...Array.from({ length: daysInMonth }, (_, index) => (
                   <div
-                    key={index}
-                    onClick={() => setSelectedDate(date)}
+                    key={index + 1}
+                    onClick={() => setSelectedDate(currentDate.date(index + 1))}
                     className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full ml-12 ${
-                      date.isSame(selectedDate, "day")
-                        ? "border-2 border-[#420F75] text-[#420F75] font-semibold"
+                      toggleOption === 0 && index + 1 === selectedDate.date()
+                        ? "border-2 border-[#420F75] text-[#420F75] font-semibold" // ล้อมรอบเฉพาะวันที่เลือก
                         : "text-gray-800"
                     }`}
                     style={{
-                      marginTop: "4px", // ขยับวงกลมลงเล็กน้อย
-                      lineHeight: "2.2rem", // ปรับตำแหน่งตัวเลขให้อยู่กึ่งกลางวงกลม
+                      marginTop: "4px",
+                      lineHeight: "2.2rem",
                     }}
                   >
-                    {date.date()}
+                    {index + 1}
                   </div>
-                ))
-              : // แสดงทั้งเดือน
-                [
-                  // ช่องว่างก่อนวันที่ 1 ของเดือน
-                  ...Array.from({ length: firstDayOfMonth }, (_, index) => (
-                    <div key={`empty-${index}`} className="w-10 h-10"></div>
-                  )),
-                  // วันที่ในเดือน
-                  ...Array.from({ length: daysInMonth }, (_, index) => (
-                    <div
-                      key={index + 1}
-                      onClick={() => setSelectedDate(currentDate.date(index + 1))}
-                      className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full ml-12 ${
-                        index + 1 === selectedDate.date()
-                          ? "border-2 border-[#420F75] text-[#420F75] font-semibold"
-                          : "text-gray-800"
-                      }`}
-                      style={{
-                        marginTop: "4px",
-                        lineHeight: "2.2rem",
-                      }}
-                    >
-                      {index + 1}
-                    </div>
-                  )),
-                ]}
+                )),
+              ]}
+
           </div>
            
         </div>

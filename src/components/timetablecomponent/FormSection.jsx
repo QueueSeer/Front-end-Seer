@@ -1,109 +1,211 @@
 import React, { useState } from "react";
+import axios from "axios";
+import ActionButtons from "./ActionButtons"; // Import ปุ่มล้างและบันทึก
 
 const FormSection = () => {
-  const [isBreakSelected, setIsBreakSelected] = useState(false); // สำหรับเลือกหรือไม่เลือกพักเที่ยง
-  const [isUnlimitedSelected, setIsUnlimitedSelected] = useState(false); // สำหรับเลือกหรือไม่เลือกไม่จำกัด
   const [formData, setFormData] = useState({
     workingHours: "",
-    package: "",
     breakTime: "",
     maxCustomers: "",
+    holiday: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" })); // ล้างข้อความ error เมื่อกรอกข้อมูลใหม่
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const timeRegex = /^\d{2}:\d{2}-\d{2}:\d{2}$/;
+
+    if (!formData.workingHours.match(timeRegex)) {
+      newErrors.workingHours = "กรุณากรอกเวลาในรูปแบบ HH:mm-HH:mm";
+    }
+
+    if (!formData.breakTime.match(timeRegex)) {
+      newErrors.breakTime = "กรุณากรอกเวลาพักในรูปแบบ HH:mm-HH:mm";
+    }
+
+    if (!formData.maxCustomers || isNaN(Number(formData.maxCustomers))) {
+      newErrors.maxCustomers = "กรุณากรอกเวลาพักระหว่างคิวเป็นตัวเลข";
+    }
+
+    if (!formData.holiday) {
+      newErrors.holiday = "กรุณากรอกวันหยุด";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // ถ้าไม่มี error ถือว่าผ่าน
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      return; // หยุดการทำงานหากข้อมูลไม่ผ่านการตรวจสอบ
+    }
+  
+    const [start, end] = formData.workingHours.split("-");
+    const [breakStart, breakEnd] = formData.breakTime.split("-");
+    const workingHours = [
+      { start_time: `${start.trim()}:00+07:00`, end_time: `${breakStart.trim()}:00+07:00` },
+      { start_time: `${breakEnd.trim()}:00+07:00`, end_time: `${end.trim()}:00+07:00` },
+    ];
+  
+    const requestData = {
+      working_hours: workingHours,
+      break_between_queue: `${formData.maxCustomers} นาที`,
+    };
+  
+    try {
+      // 1. ส่งข้อมูลตารางเวลา
+      const scheduleResponse = await axios.post(
+        "https://backend.qseer.app/api/seer/me/schedule",
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log("Schedules created:", scheduleResponse.data);
+  
+      // 2. ส่งข้อมูลวันหยุด (ถ้ามี)
+      if (formData.holiday.trim()) {
+        console.log("Holiday to be sent:", formData.holiday); // ตรวจสอบค่าที่จะส่ง
+        const dayOffResponse = await axios.post(
+          "https://backend.qseer.app/api/seer/me/dayoff",
+          { day: formData.holiday },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+        console.log("Day off added:", dayOffResponse.data);
+        alert("บันทึกตารางเวลาและวันหยุดสำเร็จ!");
+      } else {
+        alert("บันทึกตารางเวลาสำเร็จ (ไม่มีวันหยุด)");
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        alert(`เกิดข้อผิดพลาด: ${error.response.data.detail}`);
+      } else if (error.request) {
+        console.error("No response from server:", error.request);
+        alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+      } else {
+        console.error("Error:", error.message);
+        alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+      }
+    }
+  };
+  
+  
+  
+  
+  
+
+  const handleReset = () => {
+    setFormData({
+      workingHours: "",
+      breakTime: "",
+      maxCustomers: "",
+      holiday: "",
+    });
+    setErrors({});
+    alert("ล้างข้อมูลสำเร็จ!");
   };
 
   return (
-    <div className="grid grid-cols-2 gap-6 mb-6">
-      {/* เวลาเปิดทำการ */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          เวลาเปิดทำการ <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          name="workingHours"
-          value={formData.workingHours}
-          onChange={handleInputChange}
-          placeholder="09.00-17.00 น."
-          className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-      </div>
-
-      {/* แพคเกจที่เปิดบริการ */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          แพคเกจที่เปิดบริการ <span className="text-red-500">*</span>
-        </label>
-        <select
-          name="package"
-          value={formData.package}
-          onChange={handleInputChange}
-          className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-        >
-          <option value="">เลือกแพคเกจ</option>
-          <option value="package1">แพคเกจ 1</option>
-          <option value="package2">แพคเกจ 2</option>
-        </select>
-      </div>
-
-      {/* เวลาพัก */}
-      <div>
-        <div className="flex items-center gap-4 mb-2">
-          <label className="text-sm font-medium text-gray-700">เวลาพัก</label>
-          <input
-            type="checkbox"
-            name="break"
-            id="break"
-            checked={isBreakSelected}
-            onChange={() => setIsBreakSelected((prev) => !prev)} // เปลี่ยนสถานะพักเที่ยง
-            className="form-checkbox h-4 w-4 text-purple-500 focus:ring-purple-500"
-          />
-          <label htmlFor="break" className="text-sm text-gray-700">
-            พักเที่ยง
-          </label>
-        </div>
-        <input
-          type="text"
-          name="breakTime"
-          value={formData.breakTime}
-          onChange={handleInputChange}
-          placeholder="10 นาที"
-          className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-      </div>
-
-      {/* จำนวนสูงสุดที่รับ */}
-      <div>
-        <div className="flex items-center gap-4 mb-2">
-          <label className="text-sm font-medium text-gray-700">
-            จำนวนสูงสุดที่รับ
+    <div>
+      <div className="grid grid-cols-2 gap-6 mb-6">
+        {/* เวลาเปิดทำการ */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            เวลาเปิดทำการ <span className="text-red-500">*</span>
           </label>
           <input
-            type="checkbox"
-            name="max"
-            id="unlimited"
-            checked={isUnlimitedSelected}
-            onChange={() => setIsUnlimitedSelected((prev) => !prev)} // เปลี่ยนสถานะไม่จำกัด
-            className="form-checkbox h-4 w-4 text-purple-500 focus:ring-purple-500"
+            type="text"
+            name="workingHours"
+            value={formData.workingHours}
+            onChange={handleInputChange}
+            placeholder="09:00-17:00"
+            className={`w-full border ${
+              errors.workingHours ? "border-red-500" : "border-gray-300"
+            } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
           />
-          <label htmlFor="unlimited" className="text-sm text-gray-700">
-            ไม่จำกัด
-          </label>
+          {errors.workingHours && (
+            <p className="text-red-500 text-sm mt-1">{errors.workingHours}</p>
+          )}
         </div>
-        {!isUnlimitedSelected && (
+
+        {/* เวลาพักเที่ยง */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            เวลาพักเที่ยง
+          </label>
+          <input
+            type="text"
+            name="breakTime"
+            value={formData.breakTime}
+            onChange={handleInputChange}
+            placeholder="12:00-13:00"
+            className={`w-full border ${
+              errors.breakTime ? "border-red-500" : "border-gray-300"
+            } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+          />
+          {errors.breakTime && (
+            <p className="text-red-500 text-sm mt-1">{errors.breakTime}</p>
+          )}
+        </div>
+
+        {/* เวลาพักระหว่างคิว */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            เวลาพักระหว่างคิว
+          </label>
           <input
             type="number"
             name="maxCustomers"
             value={formData.maxCustomers}
             onChange={handleInputChange}
-            placeholder="10"
-            className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="10 นาที"
+            className={`w-full border ${
+              errors.maxCustomers ? "border-red-500" : "border-gray-300"
+            } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
           />
-        )}
+          {errors.maxCustomers && (
+            <p className="text-red-500 text-sm mt-1">{errors.maxCustomers}</p>
+          )}
+        </div>
+
+        {/* วันหยุด */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            วันหยุด <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="holiday"
+            value={formData.holiday}
+            onChange={handleInputChange}
+            placeholder="2025-01-14"
+            className={`w-full border ${
+              errors.holiday ? "border-red-500" : "border-gray-300"
+            } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+          />
+          {errors.holiday && (
+            <p className="text-red-500 text-sm mt-1">{errors.holiday}</p>
+          )}
+        </div>
       </div>
+
+      {/* Action Buttons */}
+      <ActionButtons onSave={handleSubmit} onReset={handleReset} />
     </div>
   );
 };

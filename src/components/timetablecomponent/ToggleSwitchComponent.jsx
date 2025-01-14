@@ -6,33 +6,36 @@ const ToggleSwitch = ({ options, onChange }) => {
   const handleToggle = (index) => {
     setActiveIndex(index);
     if (onChange) {
-      onChange(index);
+      onChange(index); // ส่งค่า index ไปยัง Parent Component
     }
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex gap-6 items-center">
       {options.map((option, index) => (
         <div
           key={index}
-          className="flex items-center gap-2 cursor-pointer"
+          className="flex items-center gap-4 cursor-pointer"
           onClick={() => handleToggle(index)}
         >
+          {/* Label */}
           <span
-            className={`text-sm font-medium ${
-              activeIndex === index ? "text-gray-700" : "text-gray-400"
+            className={`text-sm font-semibold transition ${
+              activeIndex === index ? "text-gray-800" : "text-gray-400"
             }`}
           >
             {option.label}
           </span>
+
+          {/* Toggle */}
           <div
-            className={`w-12 h-6 flex items-center rounded-full p-1 ${
-              activeIndex === index ? "bg-[#65558F]" : "bg-gray-300"
+            className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+              activeIndex === index ? "bg-purple-600" : "bg-gray-300"
             }`}
           >
             <div
-              className={`w-4 h-4 bg-white rounded-full shadow-md transform duration-300 ${
-                activeIndex === index ? "translate-x-6" : "translate-x-0"
+              className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                activeIndex === index ? "translate-x-7" : "translate-x-0"
               }`}
             ></div>
           </div>
