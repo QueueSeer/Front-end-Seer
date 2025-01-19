@@ -1,7 +1,7 @@
 import React from "react";
 import images from "../../assets";
 
-const PackageCard = ({
+const PackageCardCheckbox = ({
   id,
   imageSrc,
   title,
@@ -14,6 +14,8 @@ const PackageCard = ({
   callTime,
   packageType,
   status,
+  isSelected, // เพิ่ม prop สำหรับสถานะ Checkbox
+  onSelectClick, // ฟังก์ชันเมื่อคลิก Checkbox
 }) => {
   // ไอคอนสำหรับแต่ละประเภทแพ็กเกจ
   const packageIcons = {
@@ -24,8 +26,20 @@ const PackageCard = ({
 
   return (
     <div
-      className={`relative w-[270px] bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200`}
+      className={`relative w-[270px] bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200 ${
+        isSelected ? "opacity-100" : "opacity-80"
+      }`}
     >
+      {/* Checkbox มุมซ้ายบน */}
+      <div className="absolute top-2 left-2 z-10">
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={onSelectClick}
+          className="w-6 h-6 rounded-full border-gray-300 cursor-pointer accent-primary"
+        />
+      </div>
+
       <div className="relative">
         <img
           src={imageSrc}
@@ -81,4 +95,4 @@ const PackageCard = ({
   );
 };
 
-export default PackageCard;
+export default PackageCardCheckbox;

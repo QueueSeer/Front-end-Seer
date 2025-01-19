@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../OverviewPackage/Layout";
-import PackageCard from "../../../components/Card/PackageCard";
+import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
 import PackageContext from "../OverviewPackage/PackageContext"; // นำเข้า context
 
 const Drafted = () => {
@@ -32,12 +32,19 @@ const Drafted = () => {
     alert("Selected drafted packages have been published!");
   };
 
+  const draftedPackages = PackageContext.filter(pkg => pkg.status === "draft"); // กรองเฉพาะแพ็กเกจที่มีสถานะเป็น "draft"
+
   return (
     <Layout>
-      <div className="flex flex-wrap gap-9 justify-stretch px-12 mx-auto">
-        {PackageContext.filter(pkg => pkg.status === "draft") // กรองเฉพาะแพ็กเกจที่มีสถานะเป็น "draft"
-          .map(pkg => (
-            <PackageCard
+      {/* Check if there are drafted packages */}
+      {draftedPackages.length === 0 ? (
+        <div className="text-center text-lg text-gray-500 mt-8">
+          ไม่มีแพ็กเกจที่ร่างไว้
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-9 justify-stretch px-12 mx-auto">
+          {draftedPackages.map(pkg => (
+            <PackageCardCheckbox
               key={pkg.id} // ใช้ id แทน title เป็น key
               id={pkg.id}
               imageSrc="https://via.placeholder.com/300x300"
@@ -55,10 +62,11 @@ const Drafted = () => {
               onSelectClick={() => handleSelect(pkg.id)} // Handle selection
             />
           ))}
-      </div>
+        </div>
+      )}
 
       {/* Publish Button */}
-      <div className="flex justify-end mt-4">
+      <div className="flex justify-end mt-6">
         <button
           className="bg-primary text-white py-2 px-14 rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
           onClick={handlePublish} // Handle publish button click

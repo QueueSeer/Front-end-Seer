@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../OverviewPackage/Layout";
-import PackageCard from "../../../components/Card/PackageCard";
+import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
 import PackageContext from "../OverviewPackage/PackageContext"; // นำเข้า context
 
 const Published = () => {
@@ -38,7 +38,7 @@ const Published = () => {
         {PackageContext
           .filter(pkg => pkg.status === "published") // กรองเฉพาะแพ็กเกจที่มีสถานะเป็น "published"
           .map(pkg => (
-            <PackageCard
+            <PackageCardCheckbox
               key={pkg.id} // ใช้ id แทน title เป็น key
               id={pkg.id}
               imageSrc="https://via.placeholder.com/300x300"

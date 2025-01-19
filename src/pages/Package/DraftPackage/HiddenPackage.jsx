@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../OverviewPackage/Layout";
-import PackageCard from "../../../components/Card/PackageCard";
+import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
 import PackageContext from "../OverviewPackage/PackageContext"; // นำเข้า context
 
 const HiddenPackage = () => {
@@ -37,7 +37,7 @@ const HiddenPackage = () => {
       <div className="flex flex-wrap gap-9 justify-stretch px-12 mx-auto">
         {PackageContext.filter((pkg) => pkg.status === "hidden") // กรองเฉพาะแพ็กเกจที่มีสถานะเป็น "hidden"
           .map((pkg) => (
-            <PackageCard
+            <PackageCardCheckbox
               key={pkg.id} // ใช้ id แทน title เป็น key
               id={pkg.id}
               imageSrc="https://via.placeholder.com/300x300"
