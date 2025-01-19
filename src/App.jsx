@@ -11,6 +11,9 @@ import Package from "./pages/Package";
 import Drafted from "./pages/Package/DraftPackage/Drafted";
 import Published from "./pages/Package/DraftPackage/Published";
 import HiddenPackage from "./pages/Package/DraftPackage/HiddenPackage";
+import FortuneNow from "./pages/FortuneNow";
+
+
 export default function App() {
   return (
     <Router>
@@ -31,6 +34,8 @@ export default function App() {
         <Route path="/package/drafted" element={<Drafted />} />
         <Route path="/package/published" element={<Published />} />
         <Route path="/package/hiddenPackage" element={<HiddenPackage />} />
+        <Route path="/FortuneNow" element={<FortuneNow />} />
+
 
 
       </Routes>

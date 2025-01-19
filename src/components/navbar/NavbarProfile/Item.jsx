@@ -16,7 +16,7 @@ const menuItems = [
   {
     icon: Images.BoltIcon,
     label: "ดูดวงทันที",
-    to: "/fortune", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/FortuneNow", // กำหนดเส้นทางที่จะไปเมื่อคลิก
   },
   {
     icon: Images.SledgehammerIcon,
