@@ -4,7 +4,6 @@ import Navbar from "../../components/navbar"; // เรียกใช้ path �
 import Sidebar from "../../components/Sidebar"; // เรียกใช้ path ที่ถูกต้อง
 import Images from "../../assets";
 import Header from "../../components/Profile/Header";
-import StatusButtons from "./StatusButtons";
 
 const Package = ({ children }) => {
   return (
@@ -21,7 +20,6 @@ const Package = ({ children }) => {
         <div className="flex-1 pb-10">
           <div className="px-8 py-6 mx-auto bg-white border rounded-lg shadow-md">
             <Header image={Images.BoltIcon} alt="BoxIcon Icon" text="ดูดวงทันที" />
-            <StatusButtons/>
             {children}
           </div>
         </div>

@@ -20,7 +20,7 @@ const CopyButton = ({ text, isCopied, onCopy }) => {
     <button
       className={`w-[120px] h-[36px] py-1 rounded-full shadow-sm border flex items-center justify-center ${
         isCopied
-          ? "bg-secondary2 text-white"
+          ? "bg-secondary2 text-white "
           : isHovered
           ? "bg-secondary2 text-white"
           : "bg-white text-secondary2"

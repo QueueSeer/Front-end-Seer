@@ -103,7 +103,7 @@ const Detail = () => {
 
   return (
     <div >
-      {/* Header */}
+      
       <div className="pt-6 flex items-start">
         <BackButton />
       </div>

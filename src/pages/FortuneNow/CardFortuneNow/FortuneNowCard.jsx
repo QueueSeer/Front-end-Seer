@@ -1,9 +1,7 @@
 import React from "react";
 import ProfileInfo from "../../../components/Appointment/ProfileInfo";
 import DateInfo from "../../../components/Appointment/DateInfo";
-import CopyButton from "../../../components/Appointment/CopyButton";
 import DetailsButton from "../../../components/Appointment/DetailsButton";
-
 
 const FortuneNowCard = ({
   icon,
@@ -11,15 +9,12 @@ const FortuneNowCard = ({
   birthdate,
   date,
   time,
-  packageName,
-  code,
   email,
+  timeRemaining,
   onNameChange,
   onBirthdateChange,
   onDateChange,
   onTimeChange,
-  isCopied,
-  onCopy,
 }) => {
   return (
     <div
@@ -30,7 +25,6 @@ const FortuneNowCard = ({
       <ProfileInfo
         icon={icon}
         name={name}
-        birthdate={birthdate} // ใช้ฟังก์ชันจัดรูปแบบ
         onNameChange={onNameChange}
         onBirthdateChange={onBirthdateChange}
       />
@@ -45,10 +39,12 @@ const FortuneNowCard = ({
 
       {/* Section 3: แพ็กเกจและปุ่ม */}
       <div className="hidden xl:flex items-center space-x-10">
-        <div className="flex flex-col space-y-[4px] items-center">
-          <p className="text-[16px] font-regular text-white">{packageName}</p>
-          <CopyButton text={code} isCopied={isCopied} onCopy={onCopy} />
+        <div className="flex items-center w-[180px] justify-end">
+          <p className="text-[14px] font-regular text-white text-right">
+            {timeRemaining}
+          </p>
         </div>
+
         <DetailsButton />
       </div>
 

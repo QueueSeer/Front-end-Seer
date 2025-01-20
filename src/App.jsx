@@ -12,6 +12,7 @@ import Published from "./pages/Package/DraftPackage/Published";
 import HiddenPackage from "./pages/Package/DraftPackage/HiddenPackage";
 import FortuneNow from "./pages/FortuneNow";
 import DraftedFortuneNow from "./pages/FortuneNow/DraftedFortuneNow/DraftedFortuneNow";
+import FortuneNowDetail from "./pages/FortuneNow/DetailFortuneNow/Detail";
 
 import "./index.css";
 
@@ -40,6 +41,7 @@ export default function App() {
 
         {/* FortuneNow */}
         <Route path="/fortuneNow" element={<FortuneNow />} />
+        <Route path="/fortuneNow/:id" element={<FortuneNowDetail />} />
         <Route path="/fortuneNow/drafted" element={<DraftedFortuneNow />} />
       </Routes>
     </Router>
