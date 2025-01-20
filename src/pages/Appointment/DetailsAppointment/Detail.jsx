@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import HeaderAppointment from "../CardAppointment/HeaderAppointment";
 import BackButton from "../../../components/Button/BackButton";
 import QuestionCard from "../../../components/Card/QuestionCard";
 import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
+import Images from '../../../assets'; 
+import Header from '../../../components/Profile/Header';
 
 // ฟังก์ชันแปลงวันที่
 const formatDate = (isoDate) => {
@@ -101,9 +102,8 @@ const Detail = () => {
   }
 
   return (
-    <div className="px-8 py-6 mx-auto bg-white border rounded-lg shadow-md">
+    <div >
       {/* Header */}
-      <HeaderAppointment />
       <div className="pt-6 flex items-start">
         <BackButton />
       </div>

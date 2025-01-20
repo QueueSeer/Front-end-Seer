@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import HeaderAppointment from "./HeaderAppointment";
 import DateDropdown from "./DateDropdown";
+import Images from "../../../assets";
+import Header from "../../../components/Profile/Header";
 import AppointmentCard from "./AppointmentCard";
 
 // ฟังก์ชันจัดรูปแบบวันที่
@@ -15,7 +16,6 @@ const formatTime = (isoDate) => {
   const options = { hour: "2-digit", minute: "2-digit" };
   return new Date(isoDate).toLocaleTimeString("th-TH", options); // รูปแบบ: 05:43 น.
 };
-
 
 const Appointment = () => {
   const navigate = useNavigate();
@@ -79,8 +79,7 @@ const Appointment = () => {
   };
 
   return (
-    <div className="px-8 py-6 mx-auto bg-white border rounded-lg shadow-md">
-      <HeaderAppointment />
+    <div>
       <div className="py-8 flex items-start space-y-0 flex-row space-x-[100px]">
         <DateDropdown />
       </div>

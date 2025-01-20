@@ -3,6 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 import Navbar from "../../../components/navbar";
 import Sidebar from "../../../components/Sidebar";
 import Detail from "./Detail";
+import Layout from "../Layout";
 
 const DetailsAppointment = () => {
   const { id } = useParams();
@@ -16,19 +17,11 @@ const DetailsAppointment = () => {
   }
 
   return (
-    <div>
-      <Navbar />
-      <div className="flex px-12 pt-12 gap-14">
-        {/* Sidebar */}
-        <div className="hidden lg:block w-72">
-          {/* ส่ง activeOverride เป็น index 1 */}
-          <Sidebar activeOverride={1} />
-        </div>
-        <div className="flex-1 pb-10">
-          <Detail />
-        </div>
+    <Layout>
+      <div className="flex-1 pb-10">
+        <Detail />
       </div>
-    </div>
+    </Layout>
   );
 };
 
