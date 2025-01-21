@@ -37,7 +37,7 @@ export default function App() {
         <Route path="/package" element={<Package />} />
         <Route path="/package/drafted" element={<Drafted />} />
         <Route path="/package/published" element={<Published />} />
-        <Route path="/package/hidden" element={<HiddenPackage />} />
+        <Route path="/package/hiddenPackage" element={<HiddenPackage />} />
 
         {/* FortuneNow */}
         <Route path="/fortuneNow" element={<FortuneNow />} />

@@ -194,7 +194,7 @@ const Detail = () => {
               </div>
             }
             onClick={handleCancel}
-            className="flex items-center justify-center px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-lg"
+            className="flex items-center justify-center px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-full"
           />
 
           {/* Complete Service Button */}
@@ -205,7 +205,7 @@ const Detail = () => {
               </div>
             }
             onClick={handleSave}
-            className="flex items-center justify-center px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-lg"
+            className="flex items-center justify-center px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
           />
         </div>
 

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Layout from "../Layout";
 import BackButton from "../../../components/Button/BackButton";
-import QuestionCard from "../../../components/Card/QuestionCard";
+import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
 
 // ฟังก์ชันจัดรูปแบบวันที่
 const formatDate = (isoDate) => {
@@ -31,6 +31,8 @@ const Detail = () => {
   const location = useLocation();
   const fortuneNowDetails = location.state;
 
+  const [answer, setAnswer] = useState(""); // State สำหรับเก็บคำตอบที่กรอก
+
   if (!fortuneNowDetails) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -46,6 +48,17 @@ const Detail = () => {
     .map((question) => question.trim()) // ตัดช่องว่างออกจากแต่ละคำถาม
     .filter((question) => question.length > 0); // กรองคำถามที่ไม่ว่างเปล่า
 
+  // ฟังก์ชันจัดการเมื่อกดปุ่ม "ส่งข้อความ"
+  const handleSubmit = () => {
+    console.log("คำตอบที่บันทึก:", answer);
+    alert("บันทึกคำตอบเรียบร้อย!");
+  };
+
+  // ฟังก์ชันจัดการเมื่อกดปุ่ม "ยกเลิก"
+  const handleCancel = () => {
+    setAnswer(""); // รีเซ็ตค่าคำตอบ
+    window.scrollTo({ top: 0, behavior: "smooth" }); // เลื่อนกลับไปด้านบน
+  };
   return (
     <Layout>
       <div className="pt-6 flex items-start">
@@ -71,27 +84,46 @@ const Detail = () => {
       </div>
 
       {/* Question Section */}
-      <div className="pt-8 text-[26px] md:text-2xl font-semibold text-gray-800 ">
+      <div className="pt-8 pb-2 text-[26px] md:text-2xl font-semibold text-gray-800 ">
         คำถามดูดวงทันที
       </div>
-      <div className="px-10 py-8 mt-3 bg-primary text-white border rounded-lg shadow-md">
+      <div className="px-8 py-8 mt-3 bg-primary text-white border rounded-lg shadow-md">
         {/* แสดงคำถามแต่ละข้อใน <p> เพื่อให้แสดงแต่ละคำถามในบรรทัดใหม่ */}
         {questions.map((question, index) => (
-          <p key={index} className="text-[18px] mb-4">
+          <p key={index} className="text-[18px] mb-3">
             {question}
           </p>
         ))}
       </div>
 
-      {/* Ans Section */}
-      <div className="pt-8 text-[26px] md:text-2xl font-semibold text-gray-800 ">
+      {/* Answer Section */}
+      <div className="pt-8 pb-2 text-[26px] md:text-2xl font-semibold text-gray-800">
         คำตอบ
       </div>
       <textarea
-        rows="4"
-        className="w-full px-8 py-6 mt-3 border resize-none rounded-lg shadow-sm text-black focus:outline-none focus:ring-2 focus:ring-primary"
+        rows="12"
+        className="w-full px-8 py-6 mt-3 border border-gray-800 resize-none rounded-lg shadow-sm text-black focus:outline-none focus:border-2 focus:border-primary"
         placeholder="กรุณากรอกคำตอบของคุณที่นี่"
+        value={answer}
+        onChange={(e) => setAnswer(e.target.value)}
       />
+
+      {/* Buttons */}
+      <div className="flex justify-between space-x-6 mt-3">
+        {/* Cancel Button */}
+        <ButtonComponent
+          label="ยกเลิก"
+          className="flex items-center justify-center px-8 py-3 text-base font-semibold text-gray-500 border border-gray-400 hover:bg-zinc-100 hover:text-neutral-400 rounded-full"
+          onClick={handleCancel}
+        />
+
+        {/* Complete Service Button */}
+        <ButtonComponent
+          label="ส่งข้อความ"
+          className="flex items-center justify-center px-8 py-3 text-base font-semibold text-primary border border-primary hover:bg-secondary hover:text-white rounded-full"
+          onClick={handleSubmit}
+        />
+      </div>
     </Layout>
   );
 };
