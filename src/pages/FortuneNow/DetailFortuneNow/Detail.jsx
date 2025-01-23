@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom"; // เพิ่ม useNavigate
 import Layout from "../Layout";
 import BackButton from "../../../components/Button/BackButton";
 import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
@@ -29,6 +29,7 @@ const renderInfoSection = (title, content) => (
 const Detail = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate(); // ใช้ navigate เพื่อนำทาง
   const fortuneNowDetails = location.state;
 
   const [answer, setAnswer] = useState(""); // State สำหรับเก็บคำตอบที่กรอก
@@ -44,14 +45,15 @@ const Detail = () => {
   }
 
   const questions = fortuneNowDetails.questions
-    .split("\n") // แยกตามบรรทัด
-    .map((question) => question.trim()) // ตัดช่องว่างออกจากแต่ละคำถาม
-    .filter((question) => question.length > 0); // กรองคำถามที่ไม่ว่างเปล่า
+    .split("\n")
+    .map((question) => question.trim())
+    .filter((question) => question.length > 0);
 
   // ฟังก์ชันจัดการเมื่อกดปุ่ม "ส่งข้อความ"
   const handleSubmit = () => {
     console.log("คำตอบที่บันทึก:", answer);
     alert("บันทึกคำตอบเรียบร้อย!");
+    navigate("/fortuneNow"); // นำทางกลับไปยังหน้า fortuneNow
   };
 
   // ฟังก์ชันจัดการเมื่อกดปุ่ม "ยกเลิก"
@@ -59,11 +61,13 @@ const Detail = () => {
     setAnswer(""); // รีเซ็ตค่าคำตอบ
     window.scrollTo({ top: 0, behavior: "smooth" }); // เลื่อนกลับไปด้านบน
   };
+
   return (
     <Layout>
       <div className="pt-6 flex items-start">
         <BackButton />
       </div>
+
       {/* Booking Information */}
       <div className="px-10 py-7 mt-6 bg-white border rounded-lg shadow-md">
         <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-5">
@@ -84,11 +88,10 @@ const Detail = () => {
       </div>
 
       {/* Question Section */}
-      <div className="pt-8 pb-2 text-[26px] md:text-2xl font-semibold text-gray-800 ">
+      <div className="pt-8 pb-2 text-[26px] md:text-2xl font-semibold text-gray-800">
         คำถามดูดวงทันที
       </div>
       <div className="px-8 py-8 mt-3 bg-primary text-white border rounded-lg shadow-md">
-        {/* แสดงคำถามแต่ละข้อใน <p> เพื่อให้แสดงแต่ละคำถามในบรรทัดใหม่ */}
         {questions.map((question, index) => (
           <p key={index} className="text-[18px] mb-3">
             {question}
@@ -102,7 +105,7 @@ const Detail = () => {
       </div>
       <textarea
         rows="12"
-        className="w-full px-8 py-6 mt-3 border border-gray-800 resize-none rounded-lg shadow-sm text-black focus:outline-none focus:border-2 focus:border-primary"
+        className="w-full px-8 py-6 mt-3 border border-gray-800 resize-none rounded-lg shadow-sm text-black focus:outline-none focus:border focus:border-primary"
         placeholder="กรุณากรอกคำตอบของคุณที่นี่"
         value={answer}
         onChange={(e) => setAnswer(e.target.value)}

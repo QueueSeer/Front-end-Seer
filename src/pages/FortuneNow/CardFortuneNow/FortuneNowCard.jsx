@@ -6,13 +6,10 @@ import DetailsButton from "../../../components/Appointment/DetailsButton";
 const FortuneNowCard = ({
   icon,
   name,
-  birthdate,
   date,
   time,
-  email,
   timeRemaining,
   onNameChange,
-  onBirthdateChange,
   onDateChange,
   onTimeChange,
 }) => {
@@ -26,7 +23,6 @@ const FortuneNowCard = ({
         icon={icon}
         name={name}
         onNameChange={onNameChange}
-        onBirthdateChange={onBirthdateChange}
       />
 
       {/* Section 2: วันที่และเวลา */}
