@@ -1,7 +1,15 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Layout from "../Layout";
 import StatusButtons from "../StatusButtons";
 import ServiceCard from "../../../components/Card/ServiceCard";
+import FortuneData from "../../../data/fortuneData"; // นำเข้าไฟล์ข้อมูล
+
+// ฟังก์ชันแปลงวันที่
+const formatDate = (isoDate) => {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return new Date(isoDate).toLocaleDateString("th-TH", options);
+};
 
 const DraftedFortuneNow = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -10,6 +18,8 @@ const DraftedFortuneNow = () => {
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible);
   };
+
+  const fortunes = FortuneData.map((item) => item.id);
 
   return (
     <Layout>
@@ -31,21 +41,33 @@ const DraftedFortuneNow = () => {
         ดูรายละเอียดเพิ่มเติม
       </div>
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {/* แสดง ServiceCard สำหรับทุกๆ fortune */}
+  {FortuneData.map((fortune) => (
+    <Link
+      key={fortune.id}
+      to={`/fortuneNow/drafted/${fortune.id}`}
+      className="block"
+    >
       <ServiceCard
-        image="/path/to/image.png"
+        image={fortune.image}
         avatar="/path/to/avatar.png"
-        title="เปิดใช้บริการ"
-        description="** แจ้งรายละเอียดให้ครบถ้วนนะคะ ** ต้องใช้ประกอบการดูดวงค่ะ..."
-        details={[
-          "1. ชื่อ",
-          "2. อายุ (ไม่ต้องแจ้งวันเดือนปีเกิด)",
-          "3. สถานะด้านความรัก (โสด / มีแฟน / มีคนคุย / แต่งงาน)",
-        ]}
-        fortuneTeller="หมอดู เพียงฟ้า"
-        date="วันที่ 10 ตุลาคม 2567"
+        title={fortune.status}
+        description={fortune.details}
+        fortuneTeller={fortune.fortuneTeller}
+        date={formatDate(fortune.createdate)}
       />
+    </Link>
+  ))}
+</div>
+
+
       <div className="flex justify-end">
-        <button className="flex items-center mt-4 px-4 py-2 border border-secondary rounded-full text-gray-900 font-medium hover:bg-primary/30 transition">
+        <Link
+          to="/fortuneNow/drafted/create"
+          onClick={() => window.scrollTo(0, 0)} // เพิ่ม scrollTo
+          className="flex items-center mt-4 px-4 py-2 border border-secondary rounded-full text-gray-900 font-medium hover:bg-primary/30 transition"
+        >
           <div className="w-6 h-6 flex items-center justify-center text-secondary mr-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +75,7 @@ const DraftedFortuneNow = () => {
               viewBox="0 0 24 24"
               strokeWidth={1.7}
               stroke="currentColor"
-              className="w-10 h-10"
+              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
@@ -62,8 +84,8 @@ const DraftedFortuneNow = () => {
               />
             </svg>
           </div>
-          <span className="text-black/80 hover:text-gray-700 ">สร้างดูดวงทันที</span>
-        </button>
+          <p className="text-black/80 hover:text-gray-700">สร้างดูดวงทันที</p>
+        </Link>
       </div>
 
       {/* Conditional Rendering for Popup */}

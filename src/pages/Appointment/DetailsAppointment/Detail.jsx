@@ -3,8 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 import BackButton from "../../../components/Button/BackButton";
 import QuestionCard from "../../../components/Card/QuestionCard";
 import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
-import Images from '../../../assets'; 
-import Header from '../../../components/Profile/Header';
+
 
 // ฟังก์ชันแปลงวันที่
 const formatDate = (isoDate) => {

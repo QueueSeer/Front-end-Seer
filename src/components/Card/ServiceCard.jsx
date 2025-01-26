@@ -11,13 +11,9 @@ const ServiceCard = ({ image, avatar, title, description, details, fortuneTeller
       {/* ส่วนของเนื้อหา */}
       <div className="p-4">
         <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-        <p className="text-gray-600 text-sm mt-2">{description}</p>
+        <p className="text-gray-600 text-sm my-2 line-clamp-3 h-14 overflow-hidden">{description}</p>
 
-        <ul className="text-gray-700 text-sm mt-2 space-y-1">
-          {details.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
+    
 
         {/* ส่วนของหมอดู */}
         <div className="flex items-center mt-4 border-t border-zinc-300 pt-3">

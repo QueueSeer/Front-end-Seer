@@ -13,6 +13,9 @@ import HiddenPackage from "./pages/Package/DraftPackage/HiddenPackage";
 import FortuneNow from "./pages/FortuneNow";
 import DraftedFortuneNow from "./pages/FortuneNow/DraftedFortuneNow/DraftedFortuneNow";
 import FortuneNowDetail from "./pages/FortuneNow/DetailFortuneNow/Detail";
+import CreateFortuneNow from "./pages/FortuneNow/DraftedFortuneNow/CreateFortuneNow";
+import ContentFortuneNow from "./pages/FortuneNow/DraftedFortuneNow/ContentFortuneNow";
+
 
 import "./index.css";
 
@@ -43,6 +46,10 @@ export default function App() {
         <Route path="/fortuneNow" element={<FortuneNow />} />
         <Route path="/fortuneNow/:id" element={<FortuneNowDetail />} />
         <Route path="/fortuneNow/drafted" element={<DraftedFortuneNow />} />
+        <Route path="/fortuneNow/drafted/create" element={<CreateFortuneNow />} />
+        <Route path="/fortuneNow/drafted/:id" element={<ContentFortuneNow />} />
+
+
       </Routes>
     </Router>
   );

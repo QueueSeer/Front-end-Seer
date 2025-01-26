@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DateDropdown from "./DateDropdown";
-import Images from "../../../assets";
-import Header from "../../../components/Profile/Header";
 import AppointmentCard from "./AppointmentCard";
+import AppointmentData from "../../../Data/AppointmentData"; // นำเข้าข้อมูลจาก AppointmentData.jsx
 
 // ฟังก์ชันจัดรูปแบบวันที่
 const formatDate = (isoDate) => {
@@ -23,59 +22,21 @@ const Appointment = () => {
   // สถานะสำหรับจัดการการคัดลอก
   const [copiedCode, setCopiedCode] = useState("");
 
-  // ข้อมูล Appointment
-  const [appointments] = useState([
-    {
-      id: 1,
-      icon: "/path/to/icon1.png",
-      name: "สุรางคนางค์ เกตุยั่งยืนวงศ์",
-      birthdate: "1990-04-08T04:45:25.448Z",
-      dateappointment: "2024-09-10T10:06:38.448Z",
-      packageName: "แพ็กเกจความรัก",
-      type_package: "Questions",
-      QuestionsNumber: 1,
-      code: "4QCFR",
-      status_service: "รอเข้ารับบริการ",
-      email: "25654@gmail.com",
-    },
-    {
-      id: 2,
-      icon: "/path/to/icon2.png",
-      name: "สมชาย ใจดี",
-      birthdate: "1985-12-01T04:45:25.448Z",
-      dateappointment: "2024-09-11T10:06:38.448Z",
-      packageName: "แพ็กเกจสุขภาพ",
-      type_package: "Questions",
-      QuestionsNumber: 2,
-      code: "7XYZB",
-      status_service: "บริการสำเร็จ",
-      email: "25655@gmail.com",
-    },
-    {
-      id: 3,
-      icon: "/path/to/icon2.png",
-      name: "สมชาย ฝึกใจดี",
-      birthdate: "1985-12-01T04:45:25.448Z",
-      dateappointment: "2024-09-11T10:06:38.448Z",
-      packageName: "แพ็กเกจสุขภาพ",
-      type_package: "Call",
-      QuestionsNumber: 0,
-      code: "7XY4B",
-      status_service: "ยกเลิกบริการ",
-      email: "25655@gmail.com",
-    },
-  ]);
+  // ข้อมูล Appointment ดึงมาจาก AppointmentData.jsx
+  const [appointments] = useState(AppointmentData);
 
   // ฟังก์ชันสำหรับจัดการการคลิกบน Card
   const handleCardClick = (id) => {
     const appointment = appointments.find((a) => a.id === id); // หา appointment ที่ตรงกับ id
-    navigate(`/appointment/${id}`, { state: appointment }); // ส่งข้อมูลผ่าน state
+    if (appointment) {
+      navigate(`/appointment/${id}`, { state: appointment }); // ส่งข้อมูลผ่าน state
+    }
   };
 
   // ฟังก์ชันสำหรับจัดการการคัดลอก
   const handleCopy = (code) => {
     setCopiedCode(code); // อัปเดตสถานะการคัดลอก
-    setTimeout(() => setCopiedCode(""), 15000); // ล้างสถานะหลัง 2 วินาที
+    setTimeout(() => setCopiedCode(""), 15000); // ล้างสถานะหลัง 15 วินาที
   };
 
   return (
@@ -90,7 +51,6 @@ const Appointment = () => {
             onClick={() => handleCardClick(appointment.id)} // คลิกบน Card
           >
             <AppointmentCard
-              key={appointment.id}
               icon={appointment.icon}
               name={appointment.name}
               birthdate={formatDate(appointment.birthdate)} // แสดงวันที่

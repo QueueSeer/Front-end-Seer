@@ -42,7 +42,7 @@ const Drafted = () => {
           ไม่มีแพ็กเกจที่ร่างไว้
         </div>
       ) : (
-        <div className="flex flex-wrap gap-9 justify-stretch px-12 mx-auto">
+        <div className="flex flex-wrap gap-9 justify-stretch mx-auto">
           {draftedPackages.map(pkg => (
             <PackageCardCheckbox
               key={pkg.id} // ใช้ id แทน title เป็น key

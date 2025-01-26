@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import FortuneNowCard from "./CardFortuneNow/FortuneNowCard";
 import StatusButtons from "./StatusButtons";
+import QuestionFortuneNowData from "../../Data/QuestionFortuneNowData"; // นำเข้าข้อมูลจากไฟล์ data
 
 // ฟังก์ชันในการจัดรูปแบบวันที่
 const formatDate = (isoDate) => {
@@ -31,7 +32,7 @@ const timeDifference = (isoDate) => {
 };
 
 const FortuneNow = () => {
-  const [fortuneNows, setFortuneNows] = useState([]);
+  const [fortuneNows, setFortuneNows] = useState(QuestionFortuneNowData); // ใช้ข้อมูลจาก QuestionFortuneNowData
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -44,34 +45,6 @@ const FortuneNow = () => {
           fortuneNow.id === updatedData.id ? updatedData : fortuneNow
         )
       );
-    } else {
-      // กรณีไม่มีข้อมูล location.state ให้ใช้ค่า default
-      setFortuneNows([
-        {
-          id: 1,
-          icon: "/path/to/icon1.png",
-          name: "สุรางคนางค์ เกตุยั่งยืนวงศ์",
-          birthdate: "1990-04-08T04:45:25.448Z",
-          dateappointment: "2025-01-20T10:06:38.448Z",
-          packageName: "แพ็กเกจความรัก",
-          code: "4QCFR",
-          email: "25654@gmail.com",
-          questions: `1. ความรักในช่วงนี้จะเป็นยังไง จะได้เจอคนที่ชอบไหม หรือมีโอกาสจะได้เจอคนที่ชอบหรือเปล่า`,
-          status: "รอเข้ารับบริการ",
-        },
-        {
-          id: 2,
-          icon: "/path/to/icon2.png",
-          name: "สมชาย ใจดี",
-          birthdate: "1985-12-01T04:45:25.448Z",
-          dateappointment: "2024-09-11T10:06:38.448Z",
-          packageName: "แพ็กเกจสุขภาพ",
-          code: "7XYZB",
-          email: "25655@gmail.com",
-          questions: `1. ความรักในช่วงนี้จะเป็นยังไง จะได้เจอคนที่ชอบไหม หรือมีโอกาสจะได้เจอคนที่ชอบหรือเปล่า`,
-          status: "รอเข้ารับบริการ",
-        },
-      ]);
     }
   }, [location.state]);
 

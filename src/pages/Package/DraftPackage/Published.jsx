@@ -34,7 +34,7 @@ const Published = () => {
 
   return (
     <Layout>
-      <div className="flex flex-wrap gap-9 justify-stretch px-12 mx-auto">
+      <div className="flex flex-wrap gap-9 justify-stretch mx-auto">
         {PackageContext
           .filter(pkg => pkg.status === "published") // กรองเฉพาะแพ็กเกจที่มีสถานะเป็น "published"
           .map(pkg => (
