@@ -42,25 +42,24 @@ const DraftedFortuneNow = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-  {/* แสดง ServiceCard สำหรับทุกๆ fortune */}
-  {FortuneData.map((fortune) => (
-    <Link
-      key={fortune.id}
-      to={`/fortuneNow/drafted/${fortune.id}`}
-      className="block"
-    >
-      <ServiceCard
-        image={fortune.image}
-        avatar="/path/to/avatar.png"
-        title={fortune.status}
-        description={fortune.details}
-        fortuneTeller={fortune.fortuneTeller}
-        date={formatDate(fortune.createdate)}
-      />
-    </Link>
-  ))}
-</div>
-
+        {/* แสดง ServiceCard สำหรับทุกๆ fortune */}
+        {FortuneData.map((fortune) => (
+          <Link
+            key={fortune.id}
+            to={`/fortuneNow/drafted/${fortune.id}`}
+            className="block"
+          >
+            <ServiceCard
+              image={fortune.image}
+              avatar="/path/to/avatar.png"
+              title={fortune.status}
+              description={fortune.details}
+              fortuneTeller={fortune.fortuneTeller}
+              date={formatDate(fortune.createdate)}
+            />
+          </Link>
+        ))}
+      </div>
 
       <div className="flex justify-end">
         <Link
