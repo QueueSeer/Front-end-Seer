@@ -15,7 +15,7 @@ import DraftedFortuneNow from "./pages/FortuneNow/DraftedFortuneNow/DraftedFortu
 import FortuneNowDetail from "./pages/FortuneNow/DetailFortuneNow/Detail";
 import CreateFortuneNow from "./pages/FortuneNow/DraftedFortuneNow/CreateFortuneNow";
 import ContentFortuneNow from "./pages/FortuneNow/DraftedFortuneNow/ContentFortuneNow";
-
+import Auction from "./pages/Auction";
 
 import "./index.css";
 
@@ -49,6 +49,8 @@ export default function App() {
         <Route path="/fortuneNow/drafted/create" element={<CreateFortuneNow />} />
         <Route path="/fortuneNow/drafted/:id" element={<ContentFortuneNow />} />
 
+        {/* FortuneNow */}
+        <Route path="/auction" element={<Auction />} />
 
       </Routes>
     </Router>

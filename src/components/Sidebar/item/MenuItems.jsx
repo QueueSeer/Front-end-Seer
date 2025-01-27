@@ -5,7 +5,7 @@ const menuItems = [
   { icon: Images.calendarIcon, text: "จองคิว", href: "/appointment" },
   { icon: Images.BoxIcon, text: "แพ็กเกจ", href: "/package" },
   { icon: Images.BoltIcon, text: "ดูดวงทันที", href: "/fortuneNow" },
-  { icon: Images.SledgehammerIcon, text: "ประมูล", href: "/" },
+  { icon: Images.SledgehammerIcon, text: "ประมูล", href: "/auction" },
   { icon: Images.Clock_CircleIcon, text: "ตารางเวลา", href: "/" },
   { icon: Images.OutlineIcon, text: "รายการของฉัน", href: "/" },
   { icon: Images.Users_GroupIcon, text: "ผู้ติดตาม", href: "/" },
