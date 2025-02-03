@@ -1,5 +1,6 @@
 import logo from './images/logo.png';
-import marble from './images/login/marble.png';
+import marble from './images/login/marble.png'; 
+
 import profile_seer from './images/Navbar/profile_seer.png'
 import eyeIcon from './icon/login/eyeIcon.png';
 import keyIcon from './icon/login/keyIcon.png';

@@ -1,3 +1,5 @@
+import images from "../assets";
+
 const FortuneData = [
   {
     id: 1,
@@ -8,7 +10,9 @@ const FortuneData = [
     questionCount: 5,
     price: 150,
     image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp",
+    avatar: images.profile_seer,
     createdate: "2024-09-11T10:06:38.448Z",
+    publicdate: "2024-09-11T10:06:38.448Z",
     fortuneTeller: "หมอดู เพียงฟ้า",
   },
   {
@@ -18,8 +22,10 @@ const FortuneData = [
     questionCount: 3,
     price: 100,
     image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp",
+    avatar: images.profile_seer,
     createdate: "2024-09-11T10:06:38.448Z",
     fortuneTeller: "หมอดู เพียงฟ้า",
+
   },
   {
     id: 3,
@@ -28,6 +34,7 @@ const FortuneData = [
     questionCount: 4,
     price: 120,
     image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp",
+    avatar: images.profile_seer,
     createdate: "2024-09-11T10:06:38.448Z",
     fortuneTeller: "หมอดู เพียงฟ้า",
   },
@@ -38,6 +45,7 @@ const FortuneData = [
     questionCount: 0,
     price: 0,
     image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp",
+    avatar: images.profile_seer,
     createdate: "2024-09-11T10:06:38.448Z",
     fortuneTeller: "หมอดู เพียงฟ้า",
   },

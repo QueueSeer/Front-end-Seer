@@ -5,11 +5,6 @@ import StatusButtons from "../StatusButtons";
 import ServiceCard from "../../../components/Card/ServiceCard";
 import FortuneData from "../../../data/fortuneData"; // นำเข้าไฟล์ข้อมูล
 
-// ฟังก์ชันแปลงวันที่
-const formatDate = (isoDate) => {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return new Date(isoDate).toLocaleDateString("th-TH", options);
-};
 
 const DraftedFortuneNow = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -51,11 +46,13 @@ const DraftedFortuneNow = () => {
           >
             <ServiceCard
               image={fortune.image}
-              avatar="/path/to/avatar.png"
+              avatar={fortune.avatar}
               title={fortune.status}
               description={fortune.details}
               fortuneTeller={fortune.fortuneTeller}
-              date={formatDate(fortune.createdate)}
+              createdate={fortune.createdate}
+              fortune={fortune.status}
+              publicdate={fortune.publicdate}
             />
           </Link>
         ))}
