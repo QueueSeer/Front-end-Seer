@@ -119,7 +119,7 @@ const Detail = () => {
 
       {/* Appointment Information */}
       <div className="px-4 sm:px-8">
-        <div className="pb-8 border-b-2">
+        <div className="pb-8 border-b-2 border-gray-300">
           <div className="bg-primary text-white rounded-lg p-6 sm:p-10 mt-4 shadow-lg">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-8">
               <div className="text-center space-y-2">
@@ -156,7 +156,7 @@ const Detail = () => {
           </div>
 
           {/* Booking Information */}
-          <div className="px-10 py-8 mt-6 bg-white border rounded-lg shadow-md">
+          <div className="px-10 py-8 mt-6 bg-white border border-gray-400 rounded-lg shadow-md">
             <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-5">
               ข้อมูลผู้จอง
             </h2>

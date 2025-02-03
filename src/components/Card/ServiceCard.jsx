@@ -20,20 +20,20 @@ const getServiceStatus = (publicdate, fortune) => {
 
 const ServiceCard = ({ image, avatar, createdate, title, description, publicdate, fortuneTeller, fortune }) => {
   return (
-    <div className="max-w-[300px] bg-white rounded-xl shadow-md overflow-hidden border mt-5">
+    <div className="max-w-[310px] bg-white rounded-xl shadow-md overflow-hidden border mt-5">
       {/* ส่วนของรูปภาพ */}
       <div className="relative">
         <img className="w-full h-48 object-cover" src={image} alt="Fortune" />
       </div>
 
       {/* ส่วนของเนื้อหา */}
-      <div className="p-4">
-        <p className="text-[12px] font-regular text-primary pb-2">
+      <div className="p-4 mx-2">
+        <p className="text-[12px] font-regular text-primary pb-3">
           {getServiceStatus(publicdate, fortune)}
         </p>
 
-        <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-        <p className="text-gray-600 text-sm my-2 line-clamp-3 h-14 overflow-hidden">
+        <h2 className="flex text-[20px] h-[50px] mb-3 font-semibold text-gray-800 items-center">{title}</h2>
+        <p className="text-gray-600 text-sm mb-6 line-clamp-3 h-14 overflow-hidden ">
           {description}
         </p>
 

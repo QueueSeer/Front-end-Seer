@@ -5,6 +5,7 @@ import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdo
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
 import PackageCard from "../../components/Card/PackageCard";
 import PackageContext from "./OverviewPackage/PackageContext"; // Import the PackageContext data
+import ImageUploader from "../../components/Card/ImageUploader";
 
 const Package = () => {
   const navigate = useNavigate(); // ใช้ useNavigate เพื่อใช้ navigate
@@ -21,6 +22,8 @@ const Package = () => {
   const [details, setDetails] = useState(""); // เก็บรายละเอียดแพคเกจ
 
   const [savedData, setSavedData] = useState(null); // เก็บข้อมูลที่บันทึกแล้ว
+
+  const [imageSrc, setImageSrc] = useState(""); // เก็บ URL ของรูป
 
   const handleInputChange = (e, setValue, setError, fieldName) => {
     let value = e.target.value;
@@ -66,6 +69,12 @@ const Package = () => {
     "อื่นๆ",
   ];
 
+  const handleImageUpload = (file) => {
+    const imageUrl = URL.createObjectURL(file); // แปลงไฟล์เป็น URL
+    setImageSrc(imageUrl);
+    console.log("อัพโหลดรูป:", imageUrl);
+  };
+
   const handleQuestionCountChange = (count) => {
     setQuestionCount(count); // เก็บค่าที่เลือกจาก Dropdown
   };
@@ -84,7 +93,10 @@ const Package = () => {
 
   const handleSave = () => {
     // หาค่า id ล่าสุดใน PackageContext
-    const lastId = PackageContext.length > 0 ? Math.max(...PackageContext.map(pkg => pkg.id)) : 0;
+    const lastId =
+      PackageContext.length > 0
+        ? Math.max(...PackageContext.map((pkg) => pkg.id))
+        : 0;
     const newId = lastId + 1; // เพิ่ม 1 จาก id ล่าสุด
 
     // เก็บข้อมูลทั้งหมดใน state savedData
@@ -112,14 +124,12 @@ const Package = () => {
 
   return (
     <Layout>
-      <div className=" flex ">
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Left Column */}
         <div className="flex-1 pr-8 pl-2 mr-4 space-y-6">
           {/* ชื่อแพคเกจ */}
           <div className="mb-4">
-            <div
-              className="block text-gray-700 font-medium mb-2"
-            >
+            <div className="block text-gray-700 font-medium mb-2">
               ชื่อแพคเกจ
             </div>
             <input
@@ -134,10 +144,7 @@ const Package = () => {
 
           {/* เวลาที่ใช้ */}
           <div className="mb-4">
-            <div
-              
-              className="block text-gray-700 font-medium mb-2"
-            >
+            <div className="block text-gray-700 font-medium mb-2">
               เวลาที่ใช้ (นาที)
             </div>
             <input
@@ -157,10 +164,7 @@ const Package = () => {
 
           {/* ราคา */}
           <div className="mb-4">
-            <div
-              
-              className="block text-gray-700 font-medium mb-2"
-            >
+            <div className="block text-gray-700 font-medium mb-2">
               ราคา (Coin)
             </div>
             <input
@@ -180,9 +184,7 @@ const Package = () => {
 
           {/* รูปแบบดูดวง */}
           <div className="mb-4">
-            <div
-              className="block text-gray-700 font-medium mb-2"
-            >
+            <div className="block text-gray-700 font-medium mb-2">
               รูปแบบดูดวง
             </div>
             <ChannelSelectDropdown onChannelChange={setChannel} />
@@ -218,9 +220,10 @@ const Package = () => {
         </div>
 
         {/* Right Column */}
-        <div className="w-1/3 p-6">
+        <div className="w-full md:w-1/3 p-6 flex items-center justify-center">
+
           <PackageCard
-            imageSrc="https://via.placeholder.com/300x300"
+            imageSrc=  {imageSrc || "https://via.placeholder.com/300x300"}
             title={packageName} // แสดงชื่อแพ็กเกจที่กรอก
             fortuneTeller="หมอดูออม 1"
             imageProfile="https://via.placeholder.com/300x300"
