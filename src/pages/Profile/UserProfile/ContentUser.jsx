@@ -1,6 +1,7 @@
 // ContentUser.jsx
 import React from 'react';
 import InfoUser from './InfoUser';
+import images from '../../../assets';
 
 const ContentUser = () => {
   return (
@@ -10,7 +11,7 @@ const ContentUser = () => {
         <div className="flex flex-col items-center">
           <div className="relative">
             <img
-              src="https://via.placeholder.com/100"
+              src={images.UserProfile}
               alt="Profile Avatar"
               className="w-[200px] h-[200px] rounded-full border-2 border-purple-500"
             />
