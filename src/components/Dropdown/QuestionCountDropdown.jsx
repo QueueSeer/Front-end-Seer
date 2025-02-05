@@ -42,7 +42,7 @@ const QuestionCountDropdown = ({ onQuestionCountChange }) => {
       {/* Dropdown Button */}
       <button
         onClick={toggleDropdown}
-        className="flex items-center justify-between w-full px-6 py-3 text-black border rounded-md border-gray-300 shadow-sm focus:outline-none"
+        className="flex items-center justify-between w-full px-4 py-3 text-black border rounded-md border-gray-300 shadow-sm focus:outline-none"
       >
         {selectedCount.label}
         <span

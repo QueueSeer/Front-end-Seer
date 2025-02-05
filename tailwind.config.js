@@ -16,6 +16,9 @@ module.exports = {
       fontFamily: {
         sans: ['Noto Sans Thai', 'sans-serif'],
       },
+      screens: {
+        'xxl': '1800px', // สร้างคีย์ xxl สำหรับ 1800px
+      },
     },
   },
   plugins: [require("daisyui")],

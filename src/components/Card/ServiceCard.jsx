@@ -32,7 +32,7 @@ const ServiceCard = ({ image, avatar, createdate, title, description, publicdate
           {getServiceStatus(publicdate, fortune)}
         </p>
 
-        <h2 className="flex text-[20px] h-[50px] mb-3 font-semibold text-gray-800 items-center">{title}</h2>
+        <h2 className="flex text-[20px] h-[60px] mb-3 font-semibold text-gray-800 ">{title}</h2>
         <p className="text-gray-600 text-sm mb-6 line-clamp-3 h-14 overflow-hidden ">
           {description}
         </p>

@@ -1,9 +1,9 @@
 import React from "react";
 import images from "../../../assets";
+import ImageUploader from "../../../components/Card/ImageUploader";
 
 const ShowExampleCard = ({
   id,
-  imageSrc,
   title,
   Category,
   fortuneTeller,
@@ -22,16 +22,16 @@ const ShowExampleCard = ({
     chat: images.MessageIcon,
   };
 
+  const handleImageUpload = (file) => {
+    console.log("อัพโหลดรูป:", file);
+  };
+
   return (
     <div
       className={`relative w-[270px] bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200`}
     >
       <div className="relative">
-        <img
-          src={imageSrc}
-          alt={title || "Image"}
-          className="w-full h-40 object-cover"
-        />
+        <ImageUploader onImageUpload={handleImageUpload} />
         <div className="absolute bottom-2 left-2">
           <div className="bg-primary text-white text-sm px-4 py-1 rounded-full shadow">
             {Category}
@@ -40,9 +40,9 @@ const ShowExampleCard = ({
       </div>
 
       <div className="p-4">
-        <h3 className="my-2 text-gray-800 font-semibold text-[18px]">
+        <div className="mb-3 text-[20px] h-[60px] font-semibold text-gray-800 overflow-hidden text-ellipsis line-clamp-2">
           {title}
-        </h3>
+        </div>
         <p className="text-sm text-gray-500 flex items-center">
           <img
             src={imageProfile}
@@ -81,4 +81,4 @@ const ShowExampleCard = ({
   );
 };
 
-export default ShowExampleCard ;
+export default ShowExampleCard;

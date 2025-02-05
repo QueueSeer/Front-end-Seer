@@ -54,9 +54,9 @@ const PackageCardCheckbox = ({
       </div>
 
       <div className="p-4">
-        <h3 className="my-2 text-gray-800 font-semibold text-[18px]">
+        <div className="mb-3 text-[20px] h-[60px] font-semibold text-gray-800 overflow-hidden text-ellipsis line-clamp-2 ">
           {title}
-        </h3>
+        </div>
         <p className="text-sm text-gray-500 flex items-center">
           <img
             src={imageProfile}

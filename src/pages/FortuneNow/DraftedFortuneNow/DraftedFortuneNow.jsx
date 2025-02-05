@@ -5,7 +5,6 @@ import StatusButtons from "../StatusButtons";
 import ServiceCard from "../../../components/Card/ServiceCard";
 import FortuneData from "../../../data/fortuneData"; // นำเข้าไฟล์ข้อมูล
 
-
 const DraftedFortuneNow = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
@@ -21,7 +20,9 @@ const DraftedFortuneNow = () => {
       <StatusButtons />
       <div className="font-normal text-[18px] text-gray-800 leading-relaxed break-words">
         <p>
-          <span className="font-semibold whitespace-nowrap">บริการดูดวงทันที</span>{" "}
+          <span className="font-semibold whitespace-nowrap">
+            บริการดูดวงทันที
+          </span>{" "}
           เป็นระบบที่ให้ลูกค้าสามารถฝากคำถามสำหรับการดูดวงได้ทันทีโดยไม่ต้องรอเวลานัดหมาย
           ระบบจะทำการรวบรวมคำถามที่ลูกค้าส่งมาแล้วส่งต่อให้หมอดูเพื่อตอบคำถามเหล่านั้น
           เมื่อหมอดูตอบคำถามเสร็จแล้ว
@@ -36,7 +37,7 @@ const DraftedFortuneNow = () => {
         ดูรายละเอียดเพิ่มเติม
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xxl:grid-cols-4 gap-4">
         {/* แสดง ServiceCard สำหรับทุกๆ fortune */}
         {FortuneData.map((fortune) => (
           <Link

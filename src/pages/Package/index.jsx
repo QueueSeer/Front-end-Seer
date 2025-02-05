@@ -6,6 +6,7 @@ import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdo
 import PackageCard from "../../components/Card/PackageCard";
 import PackageContext from "./OverviewPackage/PackageContext"; // Import the PackageContext data
 import ImageUploader from "../../components/Card/ImageUploader";
+import ShowExampleCard from "./DraftPackage/ShowexampleCard";
 
 const Package = () => {
   const navigate = useNavigate(); // ใช้ useNavigate เพื่อใช้ navigate
@@ -220,10 +221,9 @@ const Package = () => {
         </div>
 
         {/* Right Column */}
-        <div className="w-full md:w-1/3 p-6 flex items-center justify-center">
+        <div className="w-full md:w-1/3 p-6 flex items-start justify-center">
 
-          <PackageCard
-            imageSrc=  {imageSrc || "https://via.placeholder.com/300x300"}
+          <ShowExampleCard
             title={packageName} // แสดงชื่อแพ็กเกจที่กรอก
             fortuneTeller="หมอดูออม 1"
             imageProfile="https://via.placeholder.com/300x300"

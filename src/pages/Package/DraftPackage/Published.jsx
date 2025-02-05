@@ -41,7 +41,7 @@ const Published = () => {
             <PackageCardCheckbox
               key={pkg.id} // ใช้ id แทน title เป็น key
               id={pkg.id}
-              imageSrc="https://via.placeholder.com/300x300"
+              imageSrc="https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"
               title={pkg.title}
               fortuneTeller={pkg.fortuneTeller}
               imageProfile="https://via.placeholder.com/300x300"
