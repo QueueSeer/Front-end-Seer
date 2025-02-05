@@ -60,7 +60,7 @@ const Auction = () => {
 
       <div className="flex justify-end pt-4">
         <Link
-          to="/fortuneNow/drafted/create"
+          to="/auction/create"
           onClick={() => window.scrollTo(0, 0)} // เพิ่ม scrollTo
           className="flex items-center mt-4 px-4 py-2 border border-secondary rounded-full text-gray-900 font-medium hover:bg-primary/30 transition"
         >

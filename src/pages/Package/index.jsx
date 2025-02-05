@@ -70,16 +70,6 @@ const Package = () => {
     "อื่นๆ",
   ];
 
-  const handleImageUpload = (file) => {
-    const imageUrl = URL.createObjectURL(file); // แปลงไฟล์เป็น URL
-    setImageSrc(imageUrl);
-    console.log("อัพโหลดรูป:", imageUrl);
-  };
-
-  const handleQuestionCountChange = (count) => {
-    setQuestionCount(count); // เก็บค่าที่เลือกจาก Dropdown
-  };
-
   const handleChannelChange = (selectedChannel) => {
     setChannel(selectedChannel); // เก็บค่าช่องทางที่เลือก
   };
