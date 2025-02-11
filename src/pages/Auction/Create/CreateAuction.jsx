@@ -1,13 +1,40 @@
 import React, { useState } from "react";
+import { DateRange } from "react-date-range";
+import { addDays } from "date-fns"; // ฟังก์ชันสำหรับการคำนวณวันที่
+import "react-date-range/dist/styles.css"; // สไตล์ของ React Date Range
+import "react-date-range/dist/theme/default.css"; // ธีมของ React Date Rang
+import { th } from "date-fns/locale"; // นำเข้า locale ภาษาไทย
 
 import Layout from "../Layout";
 import BackButton from "../../../components/Button/BackButton";
 import ImageUploader from "../../../components/Card/ImageUploader";
 import QuestionCountDropdown from "../../../components/Dropdown/QuestionCountDropdown";
+import DateRangePicker from "./DateRangePicker";
 
 const CreateAuction = () => {
   const [questionCount, setQuestionCount] = useState(null);
   const [price, setPrice] = useState(""); // เก็บค่าราคา
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const [state, setState] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 7),
+      key: "selection",
+    },
+  ]);
+
+  const handleSelect = (ranges) => {
+    setState([ranges.selection]);
+  };
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+  };
 
   const handleQuestionCountChange = (count) => {
     setQuestionCount(count);
@@ -49,33 +76,9 @@ const CreateAuction = () => {
             className="w-full h-[100px] lg:h-[120px] border border-gray-300 resize-none rounded-lg pt-4 px-6 text-[16px] text-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
             placeholder="เขียนรายละเอียด"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* วันที่เปิดประมูล */}
             <div className="flex flex-col">
-              <label className="text-gray-600 text-sm mb-1">
-                วันที่เปิดประมูล
-              </label>
-              <div className="relative">
-                <input
-                  type="date"
-                  className="w-full p-3 border rounded-lg text-gray-500 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                />
-              </div>
-            </div>
-
-            {/* วันที่ปิดประมูล */}
-            <div className="flex flex-col">
-              <label className="text-gray-600 text-sm mb-1">
-                วันที่ปิดประมูล
-              </label>
-              <div className="relative">
-                <input
-                  type="date"
-                  className="w-full p-3 border rounded-lg text-gray-500 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                />
-              </div>
-            </div>
-
+              <DateRangePicker/>
             {/* เวลาที่เปิดประมูล */}
             <div className="flex flex-col">
               <label className="text-gray-600 text-sm mb-1">
