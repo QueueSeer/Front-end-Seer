@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SidebarItem = ({ icon, text, href, isActive, onClick }) => {
+const SidebarItem = React.memo(({ icon, text, href, isActive }) => {
   return (
     <li>
       <Link
@@ -18,6 +18,6 @@ const SidebarItem = ({ icon, text, href, isActive, onClick }) => {
       </Link>
     </li>
   );
-};
+});
 
 export default SidebarItem;

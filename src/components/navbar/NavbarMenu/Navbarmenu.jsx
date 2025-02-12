@@ -10,7 +10,7 @@ const NavbarLinks = () => {
           <a href="#home">หน้าหลัก</a>
         </li>
         <li>
-          <a href="#packages">แพ็กเกจ</a>
+          <a href="/package">แพ็กเกจ</a>
         </li>
         <li>
           <a href="#auction">ประมูล</a>

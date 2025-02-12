@@ -6,17 +6,17 @@ const menuItems = [
   {
     icon: Images.calendarIcon,
     label: "จองคิว",
-    to: "/profile", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/appointment", // กำหนดเส้นทางที่จะไปเมื่อคลิก
   },
   {
     icon: Images.BoxIcon,
     label: "แพ็กเกจ",
-    to: "/", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/package", // กำหนดเส้นทางที่จะไปเมื่อคลิก
   },
   {
     icon: Images.BoltIcon,
     label: "ดูดวงทันที",
-    to: "/fortune", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/fortuneNow", // กำหนดเส้นทางที่จะไปเมื่อคลิก
   },
   {
     icon: Images.SledgehammerIcon,

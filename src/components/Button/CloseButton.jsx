@@ -1,6 +1,6 @@
 import React from "react";
 
-const BackButton = ({ label, onClose }) => {
+const CloseButton = ({ label, onClose }) => {
   return (
     <div>
       <button
@@ -13,4 +13,4 @@ const BackButton = ({ label, onClose }) => {
   );
 };
 
-export default BackButton;
+export default CloseButton;

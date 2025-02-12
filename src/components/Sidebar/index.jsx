@@ -1,37 +1,36 @@
-import React, { useState, useEffect } from "react";
-import SidebarItem from "./item/SidebarItem"; // Component สำหรับแสดงแต่ละเมนู
+import React, { useState, useEffect, useMemo } from "react";
+import SidebarItem from "./item/SidebarItem";
 import MenuItems from "./item/MenuItems";
-import { useLocation } from "react-router-dom"; // ใช้ตรวจสอบ URL ปัจจุบัน
+import { useLocation, useNavigate } from "react-router-dom";
 import Images from "../../assets";
-import { useNavigate } from "react-router-dom";
 
-
-const Sidebar = () => {
+const Sidebar = ({ activeOverride = null }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // สำหรับเปิด/ปิด Sidebar ใน Mobile
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false); // สำหรับจัดการ Popup Logout
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // for mobile sidebar toggle
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false); // for logout confirmation modal
 
-  useEffect(() => {
+  // Calculate activeIndex using useMemo to avoid recalculating on each render
+  const activeIndex = useMemo(() => {
+    if (activeOverride !== null) {
+      return activeOverride;
+    }
     const currentIndex = MenuItems.findIndex((item) =>
       Array.isArray(item.href)
         ? item.href.includes(location.pathname)
         : item.href === location.pathname
     );
-    if (currentIndex !== -1) {
-      setActiveIndex(currentIndex);
-    }
-  }, [location.pathname]);
+    return currentIndex !== -1 ? currentIndex : 0; // Default to 0 if not found
+  }, [location.pathname, activeOverride]);
 
   const handleLogout = () => {
-    // Logic สำหรับ Logout
-    navigate("/Login"); // นำไปหน้า Login
+    // Logic for logout
+    navigate("/Login"); // Redirect to login page
   };
 
   return (
     <div className="relative">
-      {/* Hamburger Button สำหรับ Mobile */}
+      {/* Hamburger Button for Mobile */}
       {!isSidebarOpen && (
         <button
           onClick={() => setIsSidebarOpen(true)}
@@ -71,7 +70,7 @@ const Sidebar = () => {
                 text={item.text}
                 href={Array.isArray(item.href) ? item.href[0] : item.href}
                 isActive={activeIndex === index}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => setIsSidebarOpen(false)} // Close sidebar on item click
               />
             ))}
           </ul>
@@ -79,7 +78,7 @@ const Sidebar = () => {
           {/* Logout Button */}
           <div className="mt-6">
             <button
-              onClick={() => setIsLogoutModalOpen(true)} // เปิด Popup
+              onClick={() => setIsLogoutModalOpen(true)} // Open Logout Confirmation Modal
               className="flex items-center justify-start w-full p-3 rounded-md cursor-pointer font-medium text-gray-700 hover:bg-[#B6AFCA] hover:text-black"
             >
               <img src={Images.Logout} alt="Logout Icon" className="w-5 h-5" />
@@ -98,13 +97,13 @@ const Sidebar = () => {
             </h2>
             <div className="flex justify-end gap-4">
               <button
-                onClick={() => setIsLogoutModalOpen(false)} // ปิด Popup
+                onClick={() => setIsLogoutModalOpen(false)} // Close modal
                 className="px-4 py-2 bg-[#D9D9D9] text-gray-700 rounded hover:bg-gray-300"
               >
                 ยกเลิก
               </button>
               <button
-                onClick={handleLogout} // ยืนยันการ Logout
+                onClick={handleLogout} // Confirm logout
                 className="px-4 py-2 bg-[#8677A7] text-white rounded hover:bg-[#6D5A90]"
               >
                 ยืนยัน
