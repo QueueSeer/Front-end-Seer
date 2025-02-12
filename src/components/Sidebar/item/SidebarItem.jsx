@@ -5,12 +5,11 @@ const SidebarItem = React.memo(({ icon, text, href, isActive }) => {
   return (
     <li>
       <Link
-        to={href} // ใช้ to สำหรับการนำทาง
-        onClick={onClick} // อัปเดต Active State
-        className={`flex items-center p-3 rounded-md cursor-pointer font-medium ${
+        to={href}
+        className={`flex items-center p-3 rounded-md cursor-pointer font-medium  ${
           isActive
-            ? "bg-[#B6AFCA] text-black font-bold" // Active State
-            : "text-gray-700 hover:bg-[#B6AFCA] hover:text-black"
+            ? "bg-background"
+            : "text-gray-700 hover:bg-purple-50 hover:text-purple-500"
         }`}
       >
         <img src={icon} alt={text} className="w-5 h-5" />

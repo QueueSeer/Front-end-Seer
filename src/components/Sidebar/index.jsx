@@ -58,7 +58,7 @@ const Sidebar = ({ activeOverride = null }) => {
 
         {/* Sidebar Content */}
         <div
-          className={`bg-white p-3 w-full rounded-lg border border-gray-200 h-full flex flex-col justify-between mb-6 font-sans ${
+          className={`bg-white p-3 w-full rounded-lg border border-gray-200 h-full flex flex-col justify-between mb-6  ${
             isSidebarOpen ? "pt-8" : "lg:pt-3"
           }`}
         >
