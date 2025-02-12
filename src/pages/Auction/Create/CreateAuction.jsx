@@ -61,24 +61,24 @@ const CreateAuction = () => {
 
       <h2 className="text-lg font-semibold text-gray-900 mb-3">ชื่อแพคเกจ</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
           <input
             id="package-name"
             type="text"
             placeholder="ความรักอยู่ที่ไหน"
-            className="w-full mb-4 px-6 py-3 border border-gray-300 rounded-md text-[16px] text-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
+            className="w-full mb-4 px-4 py-3 border border-gray-300 rounded-md text-[16px] text-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
           />
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
             คำอธิบายสั้น ๆ
           </h2>
           <textarea
-            className="w-full h-[100px] lg:h-[120px] border border-gray-300 resize-none rounded-lg pt-4 px-6 text-[16px] text-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
+            className="w-full h-[100px] lg:h-[120px] border border-gray-300 resize-none rounded-lg pt-3 mb-4 px-4 text-[16px] text-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
             placeholder="เขียนรายละเอียด"
           />
-            {/* วันที่เปิดประมูล */}
-            <div className="flex flex-col">
-              <DateRangePicker/>
+          {/* วันที่เปิดประมูล */}
+          <div className="flex flex-col">
+            <DateRangePicker />
             {/* เวลาที่เปิดประมูล */}
             <div className="flex flex-col">
               <label className="text-gray-600 text-sm mb-1">
