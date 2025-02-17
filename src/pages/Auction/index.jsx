@@ -80,7 +80,7 @@ const Auction = () => {
               />
             </svg>
           </div>
-          <p className="text-black/80 hover:text-gray-700">สร้างดูดวงทันที</p>
+          <p className="text-black/80 hover:text-gray-700">สร้างประมูลดูดวง</p>
         </Link>
       </div>
 

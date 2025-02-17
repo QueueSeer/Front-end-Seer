@@ -4,7 +4,7 @@ import "react-date-range/dist/theme/default.css";
 import Layout from "../Layout";
 import BackButton from "../../../components/Button/BackButton";
 import ImageUploader from "../../../components/Card/ImageUploader";
-import DateRangePicker from "./DateRangePicker";
+import DateRangePicker from "../../../components/RangePicker/DateRangePicker";
 import TimeAuction from "./TimeAuction";
 import TimeFortune from "./TimeFortune";
 import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
