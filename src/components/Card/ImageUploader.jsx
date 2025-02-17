@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ImageUploader = ({ onImageUpload }) => {
+const ImageUploader = ({ onImageUpload, isImageValid, resetImage }) => {
   const [image, setImage] = useState(null);
+
+  // ใช้ useEffect เพื่อตรวจสอบ prop resetImage และรีเซ็ตรูปภาพ
+  useEffect(() => {
+    if (resetImage) {
+      setImage(null); // รีเซ็ตรูปภาพเมื่อได้รับคำสั่งให้รีเซ็ต
+    }
+  }, [resetImage]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -13,7 +20,9 @@ const ImageUploader = ({ onImageUpload }) => {
   };
 
   return (
-    <div className="w-full h-[200px] border border-gray-300 rounded-lg flex flex-col items-center justify-center bg-gray-100 overflow-hidden relative">
+    <div
+      className={`w-full h-[300px] border ${!isImageValid ? "border-bordercancel" : "border-gray-300"} rounded-lg flex flex-col items-center justify-center bg-gray-100 overflow-hidden relative`}
+    >
       {image ? (
         <div className="relative w-full h-full">
           <img
@@ -51,6 +60,9 @@ const ImageUploader = ({ onImageUpload }) => {
             onChange={handleImageChange}
           />
         </label>
+      )}
+      {!isImageValid && !image && (
+        <p className="text-sm text-bordercancel mt-1">กรุณากรอกข้อมูล</p>
       )}
     </div>
   );

@@ -129,8 +129,8 @@ const DateRangePicker = () => {
   };
 
   return (
-    <div className="flex flex-col mb-4">
-      <label className="text-lg font-semibold text-gray-900 mb-3">
+    <div className="flex flex-col mb-6">
+      <label className="text-lg font-semibold text-gray-900 mb-4">
         วันที่ประมูล
       </label>
 
