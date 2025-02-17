@@ -1,39 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import Images from "../../assets";
 
 const EmailVerification = () => {
   useEffect(() => {
     const getCookie = (name) => {
-      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      const match = document.cookie.match(
+        new RegExp("(^| )" + name + "=([^;]+)")
+      );
       return match ? match[2] : null;
     };
 
     // ดึง token จาก Cookie
-    const token = getCookie('verificationToken'); // ชื่อ cookie: verificationToken
+    const token = getCookie("verificationToken"); // ชื่อ cookie: verificationToken
 
     if (token) {
       // เชื่อมต่อ API
       fetch(`https://backend.qseer.app/api/user/verify/${token}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Accept': 'application/json',
+          Accept: "application/json",
         },
       })
         .then((response) => {
           if (response.ok) {
-            console.log('ยืนยันสำเร็จ!');
-            alert('ยืนยันสำเร็จ! คุณสามารถเข้าสู่ระบบได้');
+            console.log("ยืนยันสำเร็จ!");
+            alert("ยืนยันสำเร็จ! คุณสามารถเข้าสู่ระบบได้");
           } else {
-            console.error('การยืนยันล้มเหลว', response.status);
+            console.error("การยืนยันล้มเหลว", response.status);
             alert(`การยืนยันล้มเหลว: ${response.status}`);
           }
         })
         .catch((error) => {
-          console.error('เกิดข้อผิดพลาด', error);
-          alert('เกิดข้อผิดพลาดในการเชื่อมต่อ API');
+          console.error("เกิดข้อผิดพลาด", error);
+          alert("เกิดข้อผิดพลาดในการเชื่อมต่อ API");
         });
     } else {
-      alert('ไม่พบ token ใน Cookie');
+      alert("ไม่พบ token ใน Cookie");
     }
   }, []);
 

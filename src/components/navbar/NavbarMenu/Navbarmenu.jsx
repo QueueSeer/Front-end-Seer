@@ -13,7 +13,7 @@ const NavbarLinks = () => {
           <a href="/package">แพ็กเกจ</a>
         </li>
         <li>
-          <a href="#auction">ประมูล</a>
+          <a href="/auction">ประมูล</a>
         </li>
       </ul>
     </div>
