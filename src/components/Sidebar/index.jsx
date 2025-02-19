@@ -42,7 +42,7 @@ const Sidebar = ({ activeOverride = null }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-30 left-0 h-[calc(100vh-5rem)] bg-white border-r border-gray-200 shadow-lg transition-transform ${
+        className={`fixed top-30 left-0  transition-transform ${
           isSidebarOpen ? "translate-x-0 w-1/2" : "-translate-x-full w-1/2"
         } lg:translate-x-0 lg:w-full lg:static`}
       >
@@ -58,7 +58,7 @@ const Sidebar = ({ activeOverride = null }) => {
 
         {/* Sidebar Content */}
         <div
-          className={`bg-white p-3 w-full rounded-lg border border-gray-200 h-full flex flex-col justify-between mb-6  ${
+          className={`bg-white p-3 w-full rounded-lg border border-gray-200 h-auto flex flex-col justify-start mb-6  ${
             isSidebarOpen ? "pt-8" : "lg:pt-3"
           }`}
         >
@@ -81,7 +81,7 @@ const Sidebar = ({ activeOverride = null }) => {
               onClick={() => setIsLogoutModalOpen(true)} // Open Logout Confirmation Modal
               className="flex items-center justify-start w-full p-3 rounded-md cursor-pointer font-medium text-gray-700 hover:bg-[#B6AFCA] hover:text-black"
             >
-              <img src={Images.Logout} alt="Logout Icon" className="w-5 h-5" />
+              <img src={Images.LogoutIcon} alt="Logout Icon" className="w-5 h-5" />
               <span className="ml-3">ออกจากระบบ</span>
             </button>
           </div>

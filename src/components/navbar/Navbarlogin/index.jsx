@@ -19,8 +19,8 @@ export default function Navbarlogin() {
 
   return (
     <div
-      className={`navbar shadow-md px-4 ${
-        isDarkMode ? "bg-gray-900 text-white" : "bg-base-100 text-gray-800"
+    className={`navbar sticky top-0 w-full shadow-md px-12 h-[68px] z-50 ${
+      isDarkMode ? "bg-gray-900 text-white" : "bg-base-100 text-gray-800"
       }`}
     >
       {/* โลโก้และชื่อโปรเจกต์ */}
@@ -31,7 +31,7 @@ export default function Navbarlogin() {
 
       {/* ลิงก์เมนู */}
       <div className="hidden lg:flex flex-none">
-        <ul className="menu menu-horizontal gap-1">
+        <ul className="menu menu-horizontal gap-1 text-[16px]">
           <li>
             <a
               href="#home"
