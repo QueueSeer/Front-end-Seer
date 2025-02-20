@@ -83,6 +83,7 @@ import calendartimetable from './icon/timetable/calendartimetable.png';
 import nextstep from './icon/timetable/nextstep.png';
 import backtostep from './icon/timetable/backtostep.png';
 import UserProfile from "./images/UserProfile.png";
+import logout from "./images/logout/Logout.png";
 
 // Icons for Membership
 import iconCheckedUserMale from './icon/membership/iconCheckedUserMale.png';
@@ -190,6 +191,7 @@ const images = {
     nextstep,
     backtostep,
     UserProfile,
+    logout,
 };
 
 export default images;
