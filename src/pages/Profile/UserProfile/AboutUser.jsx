@@ -29,12 +29,12 @@ const AboutUser = () => {
                 togglePopup(); // เปิด Popup
                 setTextarea(aboutMe || description); // ตั้งข้อความที่จะแสดงใน Popup
               }}
-              className="border-2 px-[30px] pt-[20px] pb-[30px] rounded-[5px] text-left"
+              className="border-2 px-[30px] pt-[20px] pb-[30px] rounded-[5px] text-left text-[16px]"
             >
               <div>{aboutMe || description}</div> {/* แสดงข้อความล่าสุด */}
             </button>
           )}
-        </AboutUserProfile>
+        </AboutUserProfile> 
       </div>
 
       {/* Popup แสดงข้อความ */}
