@@ -33,6 +33,7 @@ import CreateAuction from "./pages/Auction/Create/CreateAuction";
 
 
 import "./index.css";
+import Dashboard from "./pages/test/Dashboard.jsx";
 
 export default function App() {
   return (
@@ -99,6 +100,9 @@ export default function App() {
         <Route path="/auction" element={<Auction />} />
         <Route path="/auction/:id" element={<AuctionDetail />} />
         <Route path="/auction/create" element={<CreateAuction />} />
+
+
+        <Route path="/dashboard" element={<Dashboard/>}/>
       </Routes>
     </Router>
   );
