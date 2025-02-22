@@ -3,7 +3,6 @@ import images from "../../../assets";
 import ImageUploader from "../../../components/Card/ImageUploader";
 
 const ShowExampleCard = ({
-  id,
   title,
   Category,
   fortuneTeller,
@@ -15,7 +14,7 @@ const ShowExampleCard = ({
   packageType,
   status,
 }) => {
-  // ไอคอนสำหรับแต่ละประเภทแพ็กเกจ
+  // Icons for each package type
   const packageIcons = {
     call: images.CallIcon,
     video: images.VideoIcon,
@@ -23,12 +22,25 @@ const ShowExampleCard = ({
   };
 
   const handleImageUpload = (file) => {
-    console.log("อัพโหลดรูป:", file);
+    console.log("Uploaded image:", file);
+    // Add any necessary logic here
+  };
+
+  // Render star rating
+  const renderStars = () => {
+    const fullStars = Math.floor(rating);
+    const emptyStars = 5 - fullStars;
+    return (
+      <>
+        {"★".repeat(fullStars)}
+        {"☆".repeat(emptyStars)}
+      </>
+    );
   };
 
   return (
     <div
-      className={`relative w-[270px] bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200`}
+      className="relative w-[270px] bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200"
     >
       <div className="relative">
         <ImageUploader onImageUpload={handleImageUpload} />
@@ -46,7 +58,7 @@ const ShowExampleCard = ({
         <p className="text-sm text-gray-500 flex items-center">
           <img
             src={imageProfile}
-            alt={fortuneTeller || "Image"}
+            alt={fortuneTeller || "Fortune Teller Profile"}
             className="w-[25px] h-[25px] rounded-full mr-2"
           />
           <span className="text-black font-regular">{fortuneTeller}</span>
@@ -56,8 +68,7 @@ const ShowExampleCard = ({
             {rating.toFixed(1)}
           </span>
           <span className="text-yellow-500 text-[18px]">
-            {"★".repeat(Math.floor(rating)) +
-              "☆".repeat(5 - Math.floor(rating))}
+            {renderStars()}
           </span>
           <span className="ml-2 text-sm text-gray-500">
             ({reviews.toLocaleString()} reviews)
