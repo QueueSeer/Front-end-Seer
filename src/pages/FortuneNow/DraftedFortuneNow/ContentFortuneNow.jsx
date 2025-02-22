@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../Layout";
 import BackButton from "../../../components/Button/BackButton";
-import FortuneData from "../../../data/fortuneData"; // นำเข้าข้อมูล
+import FortuneData from "../../../Data/FortuneData";
 import ConfirmPopup from "../../../components/Popup/ConfirmPopup"; // ✅ นำเข้า Popup
 
 const ContentFortuneNow = () => {
