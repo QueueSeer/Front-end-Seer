@@ -4,7 +4,7 @@ import Layout from "./OverviewPackage/Layout";
 import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
 import PackageContext from "./OverviewPackage/PackageContext"; // Import the PackageContext data
-import ShowExampleCard from "./DraftPackage/ShowexampleCard";
+import ShowexampleCard from "./DraftPackage/ShowexampleCard";
 
 const Package = () => {
   const navigate = useNavigate(); // ใช้ useNavigate เพื่อใช้ navigate
@@ -161,7 +161,7 @@ const Package = () => {
 
         {/* Right Column */}
         <div className="w-full md:w-1/3 p-6 flex items-start justify-center">
-          <ShowExampleCard
+          <ShowexampleCard
             title={packageName}
             fortuneTeller="หมอดูออม 1"
             imageProfile="https://via.placeholder.com/300x300"
