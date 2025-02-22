@@ -1,126 +1,101 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "./OverviewPackage/Layout";
 import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
-import PackageContext from "./OverviewPackage/PackageContext"; // Import the PackageContext data
+import PackageContext from "./OverviewPackage/PackageContext";
 import ShowexampleCard from "./DraftPackage/ShowexampleCard";
 
 const Package = () => {
-  const navigate = useNavigate(); // ใช้ useNavigate เพื่อใช้ navigate
-  const [price, setPrice] = useState(""); // เก็บค่าราคา
-  const [priceError, setPriceError] = useState(""); // ข้อความแจ้งเตือนสำหรับราคา
+  const navigate = useNavigate();
+  const [price, setPrice] = useState("");
+  const [priceError, setPriceError] = useState("");
 
-  const [time, setTime] = useState(""); // เก็บค่าเวลาที่ใช้
-  const [timeError, setTimeError] = useState(""); // ข้อความแจ้งเตือนสำหรับเวลา
+  const [time, setTime] = useState("");
+  const [timeError, setTimeError] = useState("");
 
-  const [packageName, setPackageName] = useState(""); // เก็บชื่อแพคเกจ
+  const [packageName, setPackageName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [questionCount, setQuestionCount] = useState(null);
   const [channel, setChannel] = useState("chat");
-  const [details, setDetails] = useState(""); // เก็บรายละเอียดแพคเกจ
+  const [details, setDetails] = useState("");
 
-  const [savedData, setSavedData] = useState(null); // เก็บข้อมูลที่บันทึกแล้ว
+  const [savedData, setSavedData] = useState(null);
 
-  const [imageSrc, setImageSrc] = useState(""); // เก็บ URL ของรูป
+  // Calculate new package ID based on the latest saved package
+  const [newId, setNewId] = useState(0);
 
+  useEffect(() => {
+    // Get the last ID from PackageContext
+    if (PackageContext.length > 0) {
+      const lastId = Math.max(...PackageContext.map(pkg => pkg.id));
+      setNewId(lastId + 1);
+    }
+  }, []);
+
+  // Handle input changes and validate input
   const handleInputChange = (e, setValue, setError, fieldName) => {
     let value = e.target.value;
 
-    // ตรวจสอบค่าที่ไม่อนุญาต
+    // Validate values
     if (
-      value === "0" || // ไม่อนุญาตค่า 0
-      value.includes(".") || // ไม่อนุญาตทศนิยม
-      /^[^1-9]/.test(value) || // ไม่อนุญาตรูปแบบที่ขึ้นต้นด้วยตัวอักษรหรือ 0
-      /[^0-9]/.test(value) // ไม่อนุญาตอักขระที่ไม่ใช่ตัวเลข
+      value === "0" || 
+      value.includes(".") || 
+      /^[^1-9]/.test(value) || 
+      /[^0-9]/.test(value)
     ) {
       setError(`${fieldName} ต้องเป็นจำนวนเต็มที่มากกว่า 0 และไม่มีสัญลักษณ์`);
     } else {
-      setError(""); // ล้างข้อความแจ้งเตือนเมื่อค่าถูกต้อง
+      setError(""); // Clear error message when value is valid
     }
 
-    // อัปเดตค่าเฉพาะเมื่อเป็นจำนวนเต็มที่ถูกต้อง
     if (/^[1-9][0-9]*$/.test(value) || value === "") {
       setValue(value);
     }
   };
 
-  const handleTimeChange = (e) => {
-    handleInputChange(e, setTime, setTimeError, "เวลาที่ใช้");
-  };
-
-  const handlePriceChange = (e) => {
-    handleInputChange(e, setPrice, setPriceError, "ราคา");
-  };
+  const handleTimeChange = (e) => handleInputChange(e, setTime, setTimeError, "เวลาที่ใช้");
+  const handlePriceChange = (e) => handleInputChange(e, setPrice, setPriceError, "ราคา");
 
   const categories = [
-    "ความรัก",
-    "การงาน",
-    "การเงิน",
-    "สุขภาพ",
-    "ภาพรวม",
-    "ดวงรายเดือน",
-    "ดวงรายปี",
-    "เนื้อคู่",
-    "ค้นหาตัวตน",
-    "การเรียน",
-    "ย้ายงาน",
-    "อื่นๆ",
+    "ความรัก", "การงาน", "การเงิน", "สุขภาพ", "ภาพรวม", "ดวงรายเดือน", 
+    "ดวงรายปี", "เนื้อคู่", "ค้นหาตัวตน", "การเรียน", "ย้ายงาน", "อื่นๆ"
   ];
 
-  const handleChannelChange = (selectedChannel) => {
-    setChannel(selectedChannel); // เก็บค่าช่องทางที่เลือก
-  };
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-  };
-
-  const handleDetailsChange = (e) => {
-    setDetails(e.target.value); // อัปเดตค่ารายละเอียด
-  };
+  const handleChannelChange = (selectedChannel) => setChannel(selectedChannel);
+  const handleCategoryClick = (category) => setSelectedCategory(category);
+  const handleDetailsChange = (e) => setDetails(e.target.value);
 
   const handleSave = () => {
-    // หาค่า id ล่าสุดใน PackageContext
-    const lastId =
-      PackageContext.length > 0
-        ? Math.max(...PackageContext.map((pkg) => pkg.id))
-        : 0;
-    const newId = lastId + 1; // เพิ่ม 1 จาก id ล่าสุด
-
-    // เก็บข้อมูลทั้งหมดใน state savedData
     const newPackage = {
-      id: newId, // เพิ่ม id ใหม่
-      status: "draft", // Always set the status to "draft"
+      id: newId, 
+      status: "draft",
       title: packageName,
-      fortuneTeller: "หมอดูออม 1", // Static value for now, you can change it if needed
-      rating: 5, // Static value for now, you can change it if needed
-      reviews: 1300, // Static value for now
+      fortuneTeller: "หมอดูออม 1",
+      rating: 5,
+      reviews: 1300,
       price: price,
-      callTime: time + " นาที", // Combine time with "นาที"
+      callTime: `${time} นาที`,
       packageType: channel,
     };
 
-    // Add the new package to the PackageContext
-    PackageContext.push(newPackage); // You should ideally manage this with a state or context
+    // Add the new package to PackageContext
+    PackageContext.push(newPackage);
 
     // Update saved data for preview
     setSavedData(newPackage);
 
-    // Navigate to /package/drafted
-    navigate("/package/drafted"); // ทำการนำทางไปหน้า /package/drafted
+    // Navigate to the drafted packages page
+    navigate("/package/drafted");
   };
 
   return (
     <Layout>
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Left Column */}
         <div className="flex-1 pr-8 pl-2 mr-4 space-y-6">
-          {/* ชื่อแพคเกจ */}
+          {/* Package Name */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">
-              ชื่อแพคเกจ
-            </div>
+            <div className="block text-gray-700 font-medium mb-2">ชื่อแพคเกจ</div>
             <input
               id="package-name"
               type="text"
@@ -131,55 +106,41 @@ const Package = () => {
             />
           </div>
 
-          {/* เวลาที่ใช้ */}
+          {/* Time Input */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">
-              เวลาที่ใช้ (นาที)
-            </div>
+            <div className="block text-gray-700 font-medium mb-2">เวลาที่ใช้ (นาที)</div>
             <input
               id="time"
               type="number"
               placeholder="15"
               value={time}
               onChange={handleTimeChange}
-              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${
-                timeError ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${timeError ? "border-red-500" : "border-gray-300"}`}
             />
-            {timeError && (
-              <p className="text-red-500 text-sm mt-1">{timeError}</p>
-            )}
+            {timeError && <p className="text-red-500 text-sm mt-1">{timeError}</p>}
           </div>
 
-          {/* ราคา */}
+          {/* Price Input */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">
-              ราคา (Coin)
-            </div>
+            <div className="block text-gray-700 font-medium mb-2">ราคา (Coin)</div>
             <input
               id="price"
               type="number"
               placeholder="99"
               value={price}
               onChange={handlePriceChange}
-              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${
-                priceError ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${priceError ? "border-red-500" : "border-gray-300"}`}
             />
-            {priceError && (
-              <p className="text-red-500 text-sm mt-1">{priceError}</p>
-            )}
+            {priceError && <p className="text-red-500 text-sm mt-1">{priceError}</p>}
           </div>
 
-          {/* รูปแบบดูดวง */}
+          {/* Channel Selector */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">
-              รูปแบบดูดวง
-            </div>
+            <div className="block text-gray-700 font-medium mb-2">รูปแบบดูดวง</div>
             <ChannelSelectDropdown onChannelChange={setChannel} />
           </div>
 
-          {/* หมวดหมู่ */}
+          {/* Category Selection */}
           <div className="mb-4">
             <div className="block text-gray-700 font-medium mb-2">หมวดหมู่</div>
             <div className="flex flex-wrap gap-2">
@@ -187,11 +148,7 @@ const Package = () => {
                 <button
                   key={category}
                   onClick={() => handleCategoryClick(category)}
-                  className={`px-4 py-2 rounded-full border ${
-                    selectedCategory === category
-                      ? "bg-purple-600 text-white"
-                      : "bg-white text-gray-700 border-gray-300"
-                  } transition-all duration-200`}
+                  className={`px-4 py-2 rounded-full border ${selectedCategory === category ? "bg-purple-600 text-white" : "bg-white text-gray-700 border-gray-300"} transition-all duration-200`}
                 >
                   {category}
                 </button>
@@ -199,48 +156,42 @@ const Package = () => {
             </div>
           </div>
 
-          {/* จำนวนคำถาม */}
+          {/* Question Count */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">
-              จำนวนคำถาม
-            </div>
+            <div className="block text-gray-700 font-medium mb-2">จำนวนคำถาม</div>
             <QuestionCountDropdown onQuestionCountChange={setQuestionCount} />
           </div>
         </div>
 
-        {/* Right Column */}
         <div className="w-full md:w-1/3 p-6 flex items-start justify-center">
-
           <ShowexampleCard
-            title={packageName} // แสดงชื่อแพ็กเกจที่กรอก
+            title={packageName}
             fortuneTeller="หมอดูออม 1"
             imageProfile="https://via.placeholder.com/300x300"
-            Category="ไพ่ยิปซี" // แสดงหมวดหมู่ที่เลือก
+            Category="ไพ่ยิปซี"
             rating={5}
             reviews={1300}
-            price={price} // แสดงราคาที่กรอก
-            callTime={time + " นาที"} // แสดงเวลาที่ใช้
-            packageType={channel} // แสดงช่องทางที่เลือก
-            status="draft" // สถานะ: "ร่างแล้ว"
+            price={price}
+            callTime={`${time} นาที`}
+            packageType={channel}
+            status="draft"
           />
         </div>
       </div>
 
-      {/* รายละเอียดแพ็กเกจ */}
+      {/* Package Details */}
       <div className="pl-2 my-4">
-        <div className="block text-gray-700 font-medium mb-2">
-          รายละเอียดแพ็กเกจ
-        </div>
+        <div className="block text-gray-700 font-medium mb-2">รายละเอียดแพ็กเกจ</div>
         <form className="text-[16px]">
           <textarea
             className="w-full h-[225px] pt-4 px-6 border border-zinc-300 rounded-md resize-none"
-            value={details} // ผูกกับ state
-            onChange={handleDetailsChange} // อัปเดตค่าตามที่พิมพ์
+            value={details}
+            onChange={handleDetailsChange}
           />
         </form>
       </div>
 
-      {/* บันทึกข้อมูล */}
+      {/* Save Button */}
       <div className="flex justify-end">
         <button
           className="bg-primary text-white py-2 px-14 rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
@@ -250,7 +201,7 @@ const Package = () => {
         </button>
       </div>
 
-      {/* แสดงข้อมูลที่บันทึก */}
+      {/* Display Saved Data */}
       {savedData && (
         <div className="mt-6 p-4 bg-gray-100 rounded-md">
           <h4 className="font-bold">ข้อมูลที่บันทึก:</h4>

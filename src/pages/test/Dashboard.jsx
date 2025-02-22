@@ -17,7 +17,7 @@ export default function Dashboard() {
 
       try {
         const response = await axios.get("https://backend.qseer.app/api/user/me", {
-          withCredentials: true, // ต้องใส่ตรงนี้ด้วย เพื่อให้แน่ใจว่า Cookie ถูกส่ง
+          withCredentials: true, 
         });
 
         if (response.status === 200) {
