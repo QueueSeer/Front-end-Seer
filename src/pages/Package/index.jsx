@@ -1,27 +1,37 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "./OverviewPackage/Layout";
 import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
-import PackageContext from "./OverviewPackage/PackageContext"; // Import the PackageContext data
+import PackageContext from "./OverviewPackage/PackageContext";
 import ShowexampleCard from "./DraftPackage/ShowexampleCard";
 
 const Package = () => {
-  const navigate = useNavigate(); // ใช้ useNavigate เพื่อใช้ navigate
-  const [price, setPrice] = useState(""); // เก็บค่าราคา
-  const [priceError, setPriceError] = useState(""); // ข้อความแจ้งเตือนสำหรับราคา
+  const navigate = useNavigate();
+  const [price, setPrice] = useState("");
+  const [priceError, setPriceError] = useState("");
 
-  const [time, setTime] = useState(""); // เก็บค่าเวลาที่ใช้
-  const [timeError, setTimeError] = useState(""); // ข้อความแจ้งเตือนสำหรับเวลา
+  const [time, setTime] = useState("");
+  const [timeError, setTimeError] = useState("");
 
-  const [packageName, setPackageName] = useState(""); // เก็บชื่อแพคเกจ
+  const [packageName, setPackageName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [questionCount, setQuestionCount] = useState(null);
   const [channel, setChannel] = useState("chat");
-  const [details, setDetails] = useState(""); // เก็บรายละเอียดแพคเกจ
+  const [details, setDetails] = useState("");
 
-  const [savedData, setSavedData] = useState(null); // เก็บข้อมูลที่บันทึกแล้ว
+  const [savedData, setSavedData] = useState(null);
 
+  // Calculate new package ID based on the latest saved package
+  const [newId, setNewId] = useState(0);
+
+  useEffect(() => {
+    // Get the last ID from PackageContext
+    if (PackageContext.length > 0) {
+      const lastId = Math.max(...PackageContext.map(pkg => pkg.id));
+      setNewId(lastId + 1);
+    }
+  }, []);
 
   // Handle input changes and validate input
   const handleInputChange = (e, setValue, setError, fieldName) => {
@@ -57,11 +67,6 @@ const Package = () => {
   const handleDetailsChange = (e) => setDetails(e.target.value);
 
   const handleSave = () => {
-    // Generate new ID for the package
-    const lastId = PackageContext.length > 0 ? Math.max(...PackageContext.map(pkg => pkg.id)) : 0;
-    const newId = lastId + 1;
-
-    // Create new package object
     const newPackage = {
       id: newId, 
       status: "draft",
@@ -87,7 +92,6 @@ const Package = () => {
   return (
     <Layout>
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Left Column */}
         <div className="flex-1 pr-8 pl-2 mr-4 space-y-6">
           {/* Package Name */}
           <div className="mb-4">
@@ -159,7 +163,6 @@ const Package = () => {
           </div>
         </div>
 
-        {/* Right Column */}
         <div className="w-full md:w-1/3 p-6 flex items-start justify-center">
           <ShowexampleCard
             title={packageName}
