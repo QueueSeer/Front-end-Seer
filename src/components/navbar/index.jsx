@@ -8,7 +8,7 @@ import Navbarmenu from "./NavbarMenu/Navbarmenu";
 
 export default function Navbar() {
   return (
-    <div className="navbar bg-base-100 shadow-md px-12">
+    <div className="navbar sticky top-0 w-full z-50 bg-base-100 shadow-md px-12 h-[68px] ">
       {/* โลโก้ */}
       <Logonavbar />
 

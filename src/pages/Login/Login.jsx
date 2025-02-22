@@ -8,7 +8,7 @@ import Navbarlogin from "../../components/navbar/Navbarlogin";
 
 
 
-const GOOGLE_CLIENT_ID = "482872878938-qln7jlcv0elrffnnaqd4qpqs43jh4ob9.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);

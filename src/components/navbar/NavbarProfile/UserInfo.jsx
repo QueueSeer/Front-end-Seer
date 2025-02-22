@@ -8,7 +8,7 @@ const UserInfo = ({ name, username, border }) => {
         border ? "border-b border-gray-200 dark:border-gray-600" : ""
       }`}
     >
-      <span className="block text-gray-900 dark:text-white font-sans font-semibold text-[20px] mb-1.5">
+      <span className="block text-gray-900 dark:text-white font-semibold text-[20px] mb-1.5">
         {/* เพิ่ม mb-1 (margin-bottom) เพื่อสร้างระยะห่าง */}
         {name}
       </span>
