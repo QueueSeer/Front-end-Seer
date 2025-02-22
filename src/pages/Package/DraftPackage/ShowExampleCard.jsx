@@ -2,7 +2,7 @@ import React from "react";
 import images from "../../../assets";
 import ImageUploader from "../../../components/Card/ImageUploader";
 
-const ShowExampleCard = ({
+const ShowexampleCard = ({
   id,
   title,
   Category,
@@ -81,4 +81,4 @@ const ShowExampleCard = ({
   );
 };
 
-export default ShowExampleCard;
+export default ShowexampleCard;

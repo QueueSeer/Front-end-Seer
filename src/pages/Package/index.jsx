@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom"; // เพิ่มการน�
 import Layout from "./OverviewPackage/Layout";
 import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
-import PackageCard from "../../components/Card/PackageCard";
 import PackageContext from "./OverviewPackage/PackageContext"; // Import the PackageContext data
-import ImageUploader from "../../components/Card/ImageUploader";
-import ShowExampleCard from "./DraftPackage/ShowexampleCard";
+import ShowexampleCard from "./DraftPackage/ShowexampleCard";
 
 const Package = () => {
   const navigate = useNavigate(); // ใช้ useNavigate เพื่อใช้ navigate
@@ -213,7 +211,7 @@ const Package = () => {
         {/* Right Column */}
         <div className="w-full md:w-1/3 p-6 flex items-start justify-center">
 
-          <ShowExampleCard
+          <ShowexampleCard
             title={packageName} // แสดงชื่อแพ็กเกจที่กรอก
             fortuneTeller="หมอดูออม 1"
             imageProfile="https://via.placeholder.com/300x300"
