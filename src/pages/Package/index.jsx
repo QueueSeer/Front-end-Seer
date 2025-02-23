@@ -4,7 +4,7 @@ import Layout from "./OverviewPackage/Layout";
 import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
 import PackageContext from "./OverviewPackage/PackageContext";
-import ShowexampleCard from "./DraftPackage/ShowexampleCard";
+import ShowExampleCard from "../../components/Card/ShowExampleCard";
 
 const Package = () => {
   const navigate = useNavigate();
@@ -164,7 +164,7 @@ const Package = () => {
         </div>
 
         <div className="w-full md:w-1/3 p-6 flex items-start justify-center">
-          <ShowexampleCard
+          <ShowExampleCard
             title={packageName}
             fortuneTeller="หมอดูออม 1"
             imageProfile="https://via.placeholder.com/300x300"
