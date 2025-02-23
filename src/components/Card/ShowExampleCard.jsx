@@ -1,6 +1,6 @@
 import React from "react";
 import images from "../../assets";
-import ImageUploader from "../../../components/Card/ImageUploader";
+import ImageUploader from "./ImageUploader";
 
 const ShowExampleCard = ({
   title,
