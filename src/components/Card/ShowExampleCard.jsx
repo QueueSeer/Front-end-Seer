@@ -1,8 +1,8 @@
 import React from "react";
-import images from "../../../assets";
-import ImageUploader from "../../../components/Card/ImageUploader";
+import images from "../../assets";
+import ImageUploader from "./ImageUploader";
 
-const ShowexampleCard = ({
+const ShowExampleCard = ({
   title,
   Category,
   fortuneTeller,
@@ -99,4 +99,4 @@ const ShowexampleCard = ({
   );
 };
 
-export default ShowexampleCard;
+export default ShowExampleCard;

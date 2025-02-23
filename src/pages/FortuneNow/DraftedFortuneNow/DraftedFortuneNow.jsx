@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../Layout";
 import StatusButtons from "../StatusButtons";
 import ServiceCard from "../../../components/Card/ServiceCard";
-import FortuneData from "../../../data/fortuneData"; // นำเข้าไฟล์ข้อมูล
+import FortuneData from "../../../Data/FortuneData";
 
 const DraftedFortuneNow = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
