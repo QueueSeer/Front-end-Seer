@@ -40,7 +40,7 @@ export default function App() {
     <Router>
       <Routes>
         {/* เส้นทางสำหรับหน้า Login */}
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Profile />} />
 
         {/* เส้นทางสำหรับหน้า Revenue */}
         <Route path="/revenue" element={<RevenuePage />} />
