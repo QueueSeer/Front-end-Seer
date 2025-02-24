@@ -26,6 +26,18 @@ export const updateDescription = async (description) => {
   }
 };
 
+// API call to get the user description
+export const fetchDescription = async () => {
+  try {
+    const response = await axiosInstance.get("/me");
+    return response.data.description || "ยังไม่มีคำอธิบาย"; // คืนค่า description
+  } catch (error) {
+    console.error("Error fetching description:", error);
+    throw new Error("ไม่สามารถดึงข้อมูลคำอธิบายได้");
+  }
+};
+
+
 // API call to update primary skill (category)
 export const updatePrimarySkill = async (category) => {
   if (!category) throw new Error("Category cannot be empty");
