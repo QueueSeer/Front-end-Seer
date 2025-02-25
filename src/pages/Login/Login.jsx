@@ -13,6 +13,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState(""); // สำหรับอีเมล
   const [passwordError, setPasswordError] = useState(""); // สำหรับรหัสผ่าน
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
@@ -59,12 +60,12 @@ export default function Login() {
     e.preventDefault();
     setEmailError(""); // Reset email error message
     setPasswordError(""); // Reset password error message
-  
+
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
-  
+
     let hasError = false; // Track if there are errors
-  
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
     if (!email) {
@@ -74,18 +75,18 @@ export default function Login() {
       setEmailError("กรุณากรอกอีเมลให้ถูกต้อง");
       hasError = true;
     }
-  
+
     // Password validation
     if (!password) {
       setPasswordError("กรุณากรอกรหัสผ่าน");
       hasError = true;
     }
-  
+
     // If there are errors, stop here
     if (hasError) {
       return;
     }
-  
+
     // Send request to backend if no validation errors
     try {
       const response = await axios.post(
@@ -95,18 +96,20 @@ export default function Login() {
           headers: { "Content-Type": "application/json" }, // Set Content-Type to application/json
         }
       );
-  
+
       if (response.status === 200) {
         console.log("Login Successful:", response.data);
         localStorage.setItem("token", response.data.token); // Save token to localStorage
         navigate("/fillter"); // Navigate to the next page (fillter)
       }
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
-      // Handle errors from the API, e.g., show an error message
+      if (error.response && error.response.status === 401) {
+        setLoginError("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+      } else {
+        setLoginError("เกิดข้อผิดพลาดในการเข้าสู่ระบบ");
+      }
     }
   };
-  
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
@@ -304,6 +307,20 @@ export default function Login() {
                   }}
                 />
               </div>
+
+              {loginError && (
+                <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+                  <div className="bg-white p-4 rounded-lg shadow-md">
+                    <p className="text-red-500">{loginError}</p>
+                    <button
+                      onClick={() => setLoginError("")}
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
+                    >
+                      ปิด
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

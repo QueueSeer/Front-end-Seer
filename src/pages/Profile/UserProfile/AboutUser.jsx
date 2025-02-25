@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { fetchDescription, updateDescription } from "../../../Data/Profile/ProfileApi"; // นำเข้า API functions
-import AboutUserProfile from "../../../components/Profile/AboutUserProfile";
 import PopupAboutme from "../../../components/Popup/profile/PopupAboutme";
 
 const AboutUser = () => {
@@ -59,19 +58,16 @@ const AboutUser = () => {
         <h2 className="text-xl text-gray-800 font-semibold mb-4">
           คำอธิบายเกี่ยวกับฉัน
         </h2>
-        <AboutUserProfile>
-          {(description) => (
-            <button
-              onClick={() => {
-                togglePopup(); // เปิด Popup
-                setTextarea(aboutMe || description); // ตั้งข้อความที่จะแสดงใน Popup
-              }}
-              className="border-2 px-[30px] pt-[20px] pb-[30px] rounded-[5px] text-left text-[16px]"
-            >
-              <div>{aboutMe || description}</div> {/* แสดงข้อความล่าสุด */}
-            </button>
-          )}
-        </AboutUserProfile>
+        {/* แสดงข้อมูลคำอธิบายเกี่ยวกับฉัน */}
+        <button
+          onClick={() => {
+            togglePopup(); // เปิด Popup
+            setTextarea(aboutMe); // ตั้งข้อความที่จะแสดงใน Popup
+          }}
+          className="border-2 px-[30px] pt-[20px] pb-[30px] rounded-[5px] text-left text-[16px]"
+        >
+          <div>{aboutMe || "ไม่มีคำอธิบาย"}</div> {/* แสดงข้อความล่าสุด */}
+        </button>
       </div>
 
       {/* Popup แสดงข้อความ */}
