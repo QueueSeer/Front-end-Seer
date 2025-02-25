@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../OverviewPackage/Layout";
 import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
 import PackageContext from "../OverviewPackage/PackageContext";
@@ -8,22 +8,26 @@ const PublishedPackage = () => {
   const [selectedPackages, setSelectedPackages] = useState([]);
   const [fortuneTeller, setFortuneTeller] = useState("ไม่พบชื่อ");
   const [fortuneTellerImage, setFortuneTellerImage] = useState("https://via.placeholder.com/300x300");
-  const [primarySkill, setPrimarySkill] = useState("");
+  const [primarySkill, setPrimarySkill] = useState("...");
+  const [loading, setLoading] = useState(true); // ✅ เพิ่มตัวแปร loading
+
+  const getUserData = useCallback(async () => {
+    try {
+      setLoading(true); // ✅ เริ่มโหลดข้อมูล
+      const data = await fetchUserData();
+      setFortuneTeller(data.display_name || "ไม่พบชื่อ");
+      setFortuneTellerImage(data.image || "https://via.placeholder.com/300x300");
+      setPrimarySkill(data.primary_skill || "...");
+    } catch (error) {
+      console.error("Error fetching fortune teller data:", error);
+    } finally {
+      setLoading(false); // ✅ ปิดโหลดข้อมูลเมื่อเสร็จ
+    }
+  }, []);
 
   useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const data = await fetchUserData();
-        setFortuneTeller(data.display_name || "ไม่พบชื่อ");
-        setFortuneTellerImage(data.image || "https://via.placeholder.com/300x300");
-        setPrimarySkill(data.primary_skill || "ไพ่ยิปซี");
-      } catch (error) {
-        console.error("Error fetching fortune teller data:", error);
-      }
-    };
-
     getUserData();
-  }, []);
+  }, [getUserData]);
 
   const handleSelect = (pkgId) => {
     setSelectedPackages((prevSelected) =>
@@ -48,7 +52,11 @@ const PublishedPackage = () => {
 
   return (
     <Layout>
-      {publishedPackages.length === 0 ? (
+      {loading ? ( // ✅ แสดง Loading ขณะโหลดข้อมูล
+        <div className="text-center text-lg text-gray-500 mt-8">
+          กำลังโหลดข้อมูล...
+        </div>
+      ) : publishedPackages.length === 0 ? (
         <div className="text-center text-lg text-gray-500 mt-8">
           ไม่มีแพ็กเกจที่เผยแพร่
         </div>
