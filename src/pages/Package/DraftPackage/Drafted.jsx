@@ -9,16 +9,20 @@ const Drafted = () => {
   const [fortuneTeller, setFortuneTeller] = useState("ไม่พบชื่อ");
   const [fortuneTellerImage, setFortuneTellerImage] = useState("https://via.placeholder.com/300x300");
   const [primarySkill, setPrimarySkill] = useState("...");
+  const [loading, setLoading] = useState(true); // ✅ เพิ่ม state โหลดข้อมูล
 
   useEffect(() => {
     const getUserData = async () => {
       try {
+        setLoading(true); // ✅ เริ่มโหลดข้อมูล
         const data = await fetchUserData();
         setFortuneTeller(data.display_name || "ไม่พบชื่อ");
         setFortuneTellerImage(data.image || "https://via.placeholder.com/300x300");
-        setPrimarySkill(data.primary_skill || "");
+        setPrimarySkill(data.primary_skill || "...");
       } catch (error) {
         console.error("Error fetching fortune teller data:", error);
+      } finally {
+        setLoading(false); // ✅ ปิดตัวโหลดเมื่อโหลดเสร็จ
       }
     };
 
@@ -48,7 +52,11 @@ const Drafted = () => {
 
   return (
     <Layout>
-      {draftedPackages.length === 0 ? (
+      {loading ? ( // ✅ แสดงข้อความ "กำลังโหลด..." ระหว่างโหลดข้อมูล
+        <div className="text-center text-lg text-gray-500 mt-8">
+          กำลังโหลดข้อมูล...
+        </div>
+      ) : draftedPackages.length === 0 ? (
         <div className="text-center text-lg text-gray-500 mt-8">
           ไม่มีแพ็กเกจที่ร่างไว้
         </div>
