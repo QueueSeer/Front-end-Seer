@@ -25,6 +25,13 @@ const UserMenu = () => {
     getUserData();
   }, []);
 
+  // ฟังก์ชันที่ใช้ในการออกจากระบบ
+  const handleLogout = () => {
+    console.log("Logging out...");
+    // คุณสามารถทำการลบข้อมูลที่เกี่ยวข้องกับการออกจากระบบได้ที่นี่
+    // เช่น ลบ token, redirect ไปที่หน้า Login เป็นต้น
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -35,7 +42,7 @@ const UserMenu = () => {
 
   return (
     <div
-      className="z-50 my-2 px-6  list-none rounded-3xl dark:bg-gray-700"
+      className="z-50 my-2 px-6 list-none rounded-3xl dark:bg-gray-700"
       id="user-dropdown"
     >
       {/* User Info */}
@@ -45,7 +52,8 @@ const UserMenu = () => {
       />
 
       <Item />
-      <Logout />
+      {/* ส่ง onLogout prop ไปที่ Logout */}
+      <Logout onLogout={handleLogout} />
     </div>
   );
 };

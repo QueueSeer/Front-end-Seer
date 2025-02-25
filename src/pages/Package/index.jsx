@@ -199,8 +199,8 @@ const Package = () => {
         </div>
 
         {/* Example Card */}
-        <div className="w-1/3 pt-6 flex items-start justify-center">
-          <ShowExampleCard
+        <div className="w-[330px] md:w-1/3 pt-6 flex items-start justify-center mx-auto">
+        <ShowExampleCard
             title={packageName || "ความรักอยู่ที่ไหน"}
             fortuneTeller={fortuneTeller}
             imageProfile={fortuneTellerImage}

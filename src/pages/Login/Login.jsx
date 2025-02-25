@@ -5,9 +5,6 @@ import axios from "axios";
 import Images from "../../assets";
 import Navbarlogin from "../../components/navbar/Navbarlogin";
 
-
-
-
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 export default function Login() {
@@ -16,8 +13,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState(""); // สำหรับอีเมล
   const [passwordError, setPasswordError] = useState(""); // สำหรับรหัสผ่าน
-  
-  
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
@@ -31,11 +27,11 @@ export default function Login() {
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     const idToken = credentialResponse.credential;
-  
+
     try {
       const formData = new URLSearchParams();
       formData.append("credential", idToken);
-  
+
       const response = await axios.post(
         "https://backend.qseer.app/api/access/google/signin",
         formData,
@@ -45,7 +41,7 @@ export default function Login() {
           },
         }
       );
-  
+
       if (response.status === 200) {
         console.log("Login Successful:", response.data);
         localStorage.setItem("token", response.data.token); // บันทึก token
@@ -55,7 +51,6 @@ export default function Login() {
       console.error("Error:", error.response?.data || error.message);
     }
   };
-  
 
   const handleGoogleLoginError = () => {
     alert("Google login failed. Please try again.");
@@ -63,62 +58,67 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setEmailError(""); // รีเซ็ตข้อความข้อผิดพลาดอีเมล
-    setPasswordError(""); // รีเซ็ตข้อความข้อผิดพลาดรหัสผ่าน
-  
+    setEmailError(""); // Reset email error message
+    setPasswordError(""); // Reset password error message
+
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
-  
-    let hasError = false; // ใช้ตรวจสอบว่ามีข้อผิดพลาดหรือไม่
-  
-    // ตรวจสอบอีเมล
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // รูปแบบอีเมลที่ถูกต้อง
+
+    let hasError = false; // Track if there are errors
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
     if (!email) {
       setEmailError("กรุณากรอกอีเมล");
-      hasError = true; // ตั้งค่าว่ามีข้อผิดพลาด
+      hasError = true;
     } else if (!emailRegex.test(email)) {
       setEmailError("กรุณากรอกอีเมลให้ถูกต้อง");
       hasError = true;
     }
-  
-    // ตรวจสอบรหัสผ่าน
+
+    // Password validation
     if (!password) {
       setPasswordError("กรุณากรอกรหัสผ่าน");
       hasError = true;
     }
-  
-    // ถ้ามีข้อผิดพลาด ไม่ดำเนินการต่อ
+
+    // If there are errors, stop here
     if (hasError) {
       return;
     }
-  
-    // ถ้าข้อมูลถูกต้อง
+
+    // Send request to backend if no validation errors
     try {
       const response = await axios.post(
-        "https://backend.qseer.app/api/access/login",
-        { email, password },
-        { headers: { "Content-Type": "application/json" } }
+        "https://backend.qseer.app/api/access/login", // API endpoint
+        { email, password }, // Request payload
+        {
+          headers: { "Content-Type": "application/json" }, // Set Content-Type to application/json
+        }
       );
-  
+
       if (response.status === 200) {
         console.log("Login Successful:", response.data);
-        localStorage.setItem("token", response.data.token); // เก็บ token
-        navigate("/fillter"); // ไปที่หน้า fillter
+        localStorage.setItem("token", response.data.token); // Save token to localStorage
+        navigate("/fillter"); // Navigate to the next page (fillter)
       }
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
+      if (error.response && error.response.status === 401) {
+        setLoginError("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+      } else {
+        setLoginError("เกิดข้อผิดพลาดในการเข้าสู่ระบบ");
+      }
     }
   };
-  
-  
-  
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <div className={isDarkMode ? "dark" : ""}>
-      <Navbarlogin />
+        <Navbarlogin />
         <div
-          className={`flex h-screen font-notosans lg:flex-row flex-col ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-black"}`}
+          className={`flex h-screen font-notosans lg:flex-row flex-col ${
+            isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-black"
+          }`}
         >
           {/* ด้านซ้าย: พื้นหลังเบลอ */}
           <div
@@ -152,7 +152,12 @@ export default function Login() {
               </h2>
               <p className="text-lg lg:text-xl mt-4">
                 Don’t Have An Account?{" "}
-                <Link to="/register" className={`hover:underline ${isDarkMode ? "text-purple-300" : "text-purple-500"}`}>
+                <Link
+                  to="/register"
+                  className={`hover:underline ${
+                    isDarkMode ? "text-purple-300" : "text-purple-500"
+                  }`}
+                >
                   <br /> Register Here!
                 </Link>
               </p>
@@ -174,12 +179,16 @@ export default function Login() {
                 เข้าสู่ระบบ
               </h2>
               <form className="space-y-4" onSubmit={handleLogin}>
-           {/* Email Field */}
+                {/* Email Field */}
                 <div className="mb-6">
                   <div className="relative flex items-center">
                     {/* ไอคอน */}
                     <span className="absolute left-4 top-1/2 -translate-y-1/2">
-                      <img src={Images.letterIcon} alt="Email Icon" className="w-5 h-5" />
+                      <img
+                        src={Images.letterIcon}
+                        alt="Email Icon"
+                        className="w-5 h-5"
+                      />
                     </span>
                     {/* ช่องกรอกอีเมล */}
                     <input
@@ -194,7 +203,11 @@ export default function Login() {
                     />
                   </div>
                   {/* ข้อความข้อผิดพลาดอีเมล */}
-                  {emailError && <p className="text-red-500 text-sm mt-1 pl-12">{emailError}</p>}
+                  {emailError && (
+                    <p className="text-red-500 text-sm mt-1 pl-12">
+                      {emailError}
+                    </p>
+                  )}
                 </div>
 
                 {/* Password Field */}
@@ -202,7 +215,11 @@ export default function Login() {
                   <div className="relative flex items-center">
                     {/* ไอคอน */}
                     <span className="absolute left-4 top-1/2 -translate-y-1/2">
-                      <img src={Images.keyIcon} alt="Password Icon" className="w-5 h-5" />
+                      <img
+                        src={Images.keyIcon}
+                        alt="Password Icon"
+                        className="w-5 h-5"
+                      />
                     </span>
                     {/* ช่องกรอกรหัสผ่าน */}
                     <input
@@ -228,15 +245,20 @@ export default function Login() {
                     </span>
                   </div>
                   {/* ข้อความข้อผิดพลาดรหัสผ่าน */}
-                  {passwordError && <p className="text-red-500 text-sm mt-1 pl-12">{passwordError}</p>}
+                  {passwordError && (
+                    <p className="text-red-500 text-sm mt-1 pl-12">
+                      {passwordError}
+                    </p>
+                  )}
                 </div>
 
-
-
-
-
                 <div className="flex items-end text-sm">
-                  <Link to="/forgot-password" className={`ml-auto hover:underline ${isDarkMode ? "text-purple-300" : "text-purple-500"}`}>
+                  <Link
+                    to="/forgot-password"
+                    className={`ml-auto hover:underline ${
+                      isDarkMode ? "text-purple-300" : "text-purple-500"
+                    }`}
+                  >
                     Forgot Password?
                   </Link>
                 </div>
@@ -244,7 +266,9 @@ export default function Login() {
                 <button
                   type="submit"
                   className={`w-full py-2 rounded-lg hover:bg-opacity-90 transition duration-200 relative z-10 ${
-                    isDarkMode ? "bg-purple-500 text-white" : "bg-purple-700 text-white"
+                    isDarkMode
+                      ? "bg-purple-500 text-white"
+                      : "bg-purple-700 text-white"
                   }`}
                 >
                   เข้าสู่ระบบ
@@ -253,7 +277,12 @@ export default function Login() {
 
               <div className="text-center mt-4 text-sm">
                 Don’t have an account?{" "}
-                <Link to="/register" className={`hover:underline ${isDarkMode ? "text-purple-300" : "text-purple-500"}`}>
+                <Link
+                  to="/register"
+                  className={`hover:underline ${
+                    isDarkMode ? "text-purple-300" : "text-purple-500"
+                  }`}
+                >
                   Register
                 </Link>
               </div>
@@ -278,6 +307,20 @@ export default function Login() {
                   }}
                 />
               </div>
+
+              {loginError && (
+                <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+                  <div className="bg-white p-4 rounded-lg shadow-md">
+                    <p className="text-red-500">{loginError}</p>
+                    <button
+                      onClick={() => setLoginError("")}
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
+                    >
+                      ปิด
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

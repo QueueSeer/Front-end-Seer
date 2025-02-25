@@ -17,7 +17,7 @@ export default function Navbar() {
         <Navbarmenu />
 
         {/* การแจ้งเตือน */}
-        <Notification />
+        {/* <Notification /> */}
 
         {/* โปรไฟล์ผู้ใช้ */}
         <UserProfile />
