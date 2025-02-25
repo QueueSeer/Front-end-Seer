@@ -103,7 +103,7 @@ const CalendarHeader = () => {
             {days.map((day, index) => (
               <div
                 key={index}
-                className="text-[#8677A7] text-sm font-medium flex items-center justify-center h-10"
+                className="text-[#8677A7] text-sm font-medium flex items-center  h-10 pl-12"
               >
                 {day}
               </div>
@@ -116,7 +116,7 @@ const CalendarHeader = () => {
                 <div
                   key={index}
                   onClick={() => setSelectedDate(date)}
-                  className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full ml-12 ${
+                  className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full ml-10  ${
                     toggleOption === 0 && date.isSame(selectedDate, "day")
                       ? "border-2 border-[#420F75] text-[#420F75] font-semibold" // ล้อมรอบเฉพาะวันที่เลือก
                       : toggleOption === 1 && weekDates.some((d) => d.isSame(date, "day"))

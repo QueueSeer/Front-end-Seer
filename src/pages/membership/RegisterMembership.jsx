@@ -9,7 +9,7 @@ const RegisterMembership = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    birthDate: "",
+    experience: "",
     email: "",
     phone: "",
     agreement: false,
@@ -41,7 +41,7 @@ const RegisterMembership = () => {
     const newErrors = {};
     if (!formData.firstName.trim()) newErrors.firstName = "กรุณากรอกชื่อจริง";
     if (!formData.lastName.trim()) newErrors.lastName = "กรุณากรอกนามสกุล";
-    if (!formData.birthDate) newErrors.birthDate = "กรุณากรอกวัน/เดือน/ปี";
+    if (!formData.experience) newErrors.experience = "กรุณาเลือกประสบการณ์";
     if (!formData.email.trim()) newErrors.email = "กรุณากรอกอีเมล";
     if (!formData.phone.trim()) newErrors.phone = "กรุณากรอกหมายเลขโทรศัพท์";
     if (!formData.agreement)
@@ -105,133 +105,141 @@ const RegisterMembership = () => {
           </div>
         </div>
 
-        {/* Step 1 */}
-        {currentStep === 1 && (
-          <div className="bg-white w-full max-w-lg p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">
-              ข้อมูลส่วนตัว
-            </h2>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    ชื่อจริง *
-                  </label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className={`w-full mt-1 p-2 border ${
-                      errors.firstName ? "border-red-500" : "border-gray-300"
-                    } rounded-lg`}
-                    placeholder="ชื่อจริง"
-                    required
-                  />
-                  {errors.firstName && (
-                    <p className="text-sm text-red-500">{errors.firstName}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    นามสกุล *
-                  </label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className={`w-full mt-1 p-2 border ${
-                      errors.lastName ? "border-red-500" : "border-gray-300"
-                    } rounded-lg`}
-                    placeholder="นามสกุล"
-                    required
-                  />
-                  {errors.lastName && (
-                    <p className="text-sm text-red-500">{errors.lastName}</p>
-                  )}
-                </div>
-              </div>
+       {/* Step 1 */}
+{currentStep === 1 && (
+  <div className="bg-white w-full max-w-lg p-6 rounded-lg shadow-md">
+    <h2 className="text-xl font-semibold text-gray-800 mb-6">
+      ข้อมูลส่วนตัว
+    </h2>
+    <form className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            ชื่อจริง *
+          </label>
+          <input
+            type="text"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            className={`w-full mt-1 p-2 border ${
+              errors.firstName ? "border-red-500" : "border-gray-300"
+            } rounded-lg`}
+            placeholder="ชื่อจริง"
+            required
+          />
+          {errors.firstName && (
+            <p className="text-sm text-red-500">{errors.firstName}</p>
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            นามสกุล *
+          </label>
+          <input
+            type="text"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            className={`w-full mt-1 p-2 border ${
+              errors.lastName ? "border-red-500" : "border-gray-300"
+            } rounded-lg`}
+            placeholder="นามสกุล"
+            required
+          />
+          {errors.lastName && (
+            <p className="text-sm text-red-500">{errors.lastName}</p>
+          )}
+        </div>
+      </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  วัน/เดือน/ปี *
-                </label>
-                <input
-                  type="date"
-                  name="birthDate"
-                  value={formData.birthDate}
-                  onChange={handleChange}
-                  className={`w-full mt-1 p-2 border ${
-                    errors.birthDate ? "border-red-500" : "border-gray-300"
-                  } rounded-lg`}
-                  required
-                />
-                {errors.birthDate && (
-                  <p className="text-sm text-red-500">{errors.birthDate}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  อีเมล *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full mt-1 p-2 border ${
-                    errors.email ? "border-red-500" : "border-gray-300"
-                  } rounded-lg`}
-                  placeholder="example@email.com"
-                  required
-                />
-                {errors.email && (
-                  <p className="text-sm text-red-500">{errors.email}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  หมายเลขโทรศัพท์ *
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={`w-full mt-1 p-2 border ${
-                    errors.phone ? "border-red-500" : "border-gray-300"
-                  } rounded-lg`}
-                  placeholder="หมายเลขโทรศัพท์"
-                  required
-                />
-                {errors.phone && (
-                  <p className="text-sm text-red-500">{errors.phone}</p>
-                )}
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="agreement"
-                  checked={formData.agreement}
-                  onChange={handleChange}
-                  className={`h-4 w-4 text-purple-500 border-gray-300 rounded ${
-                    errors.agreement ? "border-red-500" : ""
-                  }`}
-                />
-                <label className="ml-2 text-sm text-gray-700">
-                  ฉันยินยอมให้เผยแพร่โปรไฟล์และข้อมูลการใช้บริการให้บริษัท
-                </label>
-              </div>
-              {errors.agreement && (
-                <p className="text-sm text-red-500">{errors.agreement}</p>
-              )}
-            </form>
-          </div>
+      {/* เปลี่ยนเป็น ประสบการณ์ */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          ประสบการณ์ *
+        </label>
+        <select
+          name="experience"
+          value={formData.experience}
+          onChange={handleChange}
+          className={`w-full mt-1 p-2 border ${
+            errors.experience ? "border-red-500" : "border-gray-300"
+          } rounded-lg`}
+          required
+        >
+          <option value="">เลือกประสบการณ์</option>
+          <option value="1 ปีขึ้นไป">1 ปีขึ้นไป</option>
+          <option value="2 ปีขึ้นไป">2 ปีขึ้นไป</option>
+          <option value="5 ปีขึ้นไป">5 ปีขึ้นไป</option>
+          <option value="10 ปีขึ้นไป">10 ปีขึ้นไป</option>
+          <option value="15 ปีขึ้นไป">15 ปีขึ้นไป</option>
+        </select>
+        {errors.experience && (
+          <p className="text-sm text-red-500">{errors.experience}</p>
         )}
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          อีเมล *
+        </label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className={`w-full mt-1 p-2 border ${
+            errors.email ? "border-red-500" : "border-gray-300"
+          } rounded-lg`}
+          placeholder="example@email.com"
+          required
+        />
+        {errors.email && (
+          <p className="text-sm text-red-500">{errors.email}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          หมายเลขโทรศัพท์ *
+        </label>
+        <input
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          className={`w-full mt-1 p-2 border ${
+            errors.phone ? "border-red-500" : "border-gray-300"
+          } rounded-lg`}
+          placeholder="หมายเลขโทรศัพท์"
+          required
+        />
+        {errors.phone && (
+          <p className="text-sm text-red-500">{errors.phone}</p>
+        )}
+      </div>
+
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          name="agreement"
+          checked={formData.agreement}
+          onChange={handleChange}
+          className={`h-4 w-4 text-purple-500 border-gray-300 rounded ${
+            errors.agreement ? "border-red-500" : ""
+          }`}
+        />
+        <label className="ml-2 text-sm text-gray-700">
+          ฉันยินยอมให้เผยแพร่โปรไฟล์และข้อมูลการใช้บริการให้บริษัท
+        </label>
+      </div>
+      {errors.agreement && (
+        <p className="text-sm text-red-500">{errors.agreement}</p>
+      )}
+    </form>
+  </div>
+)}
+
 
         {/* Step 2 */}
         {currentStep === 2 && (
@@ -287,7 +295,7 @@ const RegisterMembership = () => {
               onClick={handleNextStep}
               className={`px-4 py-2 rounded-lg ${
                 formData.agreement
-                  ? "bg-purple-500 text-white"
+                  ? "bg-purple-800 text-white"
                   : "bg-gray-300 text-gray-700"
               }`}
             >

@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import Layout from "../OverviewPackage/Layout";
 import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
 import PackageContext from "../OverviewPackage/PackageContext"; // นำเข้า context
+import Images from "../../../assets";
 
 const Published = () => {
   const [selectedPackages, setSelectedPackages] = useState([]); // State to track selected packages
+  const [publishedPackages, setPublishedPackages] = useState(
+    PackageContext.filter((pkg) => pkg.status === "published") // กรองเฉพาะแพ็กเกจที่เผยแพร่
+  );
+  const [isConfirmHideOpen, setIsConfirmHideOpen] = useState(false); // ควบคุม Popup
 
   // Function to handle checkbox selection
   const handleSelect = (pkgId) => {
@@ -17,34 +22,44 @@ const Published = () => {
     });
   };
 
-  // Function to handle hiding selected packages
-  const handleHide = () => {
-    // Update only selected packages with status "published"
-    PackageContext.forEach((pkg) => {
-      if (pkg.status === "published" && selectedPackages.includes(pkg.id)) {
-        pkg.status = "hidden"; // Change status to "hidden"
+  // Function to open confirmation popup
+  const openConfirmHide = () => {
+    setIsConfirmHideOpen(true);
+  };
+
+  // Function to confirm hiding selected packages
+  const confirmHide = () => {
+    const updatedPackages = publishedPackages.map((pkg) => {
+      if (selectedPackages.includes(pkg.id)) {
+        return { ...pkg, status: "hidden" }; // เปลี่ยนสถานะเป็น hidden
       }
+      return pkg;
     });
 
-    // Clear the selected packages after hiding
-    setSelectedPackages([]);
+    setPublishedPackages(updatedPackages); // อัปเดตแพ็กเกจใน State
+    setSelectedPackages([]); // ล้างแพ็กเกจที่เลือก
+    setIsConfirmHideOpen(false); // ปิด Popup
 
-    alert("Selected published packages have been hidden!");
+    alert("แพ็กเกจที่เลือกถูกซ่อนเรียบร้อยแล้ว!");
   };
 
   return (
     <Layout>
-      <div className="flex flex-wrap gap-9 justify-stretch mx-auto">
-        {PackageContext
-          .filter(pkg => pkg.status === "published") // กรองเฉพาะแพ็กเกจที่มีสถานะเป็น "published"
-          .map(pkg => (
+      {/* Check if there are published packages */}
+      {publishedPackages.length === 0 ? (
+        <div className="text-center text-lg text-gray-500 mt-8">
+          ไม่มีแพ็กเกจที่เผยแพร่
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-9 justify-stretch mx-auto">
+          {publishedPackages.map((pkg) => (
             <PackageCardCheckbox
               key={pkg.id} // ใช้ id แทน title เป็น key
               id={pkg.id}
               imageSrc="https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"
               title={pkg.title}
               fortuneTeller={pkg.fortuneTeller}
-              imageProfile="https://via.placeholder.com/300x300"
+              imageProfile={Images.gray}
               Category="ไพ่ยิปซี"
               rating={pkg.rating}
               reviews={pkg.reviews}
@@ -56,18 +71,52 @@ const Published = () => {
               onSelectClick={() => handleSelect(pkg.id)} // Handle selection
             />
           ))}
-      </div>
+        </div>
+      )}
 
-      {/* Hide Button */}
-      <div className="flex justify-end mt-4">
+      {/* Buttons Section */}
+      <div className="flex justify-end mt-6">
+        {/* ปุ่มซ่อน */}
         <button
-          className="bg-red-500 text-white py-2 px-14 rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300"
-          onClick={handleHide} // Handle hide button click
-          disabled={selectedPackages.length === 0} // Disable button if no packages are selected
+          className={`py-2 px-8 rounded-md font-semibold transition ${
+            selectedPackages.length > 0
+              ? "bg-red-500 text-white hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
+          onClick={openConfirmHide}
+          disabled={selectedPackages.length === 0} // ปิดปุ่มถ้าไม่มีแพ็กเกจที่ถูกเลือก
         >
           ซ่อน
         </button>
       </div>
+
+      {/* Popup ยืนยันการซ่อนแพ็กเกจ */}
+      {isConfirmHideOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h2 className="text-xl font-semibold text-[#65558F] text-center mb-4">
+              ยืนยันการซ่อนแพ็กเกจ
+            </h2>
+            <div className="flex justify-center gap-4">
+              {/* ปุ่ม "ไม่ใช่" */}
+              <button
+                className="bg-gray-300 text-black px-6 py-2 rounded-md font-semibold hover:bg-gray-400 transition"
+                onClick={() => setIsConfirmHideOpen(false)}
+              >
+                ไม่ใช่
+              </button>
+
+              {/* ปุ่ม "ใช่" */}
+              <button
+                className="bg-[#8677A7] text-white px-6 py-2 rounded-md font-semibold hover:bg-[#6E5A99] transition"
+                onClick={confirmHide}
+              >
+                ใช่
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };

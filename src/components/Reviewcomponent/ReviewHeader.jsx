@@ -27,23 +27,23 @@ const ReviewHeader = () => {
           </div>
           {/* Average Rating Text */}
           <div className="text-lg font-bold text-[#F59E0B]">โดยเฉลี่ย 4.5</div>
-          <div className="hidden sm:block text-gray-500">(150 รีวิว)</div>
+          <div className="hidden sm:block text-gray-500">(5 รีวิว)</div>
         </div>
 
         {/* Dropdown and Review Count for Mobile */}
         <div className="flex sm:hidden items-center justify-between">
-          <span className="text-gray-500 text-sm">(150 รีวิว)</span>
+          <span className="text-gray-500 text-sm">(5 รีวิว)</span>
           <select className="border border-gray-300 rounded-md p-2 text-sm">
-            <option>กันยายน 2567</option>
-            <option>สิงหาคม 2567</option>
+            <option>กุมภาพันธ์ 2568</option>
+            <option>มีนาคม 2568</option>
           </select>
         </div>
 
         {/* Dropdown Section for Larger Screens */}
         <div className="hidden sm:flex items-center space-x-2">
           <select className="border border-gray-300 rounded-md p-2 text-sm sm:text-base">
-            <option>กันยายน 2567</option>
-            <option>สิงหาคม 2567</option>
+          <option>กุมภาพันธ์ 2568</option>
+          <option>มีนาคม 2568</option>
           </select>
         </div>
       </div>

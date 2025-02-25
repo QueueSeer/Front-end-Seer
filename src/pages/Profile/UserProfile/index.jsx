@@ -6,6 +6,7 @@ import AboutUser from "./AboutUser";
 import CategoryUser from "./CategoryUser";
 import SocialLinksManager from "./SocialLinksManager";
 import AccountPrompay from "./AccountPrompay";
+import UserStats from '../../../components/Popup/profile/UserStats';
 
 const Profile = () => {
   return (
@@ -18,6 +19,7 @@ const Profile = () => {
         <AboutUser />
 
         <CategoryUser />
+        <UserStats /> {/* เพิ่มส่วนแสดงสถิติการดูดวง */}
 
         <SocialLinksManager />
 

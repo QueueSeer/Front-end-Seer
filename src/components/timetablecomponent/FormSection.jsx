@@ -146,7 +146,7 @@ const FormSection = () => {
         {/* เวลาพักเที่ยง */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            เวลาพักเที่ยง
+            ช่วงเวลาพักเที่ยง
           </label>
           <input
             type="text"
@@ -166,7 +166,7 @@ const FormSection = () => {
         {/* เวลาพักระหว่างคิว */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            เวลาพักระหว่างคิว
+            ช่วงเวลาพักระหว่างคิว
           </label>
           <input
             type="number"

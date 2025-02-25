@@ -1,56 +1,18 @@
-// AppointmentData.jsx
+import images from "../assets"; // นำเข้า assets
+
 const appointmentData = [
   {
     id: 1,
-    icon: "/path/to/icon1.png",
+    icon: images.gray, // ใช้ images.gray ให้ตรงกับที่ import มา
     name: "สุรางคนางค์ เกตุยั่งยืนวงศ์",
-    birthdate: "1990-04-08T04:45:25.448Z",
-    dateappointment: "2024-09-10T10:06:38.448Z",
+    birthdate: "2002-04-08T04:45:25.448Z",
+    dateappointment: "2025-02-25T10:45:00.000Z", // เปลี่ยนเป็น 10:45
     packageName: "แพ็กเกจความรัก",
     type_package: "Questions",
     QuestionsNumber: 1,
     code: "4QCFR",
     status_service: "รอเข้ารับบริการ",
     email: "25654@gmail.com",
-  },
-  {
-    id: 2,
-    icon: "/path/to/icon2.png",
-    name: "สมชาย ใจดี",
-    birthdate: "1985-12-01T04:45:25.448Z",
-    dateappointment: "2024-09-11T10:06:38.448Z",
-    packageName: "แพ็กเกจสุขภาพ",
-    type_package: "Questions",
-    QuestionsNumber: 2,
-    code: "7XYZB",
-    status_service: "บริการสำเร็จ",
-    email: "25655@gmail.com",
-  },
-  {
-    id: 3,
-    icon: "/path/to/icon2.png",
-    name: "สมชาย ฝึกใจดี",
-    birthdate: "1985-12-01T04:45:25.448Z",
-    dateappointment: "2024-09-11T10:06:38.448Z",
-    packageName: "แพ็กเกจสุขภาพ",
-    type_package: "Call",
-    QuestionsNumber: 0,
-    code: "7XY4B",
-    status_service: "ยกเลิกบริการ",
-    email: "25655@gmail.com",
-  },
-  {
-    id: 4,
-    icon: "/path/to/icon2.png",
-    name: "สมชาย ฝึกใจดี",
-    birthdate: "1985-12-01T04:45:25.448Z",
-    dateappointment: "2024-09-11T10:06:38.448Z",
-    packageName: "แพ็กเกจสุขภาพ",
-    type_package: "Call",
-    QuestionsNumber: 0,
-    code: "7XY4B",
-    status_service: "ยกเลิกบริการ",
-    email: "25655@gmail.com",
   },
 ];
 

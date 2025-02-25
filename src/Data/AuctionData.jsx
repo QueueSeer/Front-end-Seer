@@ -9,36 +9,12 @@ const AuctionData = [
     questionCount: 5,
     price: 150,
     image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp",
-    avatar: images.profile_seer,
-    createdate: "2024-09-11T10:06:38.448Z",
-    publicdate: "2024-09-11T10:06:38.448Z",
+    avatar: images.gray,
+    createdate: "2025-02-25T10:06:38.448Z",
+    publicdate: "2025-02-25T10:06:38.448Z",
     fortuneTeller: "หมอดู เพียงฟ้า",
   },
-  {
-    id: 2,
-    title: ` ความรักในช่วงนี้จะเป็นยังไง`,
-    details: `1. ความรักในช่วงนี้จะเป็นยังไง จะได้เจอคนที่ชอบไหม หรือมีโอกาสจะได้เจอคนที่ชอบหรือเปล่า`,
-    status: "ไม่เปิดให้บริการ",
-    questionCount: 3,
-    price: 100,
-    image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp",
-    avatar: images.profile_seer,
-    createdate: "2024-09-11T10:06:38.448Z",
-    fortuneTeller: "หมอดู เพียงฟ้า",
-
-  },
-  {
-    id: 3,
-    title: ` โชคลาภของคุณในเดือนนี้เป็นอย่างไร`,
-    details: "โชคลาภของคุณในเดือนนี้เป็นอย่างไร?",
-    status: "ไม่เปิดให้บริการ",
-    questionCount: 4,
-    price: 120,
-    image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp",
-    avatar: images.profile_seer,
-    createdate: "2024-09-11T10:06:38.448Z",
-    fortuneTeller: "หมอดู เพียงฟ้า",
-  },
+  
   
 ];
 

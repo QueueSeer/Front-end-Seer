@@ -20,8 +20,8 @@ const TimeSlots = ({ formData }) => {
     // ตัวอย่างการอัปเดตเวลาเมื่อเปลี่ยนแพคเกจ
     if (e.target.value === "package1") {
       setTimeSlots({
-        morning: ["09:30", "10:00", "11:00"],
-        afternoon: ["13:30", "14:00", "14:30", "15:00"],
+        morning: ["09:00", "09:40", "10:20", "11:00", "11:40"],
+  afternoon: ["13:00", "13:40", "14:20", "15:00", "15:40", "16:20"]
       });
     } else if (e.target.value === "package2") {
       setTimeSlots({
