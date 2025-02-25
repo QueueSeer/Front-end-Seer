@@ -119,6 +119,12 @@ import logout from './images/logout/Logout.png';
 // ✅ รูปภาพโปรไฟล์
 import UserProfile from './images/UserProfile.png';
 
+// ไอคอน Package
+import CallIcon from './icon/Package/CallIcon.png';
+import MessageIcon from './icon/Package/MessageIcon.png';
+import VideoIcon from './icon/Package/VideoIcon.png';
+
+
 
 const images = {
     // ✅ โลโก้และพื้นหลัง
@@ -161,6 +167,11 @@ const images = {
     TiktokIcon,
     PlusIcon,
     ThaiqrIcon,
+
+    //ไอคอน package
+    VideoIcon,
+    MessageIcon,
+    CallIcon,
 
     // ✅ ไอคอนสมาชิก (Membership)
     iconCheckedUserMale,
