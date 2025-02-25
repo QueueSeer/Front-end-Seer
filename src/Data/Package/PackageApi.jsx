@@ -22,7 +22,7 @@ export const fetchPackagePublishedData = async () => {
   }
 };
 
-// ฟังก์ชันที่ใช้ดึงข้อมูลแพ็กเกจ Published
+// ฟังก์ชันที่ใช้ดึงข้อมูลแพ็กเกจ Hidden
 export const fetchPackageHiddenData = async () => {
   try {
     const response = await axiosInstance.get('/me/package/fortune?status=hidden&last_id=0&limit=10');
@@ -30,5 +30,16 @@ export const fetchPackageHiddenData = async () => {
   } catch (error) {
     console.error("Error fetching package data:", error);
     throw error; 
+  }
+};
+
+// ฟังก์ชันที่ใช้เปลี่ยนสถานะแพ็กเกจ (published หรือ hidden)
+export const updatePackageStatus = async (packageId, status) => {
+  try {
+    const response = await axiosInstance.patch(`/me/package/fortune/${packageId}/status`, { status });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating package status:", error);
+    throw error;
   }
 };

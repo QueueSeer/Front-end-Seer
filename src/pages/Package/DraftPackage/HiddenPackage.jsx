@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "../OverviewPackage/Layout";
 import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
-import { fetchUserData } from "../../../Data/Profile/ProfileApi"; // API for fetching user data
-import { fetchPackageHiddenData } from "../../../Data/Package/PackageApi"; // นำเข้า fetchPackageHiddenData จาก PackageApi
+import { fetchUserData } from "../../../Data/Profile/ProfileApi"; 
+import {
+  fetchPackageHiddenData,
+  updatePackageStatus,
+} from "../../../Data/Package/PackageApi"; 
 
 const HiddenPackage = () => {
+  const navigate = useNavigate();
   const [selectedPackages, setSelectedPackages] = useState([]);
   const [primarySkill, setPrimarySkill] = useState("...");
   const [packages, setPackages] = useState([]);
@@ -46,16 +51,30 @@ const HiddenPackage = () => {
     );
   };
 
-  const handlePublish = () => {
-    setSelectedPackages([]);
-    alert("Selected published packages have been hidden!");
+  const handlePublish = async () => {
+    try {
+      for (const pkgId of selectedPackages) {
+        await updatePackageStatus(pkgId, "published"); // เรียกใช้ฟังก์ชัน updatePackageStatus
+      }
+      // รีเฟรชข้อมูลแพ็กเกจที่แสดงใหม่หลังจากการเปลี่ยนสถานะ
+      const updatedPackages = packages.map((pkg) =>
+        selectedPackages.includes(pkg.id)
+          ? { ...pkg, status: "published" }
+          : pkg
+      );
+      setPackages(updatedPackages); // อัปเดตข้อมูลใน state
+      setSelectedPackages([]); // รีเซ็ต selectedPackages
+      alert("Selected hidden packages have been published!");
+      navigate("/package/published");
+    } catch (error) {
+      console.error("Error publishing packages:", error);
+      alert("An error occurred while publishing the packages.");
+    }
   };
 
-  const hiddenPackages = Array.isArray(packages) 
-    ? packages.filter(pkg => pkg.status === "hidden") 
+  const hiddenPackages = Array.isArray(packages)
+    ? packages.filter((pkg) => pkg.status === "hidden")
     : [];
-
-
 
   return (
     <Layout>
@@ -70,24 +89,28 @@ const HiddenPackage = () => {
       ) : (
         <div className="flex flex-wrap gap-9 justify-stretch mx-auto">
           {hiddenPackages.map((pkg) => (
-           <PackageCardCheckbox
-           key={pkg.id} // Using id as the unique key
-           id={pkg.id} // Using id for the package id
-           imageSrc={pkg.image || "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"} // Use the package image or default if none
-           title={pkg.name}
-           fortuneTeller={pkg.seer_display_name} // ใช้ค่า seer_display_name ที่ได้จาก package
-           imageProfile={pkg.seer_image || "https://via.placeholder.com/300x300"} // Use the seer image or default if none
-           Category={primarySkill}
-           rating={pkg.seer_rating !== null ? pkg.seer_rating : 0} // ถ้า seer_rating เป็น null ให้เป็น 0
-           reviews={pkg.seer_review_count}
-           price={pkg.price}
-           callTime={`${pkg.duration} นาที` } 
-           packageType={pkg.foretell_channel}
-           status={pkg.status}
-           isSelected={selectedPackages.includes(pkg.id)}
-           onSelectClick={() => handleSelect(pkg.id)}
-         />
-         
+            <PackageCardCheckbox
+              key={pkg.id} // Using id as the unique key
+              id={pkg.id} // Using id for the package id
+              imageSrc={
+                pkg.image ||
+                "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"
+              } // Use the package image or default if none
+              title={pkg.name}
+              fortuneTeller={pkg.seer_display_name} // ใช้ค่า seer_display_name ที่ได้จาก package
+              imageProfile={
+                pkg.seer_image || "https://via.placeholder.com/300x300"
+              } // Use the seer image or default if none
+              Category={primarySkill}
+              rating={pkg.seer_rating !== null ? pkg.seer_rating : 0} // ถ้า seer_rating เป็น null ให้เป็น 0
+              reviews={pkg.seer_review_count}
+              price={pkg.price}
+              callTime={`${pkg.duration} นาที`}
+              packageType={pkg.foretell_channel}
+              status={pkg.status}
+              isSelected={selectedPackages.includes(pkg.id)}
+              onSelectClick={() => handleSelect(pkg.id)}
+            />
           ))}
         </div>
       )}

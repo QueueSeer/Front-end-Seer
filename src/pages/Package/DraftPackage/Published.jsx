@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "../OverviewPackage/Layout";
 import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
 import { fetchUserData } from "../../../Data/Profile/ProfileApi"; // API for fetching user data
-import { fetchPackagePublishedData } from "../../../Data/Package/PackageApi"; // นำเข้า fetchPackagePublishedData จาก PackageApi
+import { fetchPackagePublishedData, updatePackageStatus } from "../../../Data/Package/PackageApi"; // นำเข้า updatePackageStatus จาก PackageApi
 
 const Published = () => {
+  const navigate = useNavigate();
   const [selectedPackages, setSelectedPackages] = useState([]);
   const [primarySkill, setPrimarySkill] = useState("...");
   const [packages, setPackages] = useState([]);
@@ -45,9 +47,20 @@ const Published = () => {
     );
   };
 
-  const handleHidden = () => {
-    setSelectedPackages([]);
-    alert("Selected published packages have been Hidden!");
+  const handleHidden = async () => {
+    try {
+      // เปลี่ยนสถานะของแพ็กเกจที่เลือกทั้งหมดเป็น 'hidden'
+      for (const pkgId of selectedPackages) {
+        await updatePackageStatus(pkgId, 'hidden'); // เรียกใช้ฟังก์ชัน updatePackageStatus
+      }
+      setSelectedPackages([]); // รีเซ็ต selectedPackages
+      alert("Selected published packages have been Hidden!");
+      navigate("/package/hiddenPackage");
+
+    } catch (error) {
+      console.error("Error hiding packages:", error);
+      alert("An error occurred while hiding the packages.");
+    }
   };
 
   // Ensure packages is always an array and filter for "published" status
@@ -79,7 +92,7 @@ const Published = () => {
               rating={pkg.seer_rating !== null ? pkg.seer_rating : 0} // ถ้า seer_rating เป็น null ให้เป็น 0
               reviews={pkg.seer_review_count}
               price={pkg.price}
-              callTime={`${pkg.duration} นาที` } 
+              callTime={`${pkg.duration} นาที`} 
               packageType={pkg.foretell_channel}
               status={pkg.status}
               isSelected={selectedPackages.includes(pkg.id)}
