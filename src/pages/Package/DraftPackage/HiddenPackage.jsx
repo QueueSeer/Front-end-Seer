@@ -1,68 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../OverviewPackage/Layout";
 import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
-import PackageContext from "../OverviewPackage/PackageContext"; // นำเข้า context
+import PackageContext from "../OverviewPackage/PackageContext";
+import { fetchUserData } from "../../../Data/Profile/ProfileApi"; // นำเข้า API ดึงข้อมูลหมอดู
 
 const HiddenPackage = () => {
-  const [selectedPackages, setSelectedPackages] = useState([]); // State to track selected packages
+  const [selectedPackages, setSelectedPackages] = useState([]);
+  const [fortuneTeller, setFortuneTeller] = useState("ไม่พบชื่อ");
+  const [fortuneTellerImage, setFortuneTellerImage] = useState("https://via.placeholder.com/300x300");
+  const [primarySkill, setPrimarySkill] = useState("...");
 
-  // Function to handle checkbox selection
-  const handleSelect = (pkgId) => {
-    setSelectedPackages((prevSelected) => {
-      if (prevSelected.includes(pkgId)) {
-        return prevSelected.filter((id) => id !== pkgId); // Deselect
-      } else {
-        return [...prevSelected, pkgId]; // Select
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const data = await fetchUserData();
+        setFortuneTeller(data.display_name || "ไม่พบชื่อ");
+        setFortuneTellerImage(data.image || "https://via.placeholder.com/300x300");
+        setPrimarySkill(data.primary_skill || "");
+      } catch (error) {
+        console.error("Error fetching fortune teller data:", error);
       }
-    });
+    };
+
+    getUserData();
+  }, []);
+
+  const handleSelect = (pkgId) => {
+    setSelectedPackages((prevSelected) =>
+      prevSelected.includes(pkgId)
+        ? prevSelected.filter((id) => id !== pkgId)
+        : [...prevSelected, pkgId]
+    );
   };
 
-  // Function to handle changing the status of selected packages to "published"
   const handlePublish = () => {
-    // Update only selected packages with status "hidden"
     PackageContext.forEach((pkg) => {
       if (pkg.status === "hidden" && selectedPackages.includes(pkg.id)) {
-        pkg.status = "published"; // Change status to "published"
+        pkg.status = "published";
       }
     });
 
-    // Clear the selected packages after publishing
     setSelectedPackages([]);
-
     alert("Selected hidden packages have been published!");
   };
 
+  const hiddenPackages = PackageContext.filter(pkg => pkg.status === "hidden");
+
   return (
     <Layout>
-      <div className="flex flex-wrap gap-9 justify-stretch mx-auto">
-        {PackageContext.filter((pkg) => pkg.status === "hidden") // กรองเฉพาะแพ็กเกจที่มีสถานะเป็น "hidden"
-          .map((pkg) => (
+      {hiddenPackages.length === 0 ? (
+        <div className="text-center text-lg text-gray-500 mt-8">
+          ไม่มีแพ็กเกจที่ซ่อนอยู่
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-9 justify-stretch mx-auto">
+          {hiddenPackages.map(pkg => (
             <PackageCardCheckbox
-              key={pkg.id} // ใช้ id แทน title เป็น key
+              key={pkg.id}
               id={pkg.id}
               imageSrc="https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"
               title={pkg.title}
-              fortuneTeller={pkg.fortuneTeller}
-              imageProfile="https://via.placeholder.com/300x300"
-              Category="ไพ่ยิปซี"
+              fortuneTeller={fortuneTeller}
+              imageProfile={fortuneTellerImage}
+              Category={primarySkill}
               rating={pkg.rating}
               reviews={pkg.reviews}
               price={pkg.price}
               callTime={pkg.callTime}
               packageType={pkg.packageType}
               status={pkg.status}
-              isSelected={selectedPackages.includes(pkg.id)} // Check if the package is selected
-              onSelectClick={() => handleSelect(pkg.id)} // Handle selection
+              isSelected={selectedPackages.includes(pkg.id)}
+              onSelectClick={() => handleSelect(pkg.id)}
             />
           ))}
-      </div>
+        </div>
+      )}
 
-      {/* Publish Button */}
-      <div className="flex justify-end mt-4">
+      <div className="flex justify-end mt-6">
         <button
           className="bg-primary text-white py-2 px-14 rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
-          onClick={handlePublish} // Handle publish button click
-          disabled={selectedPackages.length === 0} // Disable button if no packages are selected
+          onClick={handlePublish}
+          disabled={selectedPackages.length === 0}
         >
           เผยแพร่
         </button>

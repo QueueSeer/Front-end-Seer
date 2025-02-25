@@ -39,7 +39,7 @@ const ShowExampleCard = ({
   };
 
   return (
-    <div className="relative w-[270px] bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200">
+    <div className="relative w-full bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200">
       <div className="relative">
         <ImageUploader onImageUpload={handleImageUpload} />
         <div className="absolute bottom-2 left-2">

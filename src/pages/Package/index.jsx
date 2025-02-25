@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useMemo  } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "./OverviewPackage/Layout";
-import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
 import PackageContext from "./OverviewPackage/PackageContext";
+import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ShowExampleCard from "../../components/Card/ShowExampleCard";
+import { fetchUserData } from "../../Data/Profile/ProfileApi"; // ใช้ API ดึงข้อมูลหมอดู
 
 const Package = () => {
   const navigate = useNavigate();
@@ -15,38 +16,50 @@ const Package = () => {
   const [timeError, setTimeError] = useState("");
 
   const [packageName, setPackageName] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(""); // ค่าเริ่มต้น
+  const [primary_skill, setprimary_skill] = useState(""); // ค่าเริ่มต้น
+
   const [questionCount, setQuestionCount] = useState(null);
   const [channel, setChannel] = useState("chat");
   const [details, setDetails] = useState("");
 
   const [savedData, setSavedData] = useState(null);
+  const [fortuneTeller, setFortuneTeller] = useState("กำลังโหลด...");
+  const [fortuneTellerImage, setFortuneTellerImage] = useState("");
 
-  // Calculate new package ID based on the latest saved package
-  const [newId, setNewId] = useState(0);
+
+  const newId = useMemo(() => {
+    return PackageContext.length > 0
+      ? Math.max(...PackageContext.map((pkg) => pkg.id)) + 1
+      : 1;
+  }, [PackageContext]);
+
 
   useEffect(() => {
-    // Get the last ID from PackageContext
-    if (PackageContext.length > 0) {
-      const lastId = Math.max(...PackageContext.map(pkg => pkg.id));
-      setNewId(lastId + 1);
-    }
+    // ดึงข้อมูลหมอดูจาก API
+    const getUserData = async () => {
+      try {
+        const data = await fetchUserData();
+        setFortuneTeller(data.display_name || "ไม่พบชื่อ");
+        setFortuneTellerImage(data.image || "https://via.placeholder.com/300x300");
+
+        // ดึง Primary Skill (Category) จาก API
+        setprimary_skill(data.primary_skill || "ไพ่ยิปซี");
+      } catch (error) {
+        console.error("Error fetching fortune teller data:", error);
+      }
+    };
+
+    getUserData();
   }, []);
 
-  // Handle input changes and validate input
   const handleInputChange = (e, setValue, setError, fieldName) => {
     let value = e.target.value;
 
-    // Validate values
-    if (
-      value === "0" || 
-      value.includes(".") || 
-      /^[^1-9]/.test(value) || 
-      /[^0-9]/.test(value)
-    ) {
+    if (value === "0" || value.includes(".") || /^[^1-9]/.test(value) || /[^0-9]/.test(value)) {
       setError(`${fieldName} ต้องเป็นจำนวนเต็มที่มากกว่า 0 และไม่มีสัญลักษณ์`);
     } else {
-      setError(""); // Clear error message when value is valid
+      setError("");
     }
 
     if (/^[1-9][0-9]*$/.test(value) || value === "") {
@@ -58,8 +71,18 @@ const Package = () => {
   const handlePriceChange = (e) => handleInputChange(e, setPrice, setPriceError, "ราคา");
 
   const categories = [
-    "ความรัก", "การงาน", "การเงิน", "สุขภาพ", "ภาพรวม", "ดวงรายเดือน", 
-    "ดวงรายปี", "เนื้อคู่", "ค้นหาตัวตน", "การเรียน", "ย้ายงาน", "อื่นๆ"
+    "ความรัก",
+    "การงาน",
+    "การเงิน",
+    "สุขภาพ",
+    "ภาพรวม",
+    "ดวงรายเดือน",
+    "ดวงรายปี",
+    "เนื้อคู่",
+    "ค้นหาตัวตน",
+    "การเรียน",
+    "ย้ายงาน",
+    "อื่นๆ",
   ];
 
   const handleChannelChange = (selectedChannel) => setChannel(selectedChannel);
@@ -68,24 +91,20 @@ const Package = () => {
 
   const handleSave = () => {
     const newPackage = {
-      id: newId, 
+      id: newId,
       status: "draft",
       title: packageName,
-      fortuneTeller: "หมอดูออม 1",
+      fortuneTeller: fortuneTeller,
       rating: 5,
       reviews: 1300,
       price: price,
       callTime: `${time} นาที`,
       packageType: channel,
+      category: primary_skill, // เพิ่มหมวดหมู่ที่เลือก
     };
 
-    // Add the new package to PackageContext
     PackageContext.push(newPackage);
-
-    // Update saved data for preview
     setSavedData(newPackage);
-
-    // Navigate to the drafted packages page
     navigate("/package/drafted");
   };
 
@@ -95,7 +114,9 @@ const Package = () => {
         <div className="flex-1 pr-8 pl-2 mr-4 space-y-6">
           {/* Package Name */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">ชื่อแพคเกจ</div>
+            <div className="block text-gray-700 font-medium mb-2">
+              ชื่อแพคเกจ
+            </div>
             <input
               id="package-name"
               type="text"
@@ -108,35 +129,49 @@ const Package = () => {
 
           {/* Time Input */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">เวลาที่ใช้ (นาที)</div>
+            <div className="block text-gray-700 font-medium mb-2">
+              เวลาที่ใช้ (นาที)
+            </div>
             <input
               id="time"
               type="number"
               placeholder="15"
               value={time}
               onChange={handleTimeChange}
-              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${timeError ? "border-red-500" : "border-gray-300"}`}
+              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${
+                timeError ? "border-red-500" : "border-gray-300"
+              }`}
             />
-            {timeError && <p className="text-red-500 text-sm mt-1">{timeError}</p>}
+            {timeError && (
+              <p className="text-red-500 text-sm mt-1">{timeError}</p>
+            )}
           </div>
 
           {/* Price Input */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">ราคา (Coin)</div>
+            <div className="block text-gray-700 font-medium mb-2">
+              ราคา (Coin)
+            </div>
             <input
               id="price"
               type="number"
               placeholder="99"
               value={price}
               onChange={handlePriceChange}
-              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${priceError ? "border-red-500" : "border-gray-300"}`}
+              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${
+                priceError ? "border-red-500" : "border-gray-300"
+              }`}
             />
-            {priceError && <p className="text-red-500 text-sm mt-1">{priceError}</p>}
+            {priceError && (
+              <p className="text-red-500 text-sm mt-1">{priceError}</p>
+            )}
           </div>
 
           {/* Channel Selector */}
           <div className="mb-4">
-            <div className="block text-gray-700 font-medium mb-2">รูปแบบดูดวง</div>
+            <div className="block text-gray-700 font-medium mb-2">
+              รูปแบบดูดวง
+            </div>
             <ChannelSelectDropdown onChannelChange={setChannel} />
           </div>
 
@@ -163,22 +198,22 @@ const Package = () => {
           </div>
         </div>
 
-        <div className="w-full md:w-1/3 p-6 flex items-start justify-center">
+        {/* Example Card */}
+        <div className="w-1/3 pt-6 flex items-start justify-center">
           <ShowExampleCard
-            title={packageName}
-            fortuneTeller="หมอดูออม 1"
-            imageProfile="https://via.placeholder.com/300x300"
-            Category="ไพ่ยิปซี"
+            title={packageName || "ความรักอยู่ที่ไหน"}
+            fortuneTeller={fortuneTeller}
+            imageProfile={fortuneTellerImage}
+            Category={primary_skill} // ใช้ค่า primary_skill จาก API
             rating={5}
             reviews={1300}
-            price={price}
-            callTime={`${time} นาที`}
+            price={price || "99"}
+            callTime={`${time || "15"} นาที`}
             packageType={channel}
             status="draft"
           />
         </div>
       </div>
-
       {/* Package Details */}
       <div className="pl-2 my-4">
         <div className="block text-gray-700 font-medium mb-2">รายละเอียดแพ็กเกจ</div>
@@ -191,6 +226,14 @@ const Package = () => {
         </form>
       </div>
 
+      {/* Display Saved Data */}
+      {savedData && (
+        <div className="mt-6 p-4 bg-gray-100 rounded-md">
+          <h4 className="font-bold">ข้อมูลที่บันทึก:</h4>
+          <pre className="text-sm">{JSON.stringify(savedData, null, 2)}</pre>
+        </div>
+      )}
+
       {/* Save Button */}
       <div className="flex justify-end">
         <button
@@ -200,14 +243,6 @@ const Package = () => {
           บันทึก
         </button>
       </div>
-
-      {/* Display Saved Data */}
-      {savedData && (
-        <div className="mt-6 p-4 bg-gray-100 rounded-md">
-          <h4 className="font-bold">ข้อมูลที่บันทึก:</h4>
-          <pre className="text-sm">{JSON.stringify(savedData, null, 2)}</pre>
-        </div>
-      )}
     </Layout>
   );
 };
