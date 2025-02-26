@@ -18,7 +18,7 @@ const FullCalendarPage = ({ onEdit, onPost, formData }) => {
   useEffect(() => {
     const mockData = [
       { date: "2025-02-25", status: "available" },
-      { date: "2025-02-26", status: "full" },
+      { date: "2025-02-26", status: "available" },
       { date: "2025-02-27", status: "available" },
       { date: "2025-02-29", status: "available" },
       { date: "2025-02-30", status: "available" },
