@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../OverviewPackage/Layout";
 import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
-import { fetchUserData } from "../../../Data/Profile/ProfileApi"; 
+import { fetchUserData } from "../../../Data/Profile/ProfileApi";
 import {
   fetchPackageHiddenData,
   updatePackageStatus,
-} from "../../../Data/Package/PackageApi"; 
+} from "../../../Data/Package/PackageApi";
 
 const HiddenPackage = () => {
   const navigate = useNavigate();
@@ -87,7 +87,12 @@ const HiddenPackage = () => {
           ไม่มีแพ็กเกจที่ร่างไว้
         </div>
       ) : (
-        <div className="flex flex-wrap gap-9 justify-stretch mx-auto">
+        <div
+          className={`flex flex-wrap gap-9 mx-auto ${
+            hiddenPackages.length === 2 ? "justify-start" : "justify-stretch"
+          }`}
+        >
+          {" "}
           {hiddenPackages.map((pkg) => (
             <PackageCardCheckbox
               key={pkg.id} // Using id as the unique key
