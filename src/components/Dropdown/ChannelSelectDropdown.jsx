@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const ChannelSelectDropdown = ({ onChannelChange }) => {
   const options = [
     { value: "chat", label: "ช่องทางสนทนา" },
-    { value: "call", label: "การโทร" },
+    { value: "phone", label: "การโทร" },
     { value: "video", label: "การวิดีโอคอล" },
   ];
 

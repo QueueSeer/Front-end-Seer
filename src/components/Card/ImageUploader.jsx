@@ -1,27 +1,35 @@
 import React, { useState, useEffect } from "react";
 
-const ImageUploader = ({ onImageUpload, isImageValid, resetImage }) => {
+const ImageUploader = ({
+  onImageUpload,
+  isImageValid,
+  setIsImageValid,
+  resetImage,
+}) => {
   const [image, setImage] = useState(null);
 
-  // ใช้ useEffect เพื่อตรวจสอบ prop resetImage และรีเซ็ตรูปภาพ
   useEffect(() => {
     if (resetImage) {
-      setImage(null); // รีเซ็ตรูปภาพเมื่อได้รับคำสั่งให้รีเซ็ต
+      setImage(null);
+      setIsImageValid(false); // รีเซ็ตค่าการตรวจสอบให้กลับไปเริ่มต้น
     }
-  }, [resetImage]);
+  }, [resetImage, setIsImageValid]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
+      setIsImageValid(true); // เปลี่ยนเป็น valid เมื่ออัปโหลดรูปแล้ว
       onImageUpload?.(file);
     }
   };
 
   return (
     <div
-      className={`w-full h-[300px] border ${!isImageValid ? "border-bordercancel" : "border-gray-300"} rounded-lg flex flex-col items-center justify-center bg-gray-100 overflow-hidden relative`}
+      className={`w-full h-[300px] border ${
+        isImageValid ? "border-gray-300" : "border-bordercancel"
+      } rounded-lg flex flex-col items-center justify-center bg-gray-100 overflow-hidden relative`}
     >
       {image ? (
         <div className="relative w-full h-full">
@@ -50,9 +58,18 @@ const ImageUploader = ({ onImageUpload, isImageValid, resetImage }) => {
             stroke="currentColor"
             className="w-12 h-12"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
           </svg>
-          <span className="text-sm mt-2">อัพโหลดรูป</span>
+          {/* เปลี่ยนแปลงตรงนี้ */}
+          {!isImageValid && !image ? (
+            <p className="text-sm text-bordercancel mt-2">กรุณากรอกข้อมูล</p>
+          ) : (
+            <span className="text-sm mt-2">อัพโหลดรูป</span>
+          )}
           <input
             type="file"
             accept="image/*"
@@ -60,9 +77,6 @@ const ImageUploader = ({ onImageUpload, isImageValid, resetImage }) => {
             onChange={handleImageChange}
           />
         </label>
-      )}
-      {!isImageValid && !image && (
-        <p className="text-sm text-bordercancel mt-1">กรุณากรอกข้อมูล</p>
       )}
     </div>
   );

@@ -45,7 +45,7 @@ export default function Login() {
       if (response.status === 200) {
         console.log("Login Successful:", response.data);
         localStorage.setItem("token", response.data.token); // บันทึก token
-        navigate("/fillter"); // ย้ายไปยังหน้าฟิลเตอร์
+        navigate("/profile"); // ย้ายไปยังหน้าฟิลเตอร์
       }
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
