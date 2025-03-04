@@ -6,7 +6,7 @@ const InfoUser = ({ userData }) => {
       <h2 className="text-[24px] text-gray-800 font-semibold mb-6">ข้อมูลส่วนตัว</h2>
       <div className="space-y-3 text-[18px]">
         <div className="flex">
-          <div className="w-32 font-medium text-black">ชื่อผหมอดู</div>
+          <div className="w-32 font-medium text-black">ชื่อหมอดู</div>
           <div>{userData.nickname}</div>
         </div>
         <div className="flex">
