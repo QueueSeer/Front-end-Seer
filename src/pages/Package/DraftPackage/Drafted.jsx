@@ -149,7 +149,7 @@ const Drafted = () => {
         <button
           className=" text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-secondary/80"
           onClick={handleDelete}
-          isabled={selectedPackages.length === 0}
+          disabled={selectedPackages.length === 0}
           aria-disabled={selectedPackages.length === 0}
         >
           ลบ
