@@ -19,9 +19,9 @@ const PackageCardCheckbox = ({
 }) => {
   // ไอคอนสำหรับแต่ละประเภทแพ็กเกจ
   const packageIcons = {
-    call: images.CallIcon,
-    video: images.VideoIcon,
-    chat: images.MessageIcon,
+    phone: images.phoneIcon,
+    video: images.videoIcon,
+    chat: images.messageIcon,
   };
 
   return (

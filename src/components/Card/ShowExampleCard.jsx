@@ -1,39 +1,40 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";  // For prop validation
+import PropTypes from "prop-types"; 
 import images from "../../assets";
 import ImageUploader from "./ImageUploader";
 
 const ShowExampleCard = ({
-  title = "Default Title",  // Default value for title
-  Category = "Uncategorized",  // Default value for Category
-  fortuneTeller = "Unknown",  // Default value for fortuneTeller
-  imageProfile = images.DefaultProfile,  // Default profile image
-  rating = 0,  // Default value for rating
-  reviews = 0,  // Default value for reviews
-  price = 0,  // Default value for price
-  callTime = "0 นาที",  // Default value for callTime
-  packageType = "call",  // Default value for packageType
-  status = "available",  // Default value for status
+  title = "Default Title",  
+  Category = "Uncategorized",  
+  fortuneTeller = "Unknown", 
+  imageProfile = images.DefaultProfile,  
+  rating = 0,  
+  reviews = 0,  
+  price = 0, 
+  callTime = "0 นาที",  
+  packageType = "phone", 
+  status = "available", 
+  onImageUpload,
 }) => {
   const [isImageValid, setIsImageValid] = useState(false);
   const [resetImage, setResetImage] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null); // เก็บรูปที่อัปโหลด
 
-  // Icons for each package type
   const packageIcons = {
-    call: images.CallIcon,
-    video: images.VideoIcon,
-    chat: images.MessageIcon,
+    phone: images.phoneIcon,
+    video: images.videoIcon,
+    chat: images.messageIcon,
   };
 
+  // รับค่าภาพที่อัปโหลดมาจาก ImageUploader
   const handleImageUpload = (file) => {
-    console.log("Uploaded image:", file);
-    // Add any necessary logic here (e.g., uploading image to server)
+    onImageUpload(file); // ส่งค่ากลับไปที่ component หลัก (Package)
+
   };
 
-  // Render star rating
   const renderStars = () => {
-    const fullStars = Math.floor(rating); // Full stars
-    const emptyStars = 5 - fullStars; // Empty stars
+    const fullStars = Math.floor(rating);
+    const emptyStars = 5 - fullStars;
     return (
       <>
         {"★".repeat(fullStars)}
@@ -52,6 +53,7 @@ const ShowExampleCard = ({
           setIsImageValid={setIsImageValid}
           resetImage={resetImage}
         />
+
         <div className="absolute bottom-2 left-2">
           <div className="bg-primary text-white text-sm px-4 py-1 rounded-full shadow">
             {Category}
@@ -68,7 +70,7 @@ const ShowExampleCard = ({
         {/* Fortune Teller Info */}
         <p className="text-sm text-gray-500 flex items-center">
           <img
-            src={imageProfile}  // Fallback image if imageProfile is missing
+            src={uploadedImage || imageProfile} // ใช้ภาพที่อัปโหลด หรือ fallback เป็นภาพเดิม
             alt={fortuneTeller || "Fortune Teller Profile"}
             className="w-[25px] h-[25px] rounded-full mr-2"
           />
@@ -97,7 +99,7 @@ const ShowExampleCard = ({
         <div className="flex items-center justify-between mt-4">
           <div className="text-[16px] font-semibold text-gray-500 flex items-center space-x-3">
             <img
-              src={packageIcons[packageType] || images.DefaultPackageIcon}  // Fallback icon
+              src={packageIcons[packageType] || images.DefaultPackageIcon}  
               alt={`${packageType} Icon`}
               className="w-[28px] h-auto"
             />
@@ -119,7 +121,7 @@ ShowExampleCard.propTypes = {
   reviews: PropTypes.number.isRequired,
   price: PropTypes.number.isRequired,
   callTime: PropTypes.string.isRequired,
-  packageType: PropTypes.oneOf(["call", "video", "chat"]).isRequired,
+  packageType: PropTypes.oneOf(["phone", "video", "chat"]).isRequired,
   status: PropTypes.string,
 };
 

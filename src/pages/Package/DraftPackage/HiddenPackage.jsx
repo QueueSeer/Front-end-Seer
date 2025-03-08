@@ -6,6 +6,7 @@ import { fetchUserData } from "../../../Data/Profile/ProfileApi";
 import {
   fetchPackageHiddenData,
   updatePackageStatus,
+  deletePackages,
 } from "../../../Data/Package/PackageApi";
 
 const HiddenPackage = () => {
@@ -49,6 +50,37 @@ const HiddenPackage = () => {
         ? prevSelected.filter((id) => id !== pkgId)
         : [...prevSelected, pkgId]
     );
+  };
+
+  const handleDelete = async () => {
+    if (selectedPackages.length === 0) {
+      alert("กรุณาเลือกแพ็กเกจที่ต้องการลบ");
+      return;
+    }
+
+    try {
+      // แสดงข้อความโหลดเมื่อเริ่มการลบ
+      setLoading(true);
+
+      // ลบแต่ละแพ็กเกจที่ถูกเลือก
+      for (const pkgId of selectedPackages) {
+        await deletePackages(pkgId); // ลบแพ็กเกจจาก API
+      }
+
+      // รีเฟรชข้อมูลแพ็กเกจใน UI
+      const updatedPackages = packages.filter(
+        (pkg) => !selectedPackages.includes(pkg.id)
+      );
+      setPackages(updatedPackages);
+      setSelectedPackages([]); // เคลียร์แพ็กเกจที่เลือก
+
+      alert("ลบแพ็กเกจที่เลือกสำเร็จ!");
+    } catch (error) {
+      console.error("Error deleting packages:", error);
+      alert("เกิดข้อผิดพลาดในการลบแพ็กเกจ");
+    } finally {
+      setLoading(false); // ยกเลิกสถานะโหลด
+    }
   };
 
   const handlePublish = async () => {
@@ -120,9 +152,17 @@ const HiddenPackage = () => {
         </div>
       )}
 
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-6 space-x-4">
         <button
-          className="bg-primary text-white py-2 px-14 rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
+          className=" text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-secondary/80"
+          onClick={handleDelete}
+          isabled={selectedPackages.length === 0}
+          aria-disabled={selectedPackages.length === 0}
+        >
+          ลบ
+        </button>
+        <button
+          className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
           onClick={handlePublish}
           disabled={selectedPackages.length === 0}
         >

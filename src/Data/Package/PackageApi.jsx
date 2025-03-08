@@ -4,7 +4,7 @@ import axiosInstance from "../AxiosConfig"; // ใช้ axios ที่ตั�
 export const fetchPackageDraftData = async () => {
   try {
     const response = await axiosInstance.get(
-      "/me/package/fortune?status=draft&last_id=0&limit=10"
+      "/me/package/fortune?status=draft&last_id=0&limit=40"
     );
     return response.data;
   } catch (error) {
@@ -53,6 +53,18 @@ export const updatePackageStatus = async (packageId, status) => {
   }
 };
 
+export const deletePackages = async (packageId) => {
+  try {
+    const response = await axiosInstance.delete(
+      `/me/package/fortune/${packageId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting package:", error);
+    throw error;
+  }
+};
+
 export const createPackagedraft = async (packageData) => {
   try {
     const response = await axiosInstance.post(
@@ -65,4 +77,3 @@ export const createPackagedraft = async (packageData) => {
     throw error;
   }
 };
-
