@@ -5,25 +5,73 @@ const ImageUploader = ({
   isImageValid,
   setIsImageValid,
   resetImage,
+  onUploadSuccess,
 }) => {
   const [image, setImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null); // Store actual file
+  const [errorMessage, setErrorMessage] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (resetImage) {
       setImage(null);
-      setIsImageValid(false); // รีเซ็ตค่าการตรวจสอบให้กลับไปเริ่มต้น
+      setSelectedFile(null);
+      setIsImageValid(false);
+      setErrorMessage("");
     }
   }, [resetImage, setIsImageValid]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const isImage = file.type.startsWith("image/");
+      if (!isImage) {
+        setErrorMessage("กรุณาเลือกไฟล์ภาพเท่านั้น");
+        setIsImageValid(false);
+        setImage(null);
+        setSelectedFile(null);
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
-      setIsImageValid(true); // เปลี่ยนเป็น valid เมื่ออัปโหลดรูปแล้ว
+      setSelectedFile(file); // Store the actual file
+      setIsImageValid(true);
+      setErrorMessage("");
       onImageUpload?.(file);
     }
   };
+
+  const handleImageUpload = async () => {
+    if (!selectedFile) {
+      setErrorMessage("กรุณาเลือกภาพก่อนอัปโหลด");
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      console.log("Uploading file:", selectedFile);
+
+      setUploading(false);
+
+      if (onUploadSuccess) {
+        onUploadSuccess(selectedFile);
+      }
+    } catch (error) {
+      setErrorMessage("ไม่สามารถอัปโหลดภาพได้");
+      setUploading(false);
+    }
+  };
+
+  // Cleanup URL object to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (image) {
+        URL.revokeObjectURL(image);
+      }
+    };
+  }, [image]);
 
   return (
     <div
@@ -64,11 +112,13 @@ const ImageUploader = ({
               d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
-          {/* เปลี่ยนแปลงตรงนี้ */}
           {!isImageValid && !image ? (
             <p className="text-sm text-bordercancel mt-2">กรุณากรอกข้อมูล</p>
           ) : (
             <span className="text-sm mt-2">อัพโหลดรูป</span>
+          )}
+          {errorMessage && (
+            <p className="text-sm text-red-500 mt-2">{errorMessage}</p>
           )}
           <input
             type="file"
@@ -77,6 +127,16 @@ const ImageUploader = ({
             onChange={handleImageChange}
           />
         </label>
+      )}
+
+      {image && (
+        <button
+          onClick={handleImageUpload}
+          className="mt-4 bg-blue-500 text-white py-2 px-6 rounded-lg"
+          disabled={uploading}
+        >
+          {uploading ? "กำลังอัปโหลด..." : "อัปโหลดรูป"}
+        </button>
       )}
     </div>
   );

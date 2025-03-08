@@ -92,7 +92,9 @@ const Drafted = () => {
             <PackageCardCheckbox
               key={pkg.id}
               id={pkg.id}
-              imageSrc={pkg.image || "https://via.placeholder.com/300"}
+              imageSrc={
+                pkg.image || "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"
+              }
               title={pkg.name}
               fortuneTeller={pkg.seer_display_name}
               imageProfile={pkg.seer_image || "https://via.placeholder.com/300"}

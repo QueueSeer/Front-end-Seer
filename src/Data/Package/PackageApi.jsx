@@ -4,7 +4,7 @@ import axiosInstance from "../AxiosConfig"; // ใช้ axios ที่ตั�
 export const fetchPackageDraftData = async () => {
   try {
     const response = await axiosInstance.get(
-      "/me/package/fortune?status=draft&last_id=0&limit=10"
+      "/me/package/fortune?status=draft&last_id=0&limit=20"
     );
     return response.data;
   } catch (error) {

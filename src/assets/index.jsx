@@ -120,9 +120,9 @@ import logout from './images/logout/Logout.png';
 import UserProfile from './images/UserProfile.png';
 
 // ไอคอน Package
-import CallIcon from './icon/Package/CallIcon.png';
-import MessageIcon from './icon/Package/MessageIcon.png';
-import VideoIcon from './icon/Package/VideoIcon.png';
+import phoneIcon from './icon/Package/CallIcon.png';
+import messageIcon from './icon/Package/MessageIcon.png';
+import videoIcon from './icon/Package/VideoIcon.png';
 
 
 
@@ -169,9 +169,9 @@ const images = {
     ThaiqrIcon,
 
     //ไอคอน package
-    VideoIcon,
-    MessageIcon,
-    CallIcon,
+    videoIcon,
+    messageIcon,
+    phoneIcon,
 
     // ✅ ไอคอนสมาชิก (Membership)
     iconCheckedUserMale,

@@ -6,6 +6,7 @@ import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdo
 import ShowExampleCard from "../../components/Card/ShowExampleCard";
 import { fetchUserData } from "../../Data/Profile/ProfileApi";
 import { createPackagedraft } from "../../Data/Package/PackageApi";
+import { postImagepackage } from "../../Data/Image/ImagesApi";
 
 // Helper function for input validation
 const validateInput = (value, fieldName) => {
@@ -36,6 +37,7 @@ const Package = () => {
   const [savedData, setSavedData] = useState(null);
   const [fortuneTeller, setFortuneTeller] = useState("กำลังโหลด...");
   const [fortuneTellerImage, setFortuneTellerImage] = useState("");
+  const [uploadedImage, setUploadedImage] = useState("");
 
   // Fetch fortune teller data on mount
   useEffect(() => {
@@ -66,27 +68,18 @@ const Package = () => {
     const value = e.target.value;
     const error = validateTime(value);
     setTimeError(error);
-
-    if (!error) {
-      setTime(value); // เก็บค่าเวลาที่กรอก
-    }
+    if (!error) setTime(value); // Set the value if there's no error
   };
 
   const validateTime = (value) => {
-    if (isNaN(value) || value <= 0) {
+    if (isNaN(value) || value <= 0 || value.includes(".")) {
       return "กรุณากรอกเวลาที่มากกว่า 0 นาที";
     }
     return "";
   };
 
-  // Convert time to timedelta (in minutes)
   const convertTimeToTimedelta = (time) => {
-    const minutes = parseInt(time, 10);
-    const hours = Math.floor(minutes / 60); // แปลงเป็นชั่วโมง
-    const remainingMinutes = minutes % 60; // คำนวณนาทีที่เหลือ
-
-    // คืนค่าในรูปแบบ timedelta string (ISO 8601)
-    return `P0DT${hours}H${remainingMinutes}M`;
+    return parseInt(time, 10); // Convert string to integer
   };
 
   const handlePriceChange = (e) => {
@@ -94,11 +87,10 @@ const Package = () => {
     const error = validateInput(value, "ราคา");
     setPriceError(error);
 
-    // ตรวจสอบว่าเป็นตัวเลข และเปลี่ยนเป็นเลขจำนวนเต็ม
     if (!error || value === "") {
       const numericValue = Number(value);
-      if (!isNaN(numericValue) && numericValue > 0) {
-        setPrice(value); // เก็บค่าเป็น string ที่แปลงเป็นตัวเลขแล้ว
+      if (numericValue > 0 && Number.isInteger(numericValue)) {
+        setPrice(value);
       } else {
         setPriceError("ราคา ต้องเป็นจำนวนที่มากกว่า 0");
       }
@@ -125,9 +117,11 @@ const Package = () => {
   const handleCategoryClick = (category) => setSelectedCategory(category);
   const handleDetailsChange = (e) => setDetails(e.target.value);
 
+  const handleImageUpload = (file) => {
+    setUploadedImage(file);
+  };
   const handleSave = async () => {
-    const formattedTime = convertTimeToTimedelta(time); // แปลงเวลาที่กรอกเป็น timedelta
-
+    const formattedTime = convertTimeToTimedelta(time); // Convert time input to an integer
     const newPackage = {
       name: packageName,
       price: parseInt(price, 10),
@@ -140,9 +134,21 @@ const Package = () => {
       required_data: ["name"],
     };
 
+    console.log("ข้อมูลที่กรอก:", newPackage);
+
     try {
       const response = await createPackagedraft(newPackage);
       setSavedData(response);
+
+      if (uploadedImage) {
+        const responseImage = await postImagepackage(
+          uploadedImage,
+          response?.id
+        ); // ส่งรูปภาพไปบันทึก
+        console.log("บันทึกรูปภาพสำเร็จ:", responseImage);
+      }
+
+      console.log("ID ของแพ็คเกจที่บันทึก:", response?.id);
       navigate("/package/drafted");
     } catch (error) {
       console.error("Error saving package draft:", error);
@@ -269,6 +275,7 @@ const Package = () => {
             callTime={`${time || "15"} นาที`}
             packageType={channel}
             status="draft"
+            onImageUpload={handleImageUpload}
           />
         </div>
       </div>
