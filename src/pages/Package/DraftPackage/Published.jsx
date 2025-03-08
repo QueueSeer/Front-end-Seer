@@ -6,6 +6,7 @@ import { fetchUserData } from "../../../Data/Profile/ProfileApi"; // API for fet
 import {
   fetchPackagePublishedData,
   updatePackageStatus,
+  deletePackages,
 } from "../../../Data/Package/PackageApi"; // นำเข้า updatePackageStatus จาก PackageApi
 
 const Published = () => {
@@ -50,6 +51,39 @@ const Published = () => {
     );
   };
 
+
+  const handleDelete = async () => {
+    if (selectedPackages.length === 0) {
+      alert("กรุณาเลือกแพ็กเกจที่ต้องการลบ");
+      return;
+    }
+
+    try {
+      // แสดงข้อความโหลดเมื่อเริ่มการลบ
+      setLoading(true);
+
+      // ลบแต่ละแพ็กเกจที่ถูกเลือก
+      for (const pkgId of selectedPackages) {
+        await deletePackages(pkgId); // ลบแพ็กเกจจาก API
+      }
+
+      // รีเฟรชข้อมูลแพ็กเกจใน UI
+      const updatedPackages = packages.filter(
+        (pkg) => !selectedPackages.includes(pkg.id)
+      );
+      setPackages(updatedPackages);
+      setSelectedPackages([]); // เคลียร์แพ็กเกจที่เลือก
+
+      alert("ลบแพ็กเกจที่เลือกสำเร็จ!");
+    } catch (error) {
+      console.error("Error deleting packages:", error);
+      alert("เกิดข้อผิดพลาดในการลบแพ็กเกจ");
+    } finally {
+      setLoading(false); // ยกเลิกสถานะโหลด
+    }
+  };
+
+
   const handleHidden = async () => {
     try {
       // เปลี่ยนสถานะของแพ็กเกจที่เลือกทั้งหมดเป็น 'hidden'
@@ -82,33 +116,49 @@ const Published = () => {
         </div>
       ) : (
         <div className="flex flex-wrap gap-9 mx-auto">
-  {publishedPackages.map((pkg) => (
-    <div key={pkg.id} className="w-[30%] min-w-[250px] flex justify-around ">
-      <PackageCardCheckbox
-        id={pkg.id}
-        imageSrc={pkg.image || "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"}
-        title={pkg.name}
-        fortuneTeller={pkg.seer_display_name}
-        imageProfile={pkg.seer_image || "https://via.placeholder.com/300x300"}
-        Category={primarySkill}
-        rating={pkg.seer_rating !== null ? pkg.seer_rating : 0}
-        reviews={pkg.seer_review_count}
-        price={pkg.price}
-        callTime={`${pkg.duration} นาที`}
-        packageType={pkg.foretell_channel}
-        status={pkg.status}
-        isSelected={selectedPackages.includes(pkg.id)}
-        onSelectClick={() => handleSelect(pkg.id)}
-      />
-    </div>
-  ))}
-</div>
-
+          {publishedPackages.map((pkg) => (
+            <div
+              key={pkg.id}
+              className="w-[30%] min-w-[250px] flex justify-around "
+            >
+              <PackageCardCheckbox
+                id={pkg.id}
+                imageSrc={
+                  pkg.image ||
+                  "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"
+                }
+                title={pkg.name}
+                fortuneTeller={pkg.seer_display_name}
+                imageProfile={
+                  pkg.seer_image || "https://via.placeholder.com/300x300"
+                }
+                Category={primarySkill}
+                rating={pkg.seer_rating !== null ? pkg.seer_rating : 0}
+                reviews={pkg.seer_review_count}
+                price={pkg.price}
+                callTime={`${pkg.duration} นาที`}
+                packageType={pkg.foretell_channel}
+                status={pkg.status}
+                isSelected={selectedPackages.includes(pkg.id)}
+                onSelectClick={() => handleSelect(pkg.id)}
+              />
+            </div>
+          ))}
+        </div>
       )}
 
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-6 space-x-4">
         <button
-          className="bg-primary text-white py-2 px-14 rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
+          className=" text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-secondary/80"
+          onClick={handleDelete}
+          isabled={selectedPackages.length === 0}
+          aria-disabled={selectedPackages.length === 0}
+        >
+          ลบ
+        </button>
+
+        <button
+          className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
           onClick={handleHidden}
           disabled={selectedPackages.length === 0}
         >

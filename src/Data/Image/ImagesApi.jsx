@@ -3,7 +3,7 @@ import axios from "axios";
 // สร้าง instance ของ axios
 const axiosInstance = axios.create({
   baseURL: "https://backend.qseer.app/api/image/package/fortune/",
-  withCredentials: true, // ส่ง cookies หรือ session ถ้ามี
+  withCredentials: true, 
 });
 
 // ฟังก์ชันสำหรับการส่งภาพไปยัง API
@@ -15,7 +15,7 @@ export const postImagepackage = async (imageFile, packageId) => {
 
   try {
     const formData = new FormData();
-    formData.append("file", imageFile); // **ตรวจสอบว่า API ใช้ key ชื่ออะไร ("file" หรือ "image")**
+    formData.append("file", imageFile);
 
     const response = await axiosInstance.post(`${packageId}`, formData, {
       headers: {

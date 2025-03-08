@@ -34,12 +34,11 @@ const Package = () => {
   const [questionCount, setQuestionCount] = useState(null);
   const [channel, setChannel] = useState("chat");
   const [details, setDetails] = useState("");
-  const [savedData, setSavedData] = useState(null);
   const [fortuneTeller, setFortuneTeller] = useState("กำลังโหลด...");
   const [fortuneTellerImage, setFortuneTellerImage] = useState("");
   const [uploadedImage, setUploadedImage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Fetch fortune teller data on mount
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -51,19 +50,13 @@ const Package = () => {
         setPrimarySkill(data.primary_skill || "ไพ่ยิปซี");
       } catch (error) {
         console.error("Error fetching fortune teller data:", error);
-      }
+      } 
     };
 
     getUserData();
   }, []);
 
-  const handleInputChange = (e, setValue, setError, fieldName) => {
-    const value = e.target.value;
-    const error = validateInput(value, fieldName);
-    setError(error);
-    if (!error || value === "") setValue(value);
-  };
-
+  
   const handleTimeChange = (e) => {
     const value = e.target.value;
     const error = validateTime(value);
@@ -121,6 +114,12 @@ const Package = () => {
     setUploadedImage(file);
   };
   const handleSave = async () => {
+    setIsLoading(true); // เปิดหน้าโหลด
+  
+    // ปิดการเลื่อนหน้าจอขณะบันทึก
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden"; // ปิดการเลื่อนใน html
+  
     const formattedTime = convertTimeToTimedelta(time); // Convert time input to an integer
     const newPackage = {
       name: packageName,
@@ -133,13 +132,12 @@ const Package = () => {
       category: selectedCategory,
       required_data: ["name"],
     };
-
+  
     console.log("ข้อมูลที่กรอก:", newPackage);
-
+  
     try {
       const response = await createPackagedraft(newPackage);
-      setSavedData(response);
-
+  
       if (uploadedImage) {
         const responseImage = await postImagepackage(
           uploadedImage,
@@ -147,13 +145,20 @@ const Package = () => {
         ); // ส่งรูปภาพไปบันทึก
         console.log("บันทึกรูปภาพสำเร็จ:", responseImage);
       }
-
+  
       console.log("ID ของแพ็คเกจที่บันทึก:", response?.id);
+      setIsLoading(false); // ซ่อนหน้าโหลด
       navigate("/package/drafted");
     } catch (error) {
       console.error("Error saving package draft:", error);
+      setIsLoading(false); // ซ่อนหน้าโหลดเมื่อเกิดข้อผิดพลาด
+    } finally {
+      // เปิดการเลื่อนหน้าจอเมื่อบันทึกเสร็จ
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto"; // เปิดการเลื่อนใน html
     }
   };
+  
 
   return (
     <Layout>
@@ -292,14 +297,6 @@ const Package = () => {
         />
       </div>
 
-      {/* Display Saved Data */}
-      {savedData && (
-        <div className="mt-6 p-4 bg-gray-100 rounded-md">
-          <h4 className="font-bold">ข้อมูลที่บันทึก:</h4>
-          <pre className="text-sm">{JSON.stringify(savedData, null, 2)}</pre>
-        </div>
-      )}
-
       {/* Save Button */}
       <div className="flex justify-end">
         <button
@@ -309,6 +306,14 @@ const Package = () => {
           บันทึก
         </button>
       </div>
+
+      {isLoading && (
+        <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-gray-900 z-50">
+          <div className="text-white text-lg font-semibold">
+            กำลังบันทึกข้อมูล...
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
