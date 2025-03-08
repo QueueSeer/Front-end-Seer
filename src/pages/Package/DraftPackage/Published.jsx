@@ -81,36 +81,29 @@ const Published = () => {
           ไม่มีแพ็กเกจที่ร่างไว้
         </div>
       ) : (
-        <div
-          className={`flex flex-wrap gap-9 mx-auto ${
-            publishedPackages.length === 2 ? "justify-start" : "justify-stretch"
-          }`}
-        >
-          {publishedPackages.map((pkg) => (
-            <PackageCardCheckbox
-              key={pkg.id} // Using id as the unique key
-              id={pkg.id} // Using id for the package id
-              imageSrc={
-                pkg.image ||
-                "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"
-              } // Use the package image or default if none
-              title={pkg.name}
-              fortuneTeller={pkg.seer_display_name} // ใช้ค่า seer_display_name ที่ได้จาก package
-              imageProfile={
-                pkg.seer_image || "https://via.placeholder.com/300x300"
-              } // Use the seer image or default if none
-              Category={primarySkill}
-              rating={pkg.seer_rating !== null ? pkg.seer_rating : 0} // ถ้า seer_rating เป็น null ให้เป็น 0
-              reviews={pkg.seer_review_count}
-              price={pkg.price}
-              callTime={`${pkg.duration} นาที`}
-              packageType={pkg.foretell_channel}
-              status={pkg.status}
-              isSelected={selectedPackages.includes(pkg.id)}
-              onSelectClick={() => handleSelect(pkg.id)}
-            />
-          ))}
-        </div>
+        <div className="flex flex-wrap gap-9 mx-auto">
+  {publishedPackages.map((pkg) => (
+    <div key={pkg.id} className="w-[30%] min-w-[250px] flex justify-around ">
+      <PackageCardCheckbox
+        id={pkg.id}
+        imageSrc={pkg.image || "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"}
+        title={pkg.name}
+        fortuneTeller={pkg.seer_display_name}
+        imageProfile={pkg.seer_image || "https://via.placeholder.com/300x300"}
+        Category={primarySkill}
+        rating={pkg.seer_rating !== null ? pkg.seer_rating : 0}
+        reviews={pkg.seer_review_count}
+        price={pkg.price}
+        callTime={`${pkg.duration} นาที`}
+        packageType={pkg.foretell_channel}
+        status={pkg.status}
+        isSelected={selectedPackages.includes(pkg.id)}
+        onSelectClick={() => handleSelect(pkg.id)}
+      />
+    </div>
+  ))}
+</div>
+
       )}
 
       <div className="flex justify-end mt-6">

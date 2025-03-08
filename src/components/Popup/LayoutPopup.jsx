@@ -9,7 +9,7 @@ const LayoutPopup = ({ title = "", children, isOpen, onClose }) => {
       role="dialog"
       aria-modal="true"
     >
-      <div className="bg-white h-[500px] px-10 py-7 rounded-lg w-3/4 md:w-[860px] shadow-lg">
+      <div className="bg-white h-[550px] px-10 py-8 rounded-lg w-3/4 md:w-[860px] shadow-lg">
         {/* Header Popup */}
         <div className="flex justify-between items-center mb-4 border-b border-zinc-300 pb-2">
           <h2 className="text-2xl font-semibold text-primary">
@@ -39,7 +39,7 @@ const LayoutPopup = ({ title = "", children, isOpen, onClose }) => {
         </div>
 
         {/* เนื้อหาภายใน Popup */}
-        <div className="pr-3 text-gray-700 space-y-5 text-lg max-h-[400px] overflow-y-auto">
+        <div className="pr-3 text-gray-700 space-y-5 text-lg max-h-[415px] overflow-y-auto">
           {children}
         </div>
       </div>
