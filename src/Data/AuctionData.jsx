@@ -27,18 +27,7 @@ const AuctionData = [
     fortuneTeller: "หมอดู เพียงฟ้า",
 
   },
-  {
-    id: 3,
-    title: ` โชคลาภของคุณในเดือนนี้เป็นอย่างไร`,
-    details: "โชคลาภของคุณในเดือนนี้เป็นอย่างไร?",
-    status: "ไม่เปิดให้บริการ",
-    questionCount: 4,
-    price: 120,
-    image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp",
-    avatar: images.profile_seer,
-    createdate: "2024-09-11T10:06:38.448Z",
-    fortuneTeller: "หมอดู เพียงฟ้า",
-  },
+  
   
 ];
 
