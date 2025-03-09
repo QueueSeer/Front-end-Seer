@@ -15,6 +15,8 @@ const Published = () => {
   const [primarySkill, setPrimarySkill] = useState("...");
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpendelete, setIsPopupOpendelete] = useState(false);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -51,7 +53,6 @@ const Published = () => {
     );
   };
 
-
   const handleDelete = async () => {
     if (selectedPackages.length === 0) {
       alert("กรุณาเลือกแพ็กเกจที่ต้องการลบ");
@@ -82,7 +83,6 @@ const Published = () => {
       setLoading(false); // ยกเลิกสถานะโหลด
     }
   };
-
 
   const handleHidden = async () => {
     try {
@@ -148,22 +148,98 @@ const Published = () => {
       )}
 
       <div className="flex justify-end mt-6 space-x-4">
+        
         <button
           className=" text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-secondary/80"
-          onClick={handleDelete}
-          isabled={selectedPackages.length === 0}
+          onClick={() => setIsPopupOpendelete(true)}
+          disabled={selectedPackages.length === 0}
           aria-disabled={selectedPackages.length === 0}
+
         >
           ลบ
         </button>
 
+        {/* ปุ่มเปิด Popup */}
         <button
           className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
-          onClick={handleHidden}
+          onClick={() => setIsPopupOpen(true)}
           disabled={selectedPackages.length === 0}
         >
           ซ่อน
         </button>
+
+        {/* Popup ยืนยัน */}
+        {isPopupOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+            onClick={() => setIsPopupOpen(false)} // คลิกนอก Popup เพื่อปิด
+          >
+            <div
+              className="bg-white px-8 py-6 rounded-xl shadow-lg w-[450px] h-[200px] flex flex-col justify-between text-center"
+              onClick={(e) => e.stopPropagation()} // ป้องกันการปิดเมื่อกดใน Popup
+            >
+              <h2 className="text-[22px] font-semibold text-gray-900 pt-3">
+                คุณยืนยันที่ซ่อนแพ็กเกจใช่ไหม?
+              </h2>
+              <p className="text-[18px] text-gray-600 ">
+                แพ็กเกจที่เลือกจะไม่สามารถมองเห็นได้โดยคนทั่วไป
+              </p>
+              <div className="flex justify-center gap-4 pt-1">
+                <button
+                  className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
+                  onClick={() => {
+                    handleHidden();
+                    setIsPopupOpen(false);
+                  }}
+                >
+                  ซ่อน
+                </button>
+                <button
+                  className=" text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-secondary/80"
+                  onClick={() => setIsPopupOpen(false)}
+                >
+                  ย้อนกลับ
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isPopupOpendelete && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+            onClick={() => setIsPopupOpendelete(false)} // คลิกนอก Popup เพื่อปิด
+          >
+            <div
+              className="bg-white px-8 py-6 rounded-xl shadow-lg w-[450px] h-[240px] flex flex-col justify-between text-center "
+              onClick={(e) => e.stopPropagation()} // ป้องกันการปิดเมื่อกดใน Popup
+            >
+              <h2 className="text-[22px] font-semibold text-gray-900 pt-3">
+                คุณต้องการที่ลบแพ็กเกจใช่ไหม?
+              </h2>
+              <p className="text-[18px] text-gray-600 py-3">
+              แพ็กเกจที่เลือกจะไม่สามารถกู้คืนได้หลังจากการลบ ข้อมูลทั้งหมดในแพ็กเกจนี้จะถูกลบ 
+              </p>
+              <div className="flex justify-center gap-4 ">
+                <button
+                  className="bg-cancel text-white py-2 w-[130px] border-2 border-bordercancel rounded-full hover:bg-cancel/80 focus:outline-none focus:ring-2 focus:ring-bordercancel/80"
+                  onClick={() => {
+                    handleDelete();
+                    setIsPopupOpendelete(false);
+                  }}
+                >
+                  ลบ
+                </button>
+                <button
+                  className=" text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-secondary/80"
+                  onClick={() => setIsPopupOpendelete(false)}
+                >
+                  ย้อนกลับ
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
