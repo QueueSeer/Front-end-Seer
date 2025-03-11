@@ -149,7 +149,6 @@ const PopupEditProfile = ({
     }
   };
 
-  // ✅ ฟังก์ชันตรวจสอบเบอร์โทร (ต้องเป็นตัวเลข 10 ตัว)
   const validatePhoneNumber = (phone) => {
     const rawNumber = phone.replace(/\D/g, ""); // เอาเฉพาะตัวเลข
     return rawNumber.length === 10;
@@ -171,8 +170,8 @@ const PopupEditProfile = ({
 
   return createPortal(
     <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg w-[500px] shadow-lg">
-        <h2 className="text-xl font-semibold mb-4 text-purple-800">
+      <div className="bg-white px-8 pt-8 pb-6 rounded-[20px] w-auto shadow-lg">
+        <h2 className="text-[22px] font-semibold mb-4 text-secondary2">
           แก้ไขโปรไฟล์
         </h2>
 
@@ -303,14 +302,14 @@ const PopupEditProfile = ({
         {/* ปุ่ม ยกเลิก & บันทึก */}
         <div className="flex justify-end gap-3 mt-6">
           <button
-            className="bg-gray-300 px-4 py-2 rounded-md disabled:opacity-50"
+            className="bg-gray-300 px-8 py-2 rounded-full disabled:opacity-50"
             onClick={onClose}
             disabled={isLoading}
           >
             ยกเลิก
           </button>
           <button
-            className="bg-purple-800 text-white px-4 py-2 rounded-md disabled:opacity-50 flex items-center justify-center"
+            className="bg-primary text-white px-8 py-2 rounded-full disabled:opacity-50 flex items-center justify-center"
             onClick={handleSubmit}
             disabled={isLoading}
           >
