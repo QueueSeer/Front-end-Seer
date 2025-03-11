@@ -44,7 +44,7 @@ const PackageCardCheckbox = ({
         <img
           src={imageSrc}
           alt={title || "Image"}
-          className="w-full h-40 object-cover"
+          className="w-full h-70 object-cover"
         />
         <div className="absolute bottom-2 left-2">
           <div className="bg-primary text-white text-sm px-4 py-1 rounded-full shadow">
@@ -65,27 +65,27 @@ const PackageCardCheckbox = ({
           />
           <span className="text-black font-regular">{fortuneTeller}</span>
         </p>
-        <div className="flex items-center mt-1">
+        {/* <div className="flex items-center mt-1">
           <span className="text-gray-800 font-regular text-sm mr-2">
-            {rating.toFixed(1)}
+            {rating ? rating.toFixed(1) : "0.0"}
           </span>
           <span className="text-yellow-500 text-[18px]">
             {"★".repeat(Math.floor(rating)) +
               "☆".repeat(5 - Math.floor(rating))}
           </span>
           <span className="ml-2 text-sm text-gray-500">
-            ({reviews.toLocaleString()} reviews)
+            {reviews ? reviews.toLocaleString() : "0"} reviews
           </span>
+        </div> */}
+        <div className="mt-3 text-[24px] font-bold text-secondary2">
+          {price ? price.toLocaleString() : "0"} Coins
         </div>
-        <div className="mt-2 text-[24px] font-bold text-secondary2">
-          {price.toLocaleString()} Coins
-        </div>
-        <div className="flex items-center justify-between mt-4">
-          <div className="text-[16px] font-semibold text-gray-500 flex items-center space-x-3">
+        <div className="flex items-center justify-between mt-2 mb-1">
+          <div className="text-[18px] font-semibold text-gray-500 flex items-center space-x-3">
             <img
               src={packageIcons[packageType]}
               alt={`${packageType} Icon`}
-              className="w-[28px] h-auto"
+              className="w-[24px] h-auto"
             />
             <span>{callTime}</span>
           </div>

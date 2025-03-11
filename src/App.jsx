@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+// Import pages and components
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import NotificationDetail from "./pages/Notification/NotificationDetail";
@@ -15,7 +16,7 @@ import ProceedWithdraw from "./components/revenue/ProceedWithdraw";
 import FollowerPage from "./pages/followerpage/FollowerPage";
 import EmailVerification from "./pages/membership/EmailVerification";
 import Reviewpage from "./pages/Review/Reviewpage.jsx";
-import Timetable from "./pages/Timetable/timetable.jsx"; 
+import Timetable from "./pages/Timetable/timetable.jsx";
 import Appointment from "./pages/Appointment/Appointment";
 import DetailsAppointment from "./pages/Appointment/DetailsAppointment";
 import Package from "./pages/Package";
@@ -31,9 +32,7 @@ import Auction from "./pages/Auction";
 import AuctionDetail from "./pages/Auction/DetailAuction/Detail";
 import CreateAuction from "./pages/Auction/Create/CreateAuction";
 
-
 import "./index.css";
-import Dashboard from "./pages/test/Dashboard.jsx";
 
 export default function App() {
   return (
@@ -57,7 +56,10 @@ export default function App() {
         <Route path="/reviews" element={<Reviewpage />} />
 
         {/* เส้นทางสำหรับ Notification */}
-        <Route path="/notifications" element={<p className="p-4">หน้าการแจ้งเตือนทั้งหมด</p>} />
+        <Route
+          path="/notifications"
+          element={<p className="p-4">หน้าการแจ้งเตือนทั้งหมด</p>}
+        />
         <Route path="/notification/:id" element={<NotificationDetail />} />
 
         {/* เส้นทางสำหรับฟอร์มต่าง ๆ */}
@@ -72,12 +74,7 @@ export default function App() {
         <Route path="/landing" element={<LandingPage />} />
 
         {/* เส้นทางสำหรับหน้า Timetable */}
-        <Route path="/timetable" element={<Timetable />} /> {/* Updated `Timetable` */}
-        <Route path="/login" element={<Login />} />
-
-        {/* Notifications */}
-        <Route path="/notifications" element={<p className="p-4">หน้าการแจ้งเตือนทั้งหมด</p>} />
-        <Route path="/notification/:id" element={<NotificationDetail />} />
+        <Route path="/timetable" element={<Timetable />} />
 
         {/* Appointments */}
         <Route path="/appointment" element={<Appointment />} />
@@ -93,16 +90,16 @@ export default function App() {
         <Route path="/fortuneNow" element={<FortuneNow />} />
         <Route path="/fortuneNow/:id" element={<FortuneNowDetail />} />
         <Route path="/fortuneNow/drafted" element={<DraftedFortuneNow />} />
-        <Route path="/fortuneNow/drafted/create" element={<CreateFortuneNow />} />
+        <Route
+          path="/fortuneNow/drafted/create"
+          element={<CreateFortuneNow />}
+        />
         <Route path="/fortuneNow/drafted/:id" element={<ContentFortuneNow />} />
 
-        {/* FortuneNow */}
+        {/* Auction */}
         <Route path="/auction" element={<Auction />} />
         <Route path="/auction/:id" element={<AuctionDetail />} />
         <Route path="/auction/create" element={<CreateAuction />} />
-
-
-        <Route path="/dashboard" element={<Dashboard/>}/>
       </Routes>
     </Router>
   );
