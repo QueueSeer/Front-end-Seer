@@ -44,22 +44,26 @@ const PopupEditProfile = ({
   const currentYear = new Date().getFullYear() + 543;
 
   useEffect(() => {
-    if (userData) {
+    if (isOpen && userData) {
       const experienceDate = new Date(userData.experience);
+  
+      const formattedPhoneNumber = formatPhoneNumber(phoneNumber || "");
   
       setFormData({
         nickname: userData.display_name || "",
         firstName: userData.first_name || "",
         lastName: userData.last_name || "",
         experience: userData.experience || "",
-        phoneNumber: formatPhoneNumber(phoneNumber || ""), // ✅ ฟอร์แมตเบอร์โทรทันที
+        phoneNumber: formattedPhoneNumber,  // ฟอร์แมตเบอร์โทรให้ถูกต้อง
         email: email || "",
         day: experienceDate.getDate().toString().padStart(2, "0"),
         month: thaiMonths[experienceDate.getMonth()],
         year: experienceDate.getFullYear() + 543,
       });
     }
-  }, [userData, phoneNumber]);
+  }, [isOpen, userData, phoneNumber, email]); // เพิ่ม isOpen เพื่อให้รีเซ็ตข้อมูลเมื่อเปิด popup ใหม่
+  
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
