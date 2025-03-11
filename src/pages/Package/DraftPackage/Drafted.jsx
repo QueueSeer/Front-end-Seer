@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../OverviewPackage/Layout";
-import PackageCardCheckbox from "../../../components/Card/PackageCardCheckbox";
+import PackageList from "./PackageList/PackageList";
+import ConfirmationPopup from "../../../components/Popup/ConfirmationPopup";
 import { fetchUserData } from "../../../Data/Profile/ProfileApi";
 import {
   fetchPackageDraftData,
@@ -12,42 +13,40 @@ import {
 const Drafted = () => {
   const navigate = useNavigate();
   const [selectedPackages, setSelectedPackages] = useState([]);
-  const [user, setUser] = useState(null);
+  const [primarySkill, setPrimarySkill] = useState("...");
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpendelete, setIsPopupOpendelete] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError("");
-
+    const getUserData = async () => {
       try {
-        const [userData, packageData] = await Promise.all([
-          fetchUserData(),
-          fetchPackageDraftData(),
-        ]);
-        setUser(userData);
-        setPackages(packageData.packages || []);
+        setLoading(true); // เริ่มการโหลดข้อมูล
+        const data = await fetchUserData();
+        setPrimarySkill(data.primary_skill || "...");
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
-      } finally {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    // ฟังก์ชันที่ใช้ดึงข้อมูลแพ็กเกจ
+    const getPackageData = async () => {
+      try {
+        const result = await fetchPackageDraftData();
+        console.log("Package data:", result);
+        setPackages(result.packages || []);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching package data:", error);
         setLoading(false);
       }
     };
 
-    fetchData();
+    getUserData();
+    getPackageData();
   }, []);
 
-  const handleSelect = (pkgId) => {
-    setSelectedPackages((prevSelected) =>
-      prevSelected.includes(pkgId)
-        ? prevSelected.filter((id) => id !== pkgId)
-        : [...prevSelected, pkgId]
-    );
-  };
-  
   const handleDelete = async () => {
     if (selectedPackages.length === 0) {
       alert("กรุณาเลือกแพ็กเกจที่ต้องการลบ");
@@ -55,27 +54,22 @@ const Drafted = () => {
     }
 
     try {
-      // แสดงข้อความโหลดเมื่อเริ่มการลบ
       setLoading(true);
-
-      // ลบแต่ละแพ็กเกจที่ถูกเลือก
       for (const pkgId of selectedPackages) {
-        await deletePackages(pkgId); // ลบแพ็กเกจจาก API
+        await deletePackages(pkgId);
       }
-
-      // รีเฟรชข้อมูลแพ็กเกจใน UI
       const updatedPackages = packages.filter(
         (pkg) => !selectedPackages.includes(pkg.id)
       );
       setPackages(updatedPackages);
-      setSelectedPackages([]); // เคลียร์แพ็กเกจที่เลือก
+      setSelectedPackages([]);
 
       alert("ลบแพ็กเกจที่เลือกสำเร็จ!");
     } catch (error) {
       console.error("Error deleting packages:", error);
       alert("เกิดข้อผิดพลาดในการลบแพ็กเกจ");
     } finally {
-      setLoading(false); // ยกเลิกสถานะโหลด
+      setLoading(false);
     }
   };
 
@@ -84,7 +78,6 @@ const Drafted = () => {
       for (const pkgId of selectedPackages) {
         await updatePackageStatus(pkgId, "published");
       }
-      // รีเฟรชข้อมูลแพ็กเกจที่แสดงใหม่หลังจากการเปลี่ยนสถานะ
       const updatedPackages = packages.map((pkg) =>
         selectedPackages.includes(pkg.id)
           ? { ...pkg, status: "published" }
@@ -100,69 +93,53 @@ const Drafted = () => {
     }
   };
 
-  const draftedPackages = packages.filter((pkg) => pkg.status === "draft");
-
   return (
     <Layout>
-      {loading ? (
-        <div className="text-center text-lg text-gray-500 mt-8">
-          กำลังโหลดข้อมูล...
-        </div>
-      ) : error ? (
-        <div className="text-center text-lg text-red-500 mt-8">{error}</div>
-      ) : draftedPackages.length === 0 ? (
-        <div className="text-center text-lg text-gray-500 mt-8">
-          ไม่มีแพ็กเกจที่ร่างไว้
-        </div>
-      ) : (
-        <div
-          className={`flex flex-wrap gap-9 mx-auto ${
-            draftedPackages.length === 2 ? "justify-start" : "justify-stretch"
-          }`}
-        >
-          {draftedPackages.map((pkg) => (
-            <PackageCardCheckbox
-              key={pkg.id}
-              id={pkg.id}
-              imageSrc={
-                pkg.image ||
-                "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa3yrS9hPC7cLIunZiA3xEkolcqTUZWEonlIsj9zzqHOOWIemeASW.webp"
-              }
-              title={pkg.name}
-              fortuneTeller={pkg.seer_display_name}
-              imageProfile={pkg.seer_image || "https://via.placeholder.com/300"}
-              Category={user?.primary_skill || "..."}
-              rating={pkg.seer_rating ?? 0}
-              reviews={pkg.seer_review_count}
-              price={pkg.price}
-              callTime={`${pkg.duration} นาที`}
-              packageType={pkg.foretell_channel}
-              status={pkg.status}
-              isSelected={selectedPackages.includes(pkg.id)}
-              onSelectClick={() => handleSelect(pkg.id)}
-            />
-          ))}
-        </div>
-      )}
-
+      <PackageList
+        packages={packages}
+        selectedPackages={selectedPackages}
+        setSelectedPackages={setSelectedPackages}
+        primarySkill={primarySkill}
+        loading={loading}
+      />
       <div className="flex justify-end mt-6 space-x-4">
         <button
-          className=" text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-secondary/80"
-          onClick={handleDelete}
-          isabled={selectedPackages.length === 0}
-          aria-disabled={selectedPackages.length === 0}
+          className="text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white"
+          onClick={() => setIsPopupOpendelete(true)}
+          disabled={selectedPackages.length === 0}
         >
           ลบ
         </button>
         <button
-          className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
-          onClick={handlePublish}
+          className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80"
+          onClick={() => setIsPopupOpen(true)}
           disabled={selectedPackages.length === 0}
-          aria-disabled={selectedPackages.length === 0}
         >
           เผยแพร่
         </button>
       </div>
+
+      <ConfirmationPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onConfirm={handlePublish}
+        title="คุณยืนยันที่เผยแพร่แพ็กเกจใช่ไหม?"
+        message={
+          <>
+            แพ็กเกจที่คุณเลือกจะสามารถมองเห็น <br />
+            และเข้าใช้บริการได้ทุกคน
+          </>
+        }
+        confirmText="เผยแพร่"
+      />
+      <ConfirmationPopup
+        isOpen={isPopupOpendelete}
+        onClose={() => setIsPopupOpendelete(false)}
+        onConfirm={handleDelete}
+        title="คุณต้องการที่ลบแพ็กเกจใช่ไหม?"
+        message="แพ็กเกจที่เลือกจะไม่สามารถกู้คืนได้หลังจากการลบ"
+        confirmText="ลบ"
+      />
     </Layout>
   );
 };
