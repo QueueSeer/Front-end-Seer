@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { UpdateInfoUserData } from "../../../Data/Profile/InfoUser";
+import { UpdateInfoUserData } from "../../../Data/Profile/InfoDataUser";
 import { Updateexperienceseer } from "../../../Data/Profile/ProfileApi";
 
 const PopupEditProfile = ({

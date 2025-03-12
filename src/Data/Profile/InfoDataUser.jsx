@@ -6,8 +6,8 @@ const axiosInstance = axios.create({
   withCredentials: true, 
 });
 
-// ฟังก์ชันดึงข้อมูลผู้ใช้
-export const fetchInfoUserData = async () => {
+
+const fetchInfoUserData = async () => {
   try {
     const response = await axiosInstance.get("/me");
     return response.data;
@@ -17,15 +17,9 @@ export const fetchInfoUserData = async () => {
   }
 };
 
-export const UpdateInfoUserData = async (display_name, first_name, last_name, phone_number) => {
+const UpdateInfoUserData = async (display_name, first_name, last_name, phone_number) => {
   try {
-    const userData = {
-      display_name: display_name,
-      first_name: first_name,
-      last_name: last_name,
-      phone_number: phone_number, 
-    };
-
+    const userData = { display_name, first_name, last_name, phone_number };
     const response = await axiosInstance.patch("/me", userData);
     return response.data;
   } catch (error) {
@@ -33,3 +27,5 @@ export const UpdateInfoUserData = async (display_name, first_name, last_name, ph
     throw new Error("ไม่สามารถแก้ไขข้อมูลผู้ใช้ได้");
   }
 };
+
+export { fetchInfoUserData, UpdateInfoUserData };
