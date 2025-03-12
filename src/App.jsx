@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./pages/Login/contexts/AuthContext";
 
 // Import pages and components
 import Login from "./pages/Login/Login";
@@ -36,71 +37,76 @@ import "./index.css";
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        {/* เส้นทางสำหรับหน้า Login */}
-        <Route path="/" element={<Login />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* เส้นทางสำหรับหน้า Login */}
+          <Route path="/" element={<Login />} />
 
-        {/* เส้นทางสำหรับหน้า Revenue */}
-        <Route path="/revenue" element={<RevenuePage />} />
-        <Route path="/withdraw-money" element={<WithdrawMoney />} />
-        <Route path="/proceed-withdraw" element={<ProceedWithdraw />} />
+          {/* เส้นทางสำหรับหน้า Revenue */}
+          <Route path="/revenue" element={<RevenuePage />} />
+          <Route path="/withdraw-money" element={<WithdrawMoney />} />
+          <Route path="/proceed-withdraw" element={<ProceedWithdraw />} />
 
-        {/* เส้นทางสำหรับหน้า Profile */}
-        <Route path="/profile" element={<Profile />} />
+          {/* เส้นทางสำหรับหน้า Profile */}
+          <Route path="/profile" element={<Profile />} />
 
-        {/* เส้นทางสำหรับหน้า Follower */}
-        <Route path="/follower" element={<FollowerPage />} />
+          {/* เส้นทางสำหรับหน้า Follower */}
+          <Route path="/follower" element={<FollowerPage />} />
 
-        {/* เส้นทางสำหรับหน้า Review */}
-        <Route path="/reviews" element={<Reviewpage />} />
+          {/* เส้นทางสำหรับหน้า Review */}
+          <Route path="/reviews" element={<Reviewpage />} />
 
-        {/* เส้นทางสำหรับ Notification */}
-        <Route
-          path="/notifications"
-          element={<p className="p-4">หน้าการแจ้งเตือนทั้งหมด</p>}
-        />
-        <Route path="/notification/:id" element={<NotificationDetail />} />
+          {/* เส้นทางสำหรับ Notification */}
+          <Route
+            path="/notifications"
+            element={<p className="p-4">หน้าการแจ้งเตือนทั้งหมด</p>}
+          />
+          <Route path="/notification/:id" element={<NotificationDetail />} />
 
-        {/* เส้นทางสำหรับฟอร์มต่าง ๆ */}
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/fillter" element={<Fillter />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/register-membership" element={<RegisterMembership />} />
-        <Route path="/EmailVerification" element={<EmailVerification />} />
+          {/* เส้นทางสำหรับฟอร์มต่าง ๆ */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/fillter" element={<Fillter />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/register-membership" element={<RegisterMembership />} />
+          <Route path="/EmailVerification" element={<EmailVerification />} />
 
-        {/* เส้นทางสำหรับหน้า LandingPage */}
-        <Route path="/landing" element={<LandingPage />} />
+          {/* เส้นทางสำหรับหน้า LandingPage */}
+          <Route path="/landing" element={<LandingPage />} />
 
-        {/* เส้นทางสำหรับหน้า Timetable */}
-        <Route path="/timetable" element={<Timetable />} />
+          {/* เส้นทางสำหรับหน้า Timetable */}
+          <Route path="/timetable" element={<Timetable />} />
 
-        {/* Appointments */}
-        <Route path="/appointment" element={<Appointment />} />
-        <Route path="/appointment/:id" element={<DetailsAppointment />} />
+          {/* Appointments */}
+          <Route path="/appointment" element={<Appointment />} />
+          <Route path="/appointment/:id" element={<DetailsAppointment />} />
 
-        {/* Package Management */}
-        <Route path="/package" element={<Package />} />
-        <Route path="/package/drafted" element={<Drafted />} />
-        <Route path="/package/published" element={<Published />} />
-        <Route path="/package/hiddenPackage" element={<HiddenPackage />} />
+          {/* Package Management */}
+          <Route path="/package" element={<Package />} />
+          <Route path="/package/drafted" element={<Drafted />} />
+          <Route path="/package/published" element={<Published />} />
+          <Route path="/package/hiddenPackage" element={<HiddenPackage />} />
 
-        {/* FortuneNow */}
-        <Route path="/fortuneNow" element={<FortuneNow />} />
-        <Route path="/fortuneNow/:id" element={<FortuneNowDetail />} />
-        <Route path="/fortuneNow/drafted" element={<DraftedFortuneNow />} />
-        <Route
-          path="/fortuneNow/drafted/create"
-          element={<CreateFortuneNow />}
-        />
-        <Route path="/fortuneNow/drafted/:id" element={<ContentFortuneNow />} />
+          {/* FortuneNow */}
+          <Route path="/fortuneNow" element={<FortuneNow />} />
+          <Route path="/fortuneNow/:id" element={<FortuneNowDetail />} />
+          <Route path="/fortuneNow/drafted" element={<DraftedFortuneNow />} />
+          <Route
+            path="/fortuneNow/drafted/create"
+            element={<CreateFortuneNow />}
+          />
+          <Route
+            path="/fortuneNow/drafted/:id"
+            element={<ContentFortuneNow />}
+          />
 
-        {/* Auction */}
-        <Route path="/auction" element={<Auction />} />
-        <Route path="/auction/:id" element={<AuctionDetail />} />
-        <Route path="/auction/create" element={<CreateAuction />} />
-      </Routes>
-    </Router>
+          {/* Auction */}
+          <Route path="/auction" element={<Auction />} />
+          <Route path="/auction/:id" element={<AuctionDetail />} />
+          <Route path="/auction/create" element={<CreateAuction />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }

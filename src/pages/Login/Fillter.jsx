@@ -44,7 +44,7 @@ export default function Fillter() {
       setStep(2);
       setSelectedTags([]);
     } else if (step === lastStep) {
-      navigate("/landing");
+      navigate("/landingpage");
     }
   };
 
@@ -107,7 +107,7 @@ export default function Fillter() {
                   เลือกศาสตร์ดูดวงที่สนใจของคุณ
                 </h2>
                 <p className="text-center mt-2 mb-6 ">
-                  เลือกศาสตร์หมอดูที่คุณเชี่ยวชาญ
+                เลือกศาสตร์หมอดูที่คุณชื่นชอบ
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
                   {tags.map((tag, index) => (
@@ -139,7 +139,7 @@ export default function Fillter() {
                   เลือกเรื่องที่สนใจของคุณ
                 </h2>
                 <p className="text-center mt-2 mb-6">
-                  เลือกเรื่องดูดวงที่เกี่ยวข้องกับการทำนายของคุณ
+                  เลือกเรื่องดูดวงที่คุณสนใจ
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
                   {[
