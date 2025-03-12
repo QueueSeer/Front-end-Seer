@@ -93,7 +93,9 @@ export default function Login() {
         "https://backend.qseer.app/api/access/login", // API endpoint
         { email, password }, // Request payload
         {
-          headers: { "Content-Type": "application/json" }, // Set Content-Type to application/json
+          headers: { "Content-Type": "application/json" }, 
+          withCredentials: true, 
+
         }
       );
 

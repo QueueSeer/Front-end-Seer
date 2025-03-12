@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import InfoUser from "./InfoUser";
 import images from "../../../assets";
 import { fetchUserData } from "../../../Data/Profile/ProfileApi";
-import { fetchInfoUserData } from "../../../Data/Profile/InfoUser"; 
+import { fetchInfoUserData } from "../../../Data/Profile/InfoDataUser"; 
 import { useNavigate } from "react-router-dom";
 import PopupEditProfile from "../../../components/Popup/profile/PopupEditProfile";
 
