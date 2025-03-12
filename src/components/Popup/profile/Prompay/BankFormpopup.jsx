@@ -30,7 +30,7 @@ const BankFormpopup = ({ isOpen, onClose, onSave, name, num, title }) => {
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-6">
           <label className="block text-gray-700 font-medium mb-2">พร้อมเพย์</label>
           <input
             type="text"

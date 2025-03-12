@@ -20,7 +20,7 @@ const AccountPrompay = () => {
             alt="Link Icon"
             className="mr-3 w-8 h-8 items-center"
           />
-          <div className="flex flex-col gap-[5px] items-start">
+          <div className="flex flex-col gap-[6px] items-start">
             <div className="font-semibold text-black text-[18px]">
               บัญชีพร้อมเพย์
             </div>
