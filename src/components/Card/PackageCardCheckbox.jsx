@@ -26,25 +26,25 @@ const PackageCardCheckbox = ({
 
   return (
     <div
-      className={`relative w-[270px] bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200 ${
+      className={`relative w-[275px]  bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200 ${
         isSelected ? "opacity-100" : "opacity-80"
       }`}
     >
       {/* Checkbox มุมซ้ายบน */}
-      <div className="absolute top-2 left-2 z-10">
+      <div className="absolute top-2 left-2 z-10 ">
         <input
           type="checkbox"
           checked={isSelected}
           onChange={onSelectClick}
-          className="w-6 h-6 rounded-full border-gray-300 cursor-pointer accent-primary"
-        />
+          className="w-8 h-8 rounded-full border-gray-300 cursor-pointer accent-primary"
+          />
       </div>
 
       <div className="relative">
         <img
           src={imageSrc}
           alt={title || "Image"}
-          className="w-full h-70 object-cover"
+          className="w-full h-[200px] object-cover"
         />
         <div className="absolute bottom-2 left-2">
           <div className="bg-primary text-white text-sm px-4 py-1 rounded-full shadow">
@@ -54,7 +54,7 @@ const PackageCardCheckbox = ({
       </div>
 
       <div className="p-4">
-        <div className="mb-3 text-[20px] h-[60px] font-semibold text-gray-800 overflow-hidden text-ellipsis line-clamp-2 ">
+        <div className="mb-3 text-[20px] h-[65px] font-semibold text-gray-800 overflow-hidden text-ellipsis line-clamp-2 ">
           {title}
         </div>
         <p className="text-sm text-gray-500 flex items-center">

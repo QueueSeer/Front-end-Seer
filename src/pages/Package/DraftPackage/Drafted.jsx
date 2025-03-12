@@ -86,7 +86,7 @@ const Drafted = () => {
       );
       setPackages(updatedPackages);
       setSelectedPackages([]);
-      alert("Selected draft packages have been published!");
+      setIsPopupOpen(false);
       navigate("/package/published");
     } catch (error) {
       console.error("Error publishing packages:", error);
