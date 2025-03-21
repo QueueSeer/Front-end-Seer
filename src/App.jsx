@@ -34,6 +34,7 @@ import AuctionDetail from "./pages/Auction/DetailAuction/Detail";
 import CreateAuction from "./pages/Auction/Create/CreateAuction";
 
 import "./index.css";
+import DetailPackage from "./pages/Package/DetailPackage/DetailPackage.jsx";
 
 export default function App() {
   return (
@@ -84,6 +85,7 @@ export default function App() {
 
           {/* Package Management */}
           <Route path="/package" element={<Package />} />
+          <Route path="/package/detail/:id" element={<DetailPackage />} />
           <Route path="/package/drafted" element={<Drafted />} />
           <Route path="/package/published" element={<Published />} />
           <Route path="/package/hiddenPackage" element={<HiddenPackage />} />

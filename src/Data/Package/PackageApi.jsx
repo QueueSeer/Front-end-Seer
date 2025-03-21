@@ -77,3 +77,15 @@ export const createPackagedraft = async (packageData) => {
     throw error;
   }
 };
+
+export const fetchPackageDetailsData = async (packageId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/me/package/fortune/${packageId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching package data:", error);
+    throw error;
+  }
+};

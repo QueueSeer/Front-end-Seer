@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Layout from "./OverviewPackage/Layout";
-import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
-import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
-import ShowExampleCard from "../../components/Card/ShowExampleCard";
-import { fetchUserData } from "../../Data/Profile/ProfileApi";
-import { createPackagedraft } from "../../Data/Package/PackageApi";
-import { postImagepackage } from "../../Data/Image/ImagesApi";
+import { useParams, useNavigate } from "react-router-dom";
+import LayoutDetails from "../OverviewPackage/LayoutDetails";
+import ChannelSelectDropdown from "../../../components/Dropdown/ChannelSelectDropdown";
+import QuestionCountDropdown from "../../../components/Dropdown/QuestionCountDropdown";
+import ShowExampleCard from "../../../components/Card/ShowExampleCard";
+import { fetchPackageDetailsData } from "../../../Data/Package/PackageApi";
+import { postImagepackage } from "../../../Data/Image/ImagesApi";
+import { fetchUserData } from "../../../Data/Profile/ProfileApi";
 
 // Helper function for input validation
 const validateInput = (value, fieldName) => {
@@ -21,78 +21,23 @@ const validateInput = (value, fieldName) => {
   return "";
 };
 
-const Package = () => {
+const DetailPackage = () => {
   const navigate = useNavigate();
+  const { id } = useParams(); // Get the package ID from the URL
 
   const [price, setPrice] = useState("");
-  const [priceError, setPriceError] = useState("");
   const [time, setTime] = useState("");
-  const [timeError, setTimeError] = useState("");
   const [packageName, setPackageName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [primarySkill, setPrimarySkill] = useState("");
   const [questionCount, setQuestionCount] = useState(null);
   const [channel, setChannel] = useState("chat");
   const [details, setDetails] = useState("");
+  const [imagespackage, setImagespackage] = useState("");
   const [fortuneTeller, setFortuneTeller] = useState("กำลังโหลด...");
   const [fortuneTellerImage, setFortuneTellerImage] = useState("");
   const [uploadedImage, setUploadedImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const data = await fetchUserData();
-        setFortuneTeller(data.display_name || "ไม่พบชื่อ");
-        setFortuneTellerImage(
-          data.image || "https://via.placeholder.com/300x300"
-        );
-        setPrimarySkill(data.primary_skill || "ไพ่ยิปซี");
-      } catch (error) {
-        console.error("Error fetching fortune teller data:", error);
-      } 
-    };
-
-    getUserData();
-  }, []);
-
-  
-  const handleTimeChange = (e) => {
-    const value = e.target.value;
-    const error = validateTime(value);
-    setTimeError(error);
-    if (!error) setTime(value); // Set the value if there's no error
-  };
-  
-  const validateTime = (value) => {
-    if (isNaN(value) || value <= 0 || value.includes(".")) {
-      return "กรุณากรอกเวลาที่มากกว่า 0 นาที";
-    }
-    return "";
-  };
-  
-  const convertTimeToTimedelta = (time) => {
-    // Convert to ISO 8601 Duration format: PT{time}M
-    return `PT${parseInt(time, 10)}M`; // Convert to ISO 8601 duration (e.g. PT20M)
-  };
-  
-
-  const handlePriceChange = (e) => {
-    const value = e.target.value;
-    const error = validateInput(value, "ราคา");
-    setPriceError(error);
-
-    if (!error || value === "") {
-      const numericValue = Number(value);
-      if (numericValue >= 0 && Number.isInteger(numericValue)) {
-        setPrice(value);
-      } else {
-        setPriceError("ราคา ต้องเป็นจำนวนที่มากกว่า 0");
-      }
-    }
-  };
-
-  // Categories array
   const categories = [
     "ความรัก",
     "การงาน",
@@ -108,25 +53,80 @@ const Package = () => {
     "อื่นๆ",
   ];
 
-  const handleChannelChange = (selectedChannel) => setChannel(selectedChannel);
-  const handleCategoryClick = (category) => setSelectedCategory(category);
-  const handleDetailsChange = (e) => setDetails(e.target.value);
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const data = await fetchUserData();
+        setFortuneTeller(data.display_name || "ไม่พบชื่อ");
+        setFortuneTellerImage(
+          data.image || "https://via.placeholder.com/300x300"
+        );
+        setPrimarySkill(data.primary_skill || "ไพ่ยิปซี");
+      } catch (error) {
+        console.error("Error fetching fortune teller data:", error);
+      }
+    };
+
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    const fetchPackageDetails = async () => {
+      try {
+        const data = await fetchPackageDetailsData(id); // Fetch data based on package ID
+        if (data) {
+          setPackageName(data.name);
+          setPrice(data.price);
+          setTime(data.duration / 60); // Convert duration from seconds to minutes
+          setDetails(data.description);
+          setQuestionCount(data.question_limit);
+          setChannel(data.foretell_channel);
+          setImagespackage(data.image);
+          setSelectedCategory(data.category);
+          setPrimarySkill(data.reading_type);
+        }
+      } catch (error) {
+        console.error("Error fetching package details:", error);
+      }
+    };
+
+    fetchPackageDetails();
+  }, [id]); // Dependency array ensures it runs whenever `id` changes
+
+  const handleTimeChange = (e) => {
+    const value = e.target.value;
+    const error = validateTime(value);
+    setTimeError(error);
+    if (!error) setTime(value);
+  };
+
+  const validateTime = (value) => {
+    if (isNaN(value) || value <= 0 || value.includes(".")) {
+      return "กรุณากรอกเวลาที่มากกว่า 0 นาที";
+    }
+    return "";
+  };
+
+  const handlePriceChange = (e) => {
+    const value = e.target.value;
+    const error = validateInput(value, "ราคา");
+    setPriceError(error);
+    if (!error || value === "") {
+      setPrice(value);
+    }
+  };
 
   const handleImageUpload = (file) => {
-    setUploadedImage(file);
+    setUploadedImage(file); // Update the uploaded image state
   };
+
   const handleSave = async () => {
-    setIsLoading(true); // เปิดหน้าโหลด
-  
-    // ปิดการเลื่อนหน้าจอขณะบันทึก
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden"; // ปิดการเลื่อนใน html
-  
-    const formattedTime = convertTimeToTimedelta(time); // Convert time input to an integer
+    setIsLoading(true); // Show loading state
+
     const newPackage = {
       name: packageName,
       price: parseInt(price, 10),
-      duration: formattedTime,
+      duration: `PT${parseInt(time, 10)}M`, // Convert to ISO 8601 format
       description: details,
       question_limit: questionCount,
       foretell_channel: channel,
@@ -134,36 +134,27 @@ const Package = () => {
       category: selectedCategory,
       required_data: ["name"],
     };
-  
-    console.log("ข้อมูลที่กรอก:", newPackage);
-  
+
     try {
       const response = await createPackagedraft(newPackage);
-  
+
       if (uploadedImage) {
         const responseImage = await postImagepackage(
           uploadedImage,
           response?.id
-        ); // ส่งรูปภาพไปบันทึก
+        );
         console.log("บันทึกรูปภาพสำเร็จ:", responseImage);
       }
-  
-      console.log("ID ของแพ็คเกจที่บันทึก:", response?.id);
-      setIsLoading(false); // ซ่อนหน้าโหลด
+
       navigate("/package/drafted");
     } catch (error) {
       console.error("Error saving package draft:", error);
-      setIsLoading(false); // ซ่อนหน้าโหลดเมื่อเกิดข้อผิดพลาด
-    } finally {
-      // เปิดการเลื่อนหน้าจอเมื่อบันทึกเสร็จ
-      document.body.style.overflow = "auto";
-      document.documentElement.style.overflow = "auto"; // เปิดการเลื่อนใน html
+      setIsLoading(false);
     }
   };
-  
 
   return (
-    <Layout>
+    <LayoutDetails>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 pr-8 pl-2 mr-4 space-y-6">
           {/* Package Name */}
@@ -198,13 +189,8 @@ const Package = () => {
               placeholder="15"
               value={time}
               onChange={handleTimeChange}
-              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${
-                timeError ? "border-red-500" : "border-gray-300"
-              }`}
+              className="w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none"
             />
-            {timeError && (
-              <p className="text-red-500 text-sm mt-1">{timeError}</p>
-            )}
           </div>
 
           {/* Price Input */}
@@ -221,13 +207,8 @@ const Package = () => {
               placeholder="99"
               value={price}
               onChange={handlePriceChange}
-              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${
-                priceError ? "border-red-500" : "border-gray-300"
-              }`}
+              className="w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none"
             />
-            {priceError && (
-              <p className="text-red-500 text-sm mt-1">{priceError}</p>
-            )}
           </div>
 
           {/* Channel Selector */}
@@ -247,12 +228,12 @@ const Package = () => {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => handleCategoryClick(category)}
+                  onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-full border ${
                     selectedCategory === category
                       ? "bg-purple-600 text-white"
                       : "bg-white text-gray-700 border-gray-300"
-                  } transition-all duration-200`}
+                  }`}
                 >
                   {category}
                 </button>
@@ -282,7 +263,7 @@ const Package = () => {
             callTime={`${time || "15"} นาที`}
             packageType={channel}
             status="draft"
-            onImageUpload={handleImageUpload}
+            onImageUpload={imagespackage}
           />
         </div>
       </div>
@@ -295,7 +276,7 @@ const Package = () => {
         <textarea
           className="w-full h-[225px] pt-4 px-6 border border-zinc-300 rounded-md resize-none"
           value={details}
-          onChange={handleDetailsChange}
+          onChange={(e) => setDetails(e.target.value)}
         />
       </div>
 
@@ -316,8 +297,8 @@ const Package = () => {
           </div>
         </div>
       )}
-    </Layout>
+    </LayoutDetails>
   );
 };
 
-export default Package;
+export default DetailPackage;
