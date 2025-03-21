@@ -1,32 +1,29 @@
+// src/pages/DetailPackage.js
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import LayoutDetails from "../OverviewPackage/LayoutDetails";
-import ChannelSelectDropdown from "../../../components/Dropdown/ChannelSelectDropdown";
-import QuestionCountDropdown from "../../../components/Dropdown/QuestionCountDropdown";
+import PackageNameInput from "../PackageFrom/PackageNameInput";
+import TimeInput from "../PackageFrom/TimeInput";
+import PriceInput from "../PackageFrom/PriceInput";
+import CategorySelector from "../PackageFrom/CategorySelector";
+import QuestionCountSelector from "../PackageFrom/QuestionCountSelector";
+import PackageDetailsTextarea from "../PackageFrom/PackageDetailsTextarea";
+import SaveButton from "../PackageFrom/SaveButton";
 import ShowExampleCard from "../../../components/Card/ShowExampleCard";
-import { fetchPackageDetailsData } from "../../../Data/Package/PackageApi";
+import {
+  fetchPackageDetailsData,
+  updatePackageDetailsData,
+} from "../../../Data/Package/PackageApi";
 import { postImagepackage } from "../../../Data/Image/ImagesApi";
 import { fetchUserData } from "../../../Data/Profile/ProfileApi";
-
-// Helper function for input validation
-const validateInput = (value, fieldName) => {
-  if (
-    value === "0" ||
-    value.includes(".") ||
-    /^[^1-9]/.test(value) ||
-    /[^0-9]/.test(value)
-  ) {
-    return `${fieldName} ต้องเป็นจำนวนเต็มที่มากกว่า 0 และไม่มีสัญลักษณ์`;
-  }
-  return "";
-};
+import ChannelSelectDropdown from "../../../components/Dropdown/ChannelSelectDropdown";
 
 const DetailPackage = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the package ID from the URL
+  const { id } = useParams();
 
-  const [price, setPrice] = useState("");
-  const [time, setTime] = useState("");
+  const [price, setPrice] = useState(0);
+  const [time, setTime] = useState(0);
   const [packageName, setPackageName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [primarySkill, setPrimarySkill] = useState("");
@@ -38,20 +35,7 @@ const DetailPackage = () => {
   const [fortuneTellerImage, setFortuneTellerImage] = useState("");
   const [uploadedImage, setUploadedImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const categories = [
-    "ความรัก",
-    "การงาน",
-    "การเงิน",
-    "สุขภาพ",
-    "ภาพรวม",
-    "ดวงรายเดือน",
-    "ดวงรายปี",
-    "เนื้อคู่",
-    "ค้นหาตัวตน",
-    "การเรียน",
-    "ย้ายงาน",
-    "อื่นๆ",
-  ];
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     const getUserData = async () => {
@@ -76,14 +60,15 @@ const DetailPackage = () => {
         const data = await fetchPackageDetailsData(id); // Fetch data based on package ID
         if (data) {
           setPackageName(data.name);
-          setPrice(data.price);
-          setTime(data.duration / 60); // Convert duration from seconds to minutes
+          setPrice(data.price ? parseInt(data.price, 10) : 0);
+          setTime(data.duration ? data.duration / 60 : 0);
           setDetails(data.description);
           setQuestionCount(data.question_limit);
           setChannel(data.foretell_channel);
           setImagespackage(data.image);
           setSelectedCategory(data.category);
           setPrimarySkill(data.reading_type);
+          setStatus(data.status); // กำหนดสถานะของ package
         }
       } catch (error) {
         console.error("Error fetching package details:", error);
@@ -91,28 +76,23 @@ const DetailPackage = () => {
     };
 
     fetchPackageDetails();
-  }, [id]); // Dependency array ensures it runs whenever `id` changes
+  }, [id]);
 
   const handleTimeChange = (e) => {
     const value = e.target.value;
-    const error = validateTime(value);
-    setTimeError(error);
-    if (!error) setTime(value);
-  };
+    const parsedValue = parseInt(value, 10);
 
-  const validateTime = (value) => {
-    if (isNaN(value) || value <= 0 || value.includes(".")) {
-      return "กรุณากรอกเวลาที่มากกว่า 0 นาที";
+    if (value === "" || parsedValue > 0) {
+      setTime(parsedValue); // แก้ไขให้สามารถกรอกตัวเลขที่ถูกต้องได้
     }
-    return "";
   };
 
   const handlePriceChange = (e) => {
     const value = e.target.value;
-    const error = validateInput(value, "ราคา");
-    setPriceError(error);
-    if (!error || value === "") {
-      setPrice(value);
+    const parsedValue = Number(value); // ใช้ Number แทน parseInt
+
+    if (value === "" || parsedValue >= 0) {
+      setPrice(parsedValue || 0); // ถ้า parsedValue เป็น NaN หรือค่าว่าง ให้ใช้ 0
     }
   };
 
@@ -125,10 +105,10 @@ const DetailPackage = () => {
 
     const newPackage = {
       name: packageName,
-      price: parseInt(price, 10),
+      price: price.toString(), // Convert price to string
       duration: `PT${parseInt(time, 10)}M`, // Convert to ISO 8601 format
       description: details,
-      question_limit: questionCount,
+      question_limit: parseInt(questionCount, 10) || 0, // Ensure questionCount is a valid number, fallback to 0 if invalid
       foretell_channel: channel,
       reading_type: primarySkill,
       category: selectedCategory,
@@ -136,7 +116,7 @@ const DetailPackage = () => {
     };
 
     try {
-      const response = await createPackagedraft(newPackage);
+      const response = await updatePackageDetailsData(id, newPackage);
 
       if (uploadedImage) {
         const responseImage = await postImagepackage(
@@ -148,7 +128,7 @@ const DetailPackage = () => {
 
       navigate("/package/drafted");
     } catch (error) {
-      console.error("Error saving package draft:", error);
+      console.error("Error saving package:", error);
       setIsLoading(false);
     }
   };
@@ -157,100 +137,28 @@ const DetailPackage = () => {
     <LayoutDetails>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 pr-8 pl-2 mr-4 space-y-6">
-          {/* Package Name */}
-          <div className="mb-4">
-            <label
-              htmlFor="package-name"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              ชื่อแพคเกจ
-            </label>
-            <input
-              id="package-name"
-              type="text"
-              placeholder="ความรักอยู่ที่ไหน"
-              value={packageName}
-              onChange={(e) => setPackageName(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring focus:ring-purple-200 focus:outline-none"
-            />
-          </div>
-
-          {/* Time Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="time"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              เวลาที่ใช้ (นาที)
-            </label>
-            <input
-              id="time"
-              type="number"
-              placeholder="15"
-              value={time}
-              onChange={handleTimeChange}
-              className="w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none"
-            />
-          </div>
-
-          {/* Price Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="price"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              ราคา (Coin)
-            </label>
-            <input
-              id="price"
-              type="number"
-              placeholder="99"
-              value={price}
-              onChange={handlePriceChange}
-              className="w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none"
-            />
-          </div>
-
-          {/* Channel Selector */}
+          <PackageNameInput
+            packageName={packageName}
+            setPackageName={setPackageName}
+          />
+          <TimeInput time={time} handleTimeChange={handleTimeChange} />
+          <PriceInput price={price} handlePriceChange={handlePriceChange} />
           <div className="mb-4">
             <label className="block text-gray-700 font-medium mb-2">
               รูปแบบดูดวง
             </label>
-            <ChannelSelectDropdown onChannelChange={setChannel} />
+            <ChannelSelectDropdown
+              selectedChannel={channel}
+              onChannelChange={setChannel}
+            />
           </div>
-
-          {/* Category Selection */}
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">
-              หมวดหมู่
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full border ${
-                    selectedCategory === category
-                      ? "bg-purple-600 text-white"
-                      : "bg-white text-gray-700 border-gray-300"
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Question Count */}
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">
-              จำนวนคำถาม
-            </label>
-            <QuestionCountDropdown onQuestionCountChange={setQuestionCount} />
-          </div>
+          <CategorySelector
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+          <QuestionCountSelector setQuestionCount={setQuestionCount} />
         </div>
 
-        {/* Example Card */}
         <div className="w-[330px] md:w-1/3 pt-6 flex items-start justify-center mx-auto">
           <ShowExampleCard
             title={packageName || "ความรักอยู่ที่ไหน"}
@@ -263,32 +171,19 @@ const DetailPackage = () => {
             callTime={`${time || "15"} นาที`}
             packageType={channel}
             status="draft"
-            onImageUpload={imagespackage}
+            onImageUpload={handleImageUpload}
+            defaultImage={imagespackage}
           />
         </div>
       </div>
 
-      {/* Package Details */}
-      <div className="pl-2 my-4">
-        <label className="block text-gray-700 font-medium mb-2">
-          รายละเอียดแพ็กเกจ
-        </label>
-        <textarea
-          className="w-full h-[225px] pt-4 px-6 border border-zinc-300 rounded-md resize-none"
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
-        />
-      </div>
+      <PackageDetailsTextarea details={details} setDetails={setDetails} />
 
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <button
-          className="bg-primary text-white py-2 px-14 rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-secondary/80"
-          onClick={handleSave}
-        >
-          บันทึก
-        </button>
-      </div>
+      <SaveButton
+        status={status}
+        handleSave={handleSave}
+        isLoading={isLoading}
+      />
 
       {isLoading && (
         <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-gray-900 z-50">

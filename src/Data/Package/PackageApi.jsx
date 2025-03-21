@@ -89,3 +89,16 @@ export const fetchPackageDetailsData = async (packageId) => {
     throw error;
   }
 };
+
+export const updatePackageDetailsData = async (packageId, updatedPackageData) => {
+  try {
+    const response = await axiosInstance.patch(
+      `/me/package/fortune/${packageId}`,
+      updatedPackageData  // ส่งข้อมูลแพ็คเกจที่ต้องการอัปเดต
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error patch package data:", error);
+    throw error;
+  }
+};

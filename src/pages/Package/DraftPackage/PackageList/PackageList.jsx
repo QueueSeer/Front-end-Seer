@@ -51,7 +51,6 @@ const PackageList = ({
           rating={pkg.seer_rating ?? 0}
           reviews={pkg.seer_review_count}
           price={pkg.price}
-          // แปลงเวลาเป็นนาทีถ้า pkg.duration เป็นวินาที
           callTime={`${convertSecondsToMinutes(pkg.duration)} นาที`}
           packageType={pkg.foretell_channel}
           status={pkg.status}
