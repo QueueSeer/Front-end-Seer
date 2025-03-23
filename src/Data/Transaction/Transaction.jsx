@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 
 const fetchSelfTransactions = async ({
   last_id,
-  limit = 10,
+  limit = 100,
   activity_id,
   activity_type,
   txn_type,

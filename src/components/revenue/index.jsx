@@ -1,4 +1,3 @@
-// src/pages/Revenue.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Images from "../../assets";
@@ -13,13 +12,14 @@ const Revenue = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
-  const [dateFilter, setDateFilter] = useState("month");
+  const [dateFilter, setDateFilter] = useState("month"); // Initial date filter state
+  const itemsPerPage = 10; // กำหนดจำนวนรายการต่อหน้า
 
   const handleDateFilterChange = (event) => {
     setDateFilter(event.target.value);
   };
 
+  // ฟังก์ชันสำหรับกรองข้อมูล
   const filteredTransactions = transactions.filter((item) => {
     const transactionDate = new Date(item.date_created);
     const now = new Date();
@@ -35,6 +35,40 @@ const Revenue = () => {
     return true;
   });
 
+  // คำนวณจำนวนหน้า
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage); 
+
+  // คำนวณช่วงของรายการที่จะถูกแสดงในแต่ละหน้า
+  const indexOfLastTransaction = currentPage * itemsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - itemsPerPage;
+  const currentTransactions = filteredTransactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+
+  // โหลดข้อมูล
+  useEffect(() => {
+    const loadTransactions = async () => {
+      try {
+        const data = await fetchSelfTransactions();
+        setTransactions(data);
+      } catch (err) {
+        setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadTransactions();
+  }, []);
+
+  // กรณีที่ยังโหลดข้อมูล
+  if (loading)
+    return (
+      <p className="text-center text-gray-700 dark:text-gray-300">
+        กำลังโหลดข้อมูล...
+      </p>
+    );
+  // กรณีที่เกิดข้อผิดพลาด
+  if (error) return <p className="text-center text-red-500">{error}</p>;
+
+  // ฟังก์ชันเพื่อดึงชื่อเดือนที่ไม่ซ้ำ
   const getUniqueMonths = (transactions) => {
     const months = transactions.map((item) => {
       const transactionDate = new Date(item.date_created);
@@ -61,28 +95,6 @@ const Revenue = () => {
     });
   };
 
-  useEffect(() => {
-    const loadTransactions = async () => {
-      try {
-        const data = await fetchSelfTransactions();
-        setTransactions(data);
-      } catch (err) {
-        setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadTransactions();
-  }, []);
-
-  if (loading)
-    return (
-      <p className="text-center text-gray-700 dark:text-gray-300">
-        กำลังโหลดข้อมูล...
-      </p>
-    );
-  if (error) return <p className="text-center text-red-500">{error}</p>;
-
   const uniqueMonths = getUniqueMonths(transactions);
 
   return (
@@ -101,7 +113,7 @@ const Revenue = () => {
           uniqueMonths={uniqueMonths}
         />
 
-        <TransactionTable transactions={filteredTransactions} />
+        <TransactionTable transactions={currentTransactions} /> {/* เปลี่ยนจาก filteredTransactions เป็น currentTransactions */}
 
         <Pagination
           currentPage={currentPage}
