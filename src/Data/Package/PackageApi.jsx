@@ -1,4 +1,4 @@
-import axiosInstance from "../AxiosConfig"; // ใช้ axios ที่ตั้งค่าไว้
+import axiosInstance from "../AxiosConfig"; 
 
 // ฟังก์ชันที่ใช้ดึงข้อมูลแพ็กเกจ Draft
 export const fetchPackageDraftData = async () => {
