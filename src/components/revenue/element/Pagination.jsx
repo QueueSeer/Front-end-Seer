@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Images from "../../../assets";
 
 const Pagination = ({ currentPage, setCurrentPage, totalPages }) => {
@@ -28,5 +28,6 @@ const Pagination = ({ currentPage, setCurrentPage, totalPages }) => {
     </div>
   );
 };
+
 
 export default Pagination;
