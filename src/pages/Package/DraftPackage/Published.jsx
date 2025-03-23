@@ -50,7 +50,7 @@ const Published = () => {
       }
       setPackages(packages.filter((pkg) => !selectedPackages.includes(pkg.id)));
       setSelectedPackages([]);
-      alert("ลบแพ็กเกจที่เลือกสำเร็จ!");
+      setIsPopupOpendelete(false);
     } catch (error) {
       console.error("Error deleting packages:", error);
       alert("เกิดข้อผิดพลาดในการลบแพ็กเกจ");
@@ -65,7 +65,7 @@ const Published = () => {
         await updatePackageStatus(pkgId, "hidden");
       }
       setSelectedPackages([]);
-      alert("Selected published packages have been Hidden!");
+      setIsPopupOpen(false);    
       navigate("/package/hiddenPackage");
     } catch (error) {
       console.error("Error hiding packages:", error);

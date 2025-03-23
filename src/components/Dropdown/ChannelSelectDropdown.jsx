@@ -1,40 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ChannelSelectDropdown = ({ onChannelChange }) => {
+const ChannelSelectDropdown = ({ selectedChannel, onChannelChange }) => {
+  // ตั้งค่าเริ่มต้นให้ selectedChannel เป็น "chat" ถ้าไม่มีค่า
+  const [channel, setChannel] = useState(selectedChannel || "chat");
+  const [isOpen, setIsOpen] = useState(false); // สร้างสถานะเพื่อควบคุมการแสดงผลของ Dropdown
+
   const options = [
     { value: "chat", label: "ช่องทางสนทนา" },
     { value: "phone", label: "การโทร" },
     { value: "video", label: "การวิดีโอคอล" },
   ];
 
-  const [selectedChannel, setSelectedChannel] = useState(options[0].label); // ค่าเริ่มต้นจาก options
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Toggle เปิด/ปิดเมนู
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  useEffect(() => {
+    // อัปเดตค่า selectedChannel เมื่อมันมีการเปลี่ยนแปลงจาก parent component
+    if (selectedChannel) {
+      setChannel(selectedChannel);
+    }
+  }, [selectedChannel]);
 
   // ฟังก์ชันจัดการการเลือกช่องทาง
   const handleSelect = (option) => {
-    setSelectedChannel(option.label); // อัปเดตค่าที่เลือก
-    setIsOpen(false); // ปิดเมนู
-
-    // ส่งค่าไปยังฟังก์ชันพาเรนต์
     if (onChannelChange) {
-      onChannelChange(option.value); // ส่งค่า value ของช่องทาง
+      onChannelChange(option.value); // ส่งค่า value ของช่องทางไปยัง parent component
+      setChannel(option.value); // อัปเดต channel ในสถานะ
+      setIsOpen(false); // ปิด Dropdown เมื่อเลือกช่องทาง
     }
+  };
+
+  // ฟังก์ชันเปิด/ปิด Dropdown
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
     <div className="relative inline-block text-left w-full">
       {/* Dropdown Button */}
       <button
-        onClick={toggleDropdown}
+        onClick={toggleDropdown} // เมื่อคลิกที่ปุ่มจะ toggle การเปิด/ปิดเมนู
         className="flex items-center justify-between w-full px-4 py-3 text-black border rounded-md border-gray-300 shadow-sm focus:outline-none"
       >
-        {selectedChannel}
-        <span
-          className={`transition-transform duration-200 ${isOpen ? "rotate-180" : "rotate-0"}`}
-        >
+        {options.find(option => option.value === channel)?.label || "เลือกช่องทาง"} {/* แสดงชื่อช่องทางที่เลือก */}
+        <span className="transition-transform duration-200">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -60,7 +66,7 @@ const ChannelSelectDropdown = ({ onChannelChange }) => {
               <li
                 key={option.value}
                 className="px-6 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleSelect(option)}
+                onClick={() => handleSelect(option)} // เมื่อคลิกเลือกช่องทาง
               >
                 {option.label}
               </li>

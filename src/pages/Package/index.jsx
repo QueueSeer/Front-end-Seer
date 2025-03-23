@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "./OverviewPackage/Layout";
+import PackageNameInput from "./PackageFrom/PackageNameInput";
+import TimeInput from "./PackageFrom/TimeInput";
+import PriceInput from "./PackageFrom/PriceInput";
+import CategorySelector from "./PackageFrom/CategorySelector";
+import QuestionCountSelector from "./PackageFrom/QuestionCountSelector";
+import PackageDetailsTextarea from "./PackageFrom/PackageDetailsTextarea";
+import SaveButton from "./PackageFrom/SaveButton";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
 import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ShowExampleCard from "../../components/Card/ShowExampleCard";
@@ -63,17 +70,18 @@ const Package = () => {
     setTimeError(error);
     if (!error) setTime(value); // Set the value if there's no error
   };
-
+  
   const validateTime = (value) => {
     if (isNaN(value) || value <= 0 || value.includes(".")) {
       return "กรุณากรอกเวลาที่มากกว่า 0 นาที";
     }
     return "";
   };
-
+  
   const convertTimeToTimedelta = (time) => {
-    return parseInt(time, 10); // Convert string to integer
+    return `PT${parseInt(time, 10)}M`; // Convert to ISO 8601 duration (e.g. PT20M)
   };
+  
 
   const handlePriceChange = (e) => {
     const value = e.target.value;
@@ -82,7 +90,7 @@ const Package = () => {
 
     if (!error || value === "") {
       const numericValue = Number(value);
-      if (numericValue > 0 && Number.isInteger(numericValue)) {
+      if (numericValue >= 0 && Number.isInteger(numericValue)) {
         setPrice(value);
       } else {
         setPriceError("ราคา ต้องเป็นจำนวนที่มากกว่า 0");
@@ -90,24 +98,7 @@ const Package = () => {
     }
   };
 
-  // Categories array
-  const categories = [
-    "ความรัก",
-    "การงาน",
-    "การเงิน",
-    "สุขภาพ",
-    "ภาพรวม",
-    "ดวงรายเดือน",
-    "ดวงรายปี",
-    "เนื้อคู่",
-    "ค้นหาตัวตน",
-    "การเรียน",
-    "ย้ายงาน",
-    "อื่นๆ",
-  ];
-
-  const handleChannelChange = (selectedChannel) => setChannel(selectedChannel);
-  const handleCategoryClick = (category) => setSelectedCategory(category);
+ 
   const handleDetailsChange = (e) => setDetails(e.target.value);
 
   const handleImageUpload = (file) => {
@@ -165,68 +156,13 @@ const Package = () => {
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 pr-8 pl-2 mr-4 space-y-6">
           {/* Package Name */}
-          <div className="mb-4">
-            <label
-              htmlFor="package-name"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              ชื่อแพคเกจ
-            </label>
-            <input
-              id="package-name"
-              type="text"
-              placeholder="ความรักอยู่ที่ไหน"
-              value={packageName}
-              onChange={(e) => setPackageName(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring focus:ring-purple-200 focus:outline-none"
-            />
-          </div>
+          <PackageNameInput packageName={packageName} setPackageName={setPackageName} />
 
           {/* Time Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="time"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              เวลาที่ใช้ (นาที)
-            </label>
-            <input
-              id="time"
-              type="number"
-              placeholder="15"
-              value={time}
-              onChange={handleTimeChange}
-              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${
-                timeError ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {timeError && (
-              <p className="text-red-500 text-sm mt-1">{timeError}</p>
-            )}
-          </div>
+          <TimeInput time={time} handleTimeChange={handleTimeChange} />
 
           {/* Price Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="price"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              ราคา (Coin)
-            </label>
-            <input
-              id="price"
-              type="number"
-              placeholder="99"
-              value={price}
-              onChange={handlePriceChange}
-              className={`w-full px-4 py-3 border rounded-md focus:ring focus:ring-purple-200 focus:outline-none ${
-                priceError ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {priceError && (
-              <p className="text-red-500 text-sm mt-1">{priceError}</p>
-            )}
-          </div>
+          <PriceInput price={price} handlePriceChange={handlePriceChange} />
 
           {/* Channel Selector */}
           <div className="mb-4">
@@ -237,34 +173,14 @@ const Package = () => {
           </div>
 
           {/* Category Selection */}
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">
-              หมวดหมู่
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => handleCategoryClick(category)}
-                  className={`px-4 py-2 rounded-full border ${
-                    selectedCategory === category
-                      ? "bg-purple-600 text-white"
-                      : "bg-white text-gray-700 border-gray-300"
-                  } transition-all duration-200`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
+          <CategorySelector
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
 
           {/* Question Count */}
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">
-              จำนวนคำถาม
-            </label>
-            <QuestionCountDropdown onQuestionCountChange={setQuestionCount} />
-          </div>
+          <QuestionCountSelector setQuestionCount={setQuestionCount} />
+
         </div>
 
         {/* Example Card */}

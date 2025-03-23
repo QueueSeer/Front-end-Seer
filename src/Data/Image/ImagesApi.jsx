@@ -19,7 +19,7 @@ export const postImagepackage = async (imageFile, packageId) => {
 
     const response = await axiosInstance.post(`${packageId}`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data", // ต้องกำหนด multipart/form-data
+        "Content-Type": "multipart/form-data", 
       },
     });
 

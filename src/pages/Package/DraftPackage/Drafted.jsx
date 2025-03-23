@@ -64,7 +64,8 @@ const Drafted = () => {
       setPackages(updatedPackages);
       setSelectedPackages([]);
 
-      alert("ลบแพ็กเกจที่เลือกสำเร็จ!");
+      setIsPopupOpendelete(false);
+
     } catch (error) {
       console.error("Error deleting packages:", error);
       alert("เกิดข้อผิดพลาดในการลบแพ็กเกจ");
@@ -85,7 +86,7 @@ const Drafted = () => {
       );
       setPackages(updatedPackages);
       setSelectedPackages([]);
-      alert("Selected draft packages have been published!");
+      setIsPopupOpen(false);
       navigate("/package/published");
     } catch (error) {
       console.error("Error publishing packages:", error);

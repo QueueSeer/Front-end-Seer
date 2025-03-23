@@ -2,6 +2,11 @@
 import React from "react";
 import PackageCardCheckbox from "../../../../components/Card/PackageCardCheckbox";
 
+// ฟังก์ชันสำหรับแปลงจากวินาทีเป็นนาที
+const convertSecondsToMinutes = (seconds) => {
+  return seconds / 60; // แปลงจากวินาทีเป็นนาที
+};
+
 const PackageList = ({
   packages,
   selectedPackages,
@@ -26,7 +31,11 @@ const PackageList = ({
       ไม่มีแพ็กเกจที่ร่างไว้
     </div>
   ) : (
-    <div className="flex flex-wrap gap-9 mx-auto">
+    <div
+      className={`flex flex-wrap gap-8 mx-2 md:mx-6 md:gap-10 ${
+        packages.length <= 2 ? "justify-start" : "justify-around"
+      }`}
+    >
       {packages.map((pkg) => (
         <PackageCardCheckbox
           key={pkg.id}
@@ -42,7 +51,7 @@ const PackageList = ({
           rating={pkg.seer_rating ?? 0}
           reviews={pkg.seer_review_count}
           price={pkg.price}
-          callTime={`${pkg.duration} นาที`}
+          callTime={`${convertSecondsToMinutes(pkg.duration)} นาที`}
           packageType={pkg.foretell_channel}
           status={pkg.status}
           isSelected={selectedPackages.includes(pkg.id)}

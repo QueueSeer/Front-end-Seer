@@ -6,8 +6,9 @@ const ImageUploader = ({
   setIsImageValid,
   resetImage,
   onUploadSuccess,
+  defaultImage, // Add the defaultImage prop here
 }) => {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(defaultImage || null);
   const [selectedFile, setSelectedFile] = useState(null); // Store actual file
   const [errorMessage, setErrorMessage] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -20,6 +21,13 @@ const ImageUploader = ({
       setErrorMessage("");
     }
   }, [resetImage, setIsImageValid]);
+
+  // If defaultImage prop changes, update the image state
+  useEffect(() => {
+    if (defaultImage) {
+      setImage(defaultImage);
+    }
+  }, [defaultImage]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -44,7 +52,7 @@ const ImageUploader = ({
 
   const handleImageUpload = async () => {
     if (!selectedFile) {
-      setErrorMessage("กรุณาเลือกภาพก่อนอัปโหลด");
+      setErrorMessage("กรุณากรอกภาพก่อนอัปโหลด");
       return;
     }
 
@@ -128,8 +136,6 @@ const ImageUploader = ({
           />
         </label>
       )}
-
-      
     </div>
   );
 };

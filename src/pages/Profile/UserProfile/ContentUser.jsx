@@ -8,7 +8,7 @@ import PopupEditProfile from "../../../components/Popup/profile/PopupEditProfile
 
 const ContentUser = () => {
   const [userData, setUserData] = useState(null);
-  const [userInfo, setUserInfo] = useState(null); // Store email and phone number
+  const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [error, setError] = useState(null);

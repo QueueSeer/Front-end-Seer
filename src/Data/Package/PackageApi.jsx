@@ -1,4 +1,4 @@
-import axiosInstance from "../AxiosConfig"; // ใช้ axios ที่ตั้งค่าไว้
+import axiosInstance from "../AxiosConfig"; 
 
 // ฟังก์ชันที่ใช้ดึงข้อมูลแพ็กเกจ Draft
 export const fetchPackageDraftData = async () => {
@@ -74,6 +74,31 @@ export const createPackagedraft = async (packageData) => {
     return response.data;
   } catch (error) {
     console.error("Error posting package draft:", error);
+    throw error;
+  }
+};
+
+export const fetchPackageDetailsData = async (packageId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/me/package/fortune/${packageId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching package data:", error);
+    throw error;
+  }
+};
+
+export const updatePackageDetailsData = async (packageId, updatedPackageData) => {
+  try {
+    const response = await axiosInstance.patch(
+      `/me/package/fortune/${packageId}`,
+      updatedPackageData  // ส่งข้อมูลแพ็คเกจที่ต้องการอัปเดต
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error patch package data:", error);
     throw error;
   }
 };

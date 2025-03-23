@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";  // เพิ่มการนำเข้า Link จาก react-router-dom
 import images from "../../assets";
 
 const PackageCardCheckbox = ({
@@ -26,35 +27,36 @@ const PackageCardCheckbox = ({
 
   return (
     <div
-      className={`relative w-[270px] bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200 ${
+      className={`relative w-[275px]  bg-white rounded-lg shadow-md overflow-hidden border transition-all duration-200 ${
         isSelected ? "opacity-100" : "opacity-80"
       }`}
     >
       {/* Checkbox มุมซ้ายบน */}
-      <div className="absolute top-2 left-2 z-10">
+      <div className="absolute top-2 left-2 z-10 ">
         <input
           type="checkbox"
           checked={isSelected}
           onChange={onSelectClick}
-          className="w-6 h-6 rounded-full border-gray-300 cursor-pointer accent-primary"
+          className="w-8 h-8 rounded-full border-gray-300 cursor-pointer accent-primary"
         />
       </div>
 
-      <div className="relative">
+      {/* ใช้ Link เพื่อทำการนำทางไปที่หน้า /package/detail/:id */}
+      <Link to={`/package/detail/${id}`} className="relative block">
         <img
           src={imageSrc}
           alt={title || "Image"}
-          className="w-full h-70 object-cover"
+          className="w-full h-[200px] object-cover"
         />
         <div className="absolute bottom-2 left-2">
           <div className="bg-primary text-white text-sm px-4 py-1 rounded-full shadow">
             {Category}
           </div>
         </div>
-      </div>
+      </Link>
 
       <div className="p-4">
-        <div className="mb-3 text-[20px] h-[60px] font-semibold text-gray-800 overflow-hidden text-ellipsis line-clamp-2 ">
+        <div className="mb-3 text-[20px] h-[65px] font-semibold text-gray-800 overflow-hidden text-ellipsis line-clamp-2 ">
           {title}
         </div>
         <p className="text-sm text-gray-500 flex items-center">
@@ -65,18 +67,6 @@ const PackageCardCheckbox = ({
           />
           <span className="text-black font-regular">{fortuneTeller}</span>
         </p>
-        {/* <div className="flex items-center mt-1">
-          <span className="text-gray-800 font-regular text-sm mr-2">
-            {rating ? rating.toFixed(1) : "0.0"}
-          </span>
-          <span className="text-yellow-500 text-[18px]">
-            {"★".repeat(Math.floor(rating)) +
-              "☆".repeat(5 - Math.floor(rating))}
-          </span>
-          <span className="ml-2 text-sm text-gray-500">
-            {reviews ? reviews.toLocaleString() : "0"} reviews
-          </span>
-        </div> */}
         <div className="mt-3 text-[24px] font-bold text-secondary2">
           {price ? price.toLocaleString() : "0"} Coins
         </div>

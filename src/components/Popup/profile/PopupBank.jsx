@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BankFormpopup from "./Prompay/BankFormpopup";
 import CloseButton from "../../Button/CloseButton";
 import AddButton from "./Social/AddButton";
 import Images from "../../../assets"; // ตรวจสอบให้แน่ใจว่าไฟล์นี้มี PlusIcon
 
-const PopupBank = ({ isOpen, onClose }) => {
+const PopupBank = ({ isOpen, onClose, bankName, bankNo }) => {
   const [prompay, setPrompay] = useState([]); // เก็บข้อมูลบัญชีผู้ใช้
   const [showFormPopup, setShowFormPopup] = useState(false);
   const [currentLinkData, setCurrentLinkData] = useState({ name: "", num: "" });
   const [popupTitle, setPopupTitle] = useState(""); // เก็บชื่อ popup
+
+  // อัปเดตค่าของบัญชีพร้อมเพย์เมื่อ Component โหลด
+  useEffect(() => {
+    if (bankName && bankNo) {
+      setPrompay([{ name: bankName, num: bankNo }]);
+    }
+  }, [bankName, bankNo]);
 
   const handleAddNewLink = () => {
     setCurrentLinkData({ name: "", num: "" }); // เคลียร์ข้อมูลฟอร์ม
@@ -101,11 +108,7 @@ const PopupBank = ({ isOpen, onClose }) => {
         )}
         {!showFormPopup && (
           <div className="flex justify-end mt-6">
-            {prompay.length === 0 ? (
-              <CloseButton label="ย้อนกลับ" onClose={onClose} />
-            ) : (
-              <CloseButton label="เสร็จสิ้น" onClose={onClose} />
-            )}
+            <CloseButton label="เสร็จสิ้น" onClose={onClose} />
           </div>
         )}
       </div>

@@ -69,7 +69,7 @@ const HiddenPackage = () => {
       setPackages(updatedPackages);
       setSelectedPackages([]); // เคลียร์แพ็กเกจที่เลือก
 
-      alert("ลบแพ็กเกจที่เลือกสำเร็จ!");
+      setIsPopupOpendelete(false);
     } catch (error) {
       console.error("Error deleting packages:", error);
       alert("เกิดข้อผิดพลาดในการลบแพ็กเกจ");
@@ -91,7 +91,7 @@ const HiddenPackage = () => {
       );
       setPackages(updatedPackages); // อัปเดตข้อมูลใน state
       setSelectedPackages([]); // รีเซ็ต selectedPackages
-      alert("Selected hidden packages have been published!");
+      setIsPopupOpen(false);    
       navigate("/package/published");
     } catch (error) {
       console.error("Error publishing packages:", error);
