@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BackButton from "../../../components/Button/BackButton";
 import QuestionCard from "../../../components/Card/QuestionCard";
 import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
@@ -15,7 +15,18 @@ const formatDate = (isoDate) => {
 // ฟังก์ชันแปลงเวลา
 const formatTime = (isoDate) => {
   const options = { hour: "2-digit", minute: "2-digit" };
-  return new Date(isoDate).toLocaleTimeString("th-TH", options);
+  const time = new Date(isoDate).toLocaleTimeString("th-TH", options);
+  return `${time} น.`;
+};
+
+
+const formatPhoneNumber = (number) => {
+  if (!number) return "ไม่มีข้อมูล";
+  const rawNumber = number.replace(/\D/g, "");
+  if (rawNumber.length !== 10) return number;
+  return `${rawNumber.slice(0, 3)}-${rawNumber.slice(3, 6)}-${rawNumber.slice(
+    6
+  )}`;
 };
 
 // ฟังก์ชันในการ render ข้อมูล
@@ -27,13 +38,6 @@ const renderInfoSection = (title, content) => (
     <div className="flex-1">{content}</div>
   </div>
 );
-
-// ข้อมูลคำถาม
-const questions = [
-  "ความรักในช่วงนี้จะเป็นยังไง จะได้เจอคนที่ชอบไหม หรือมีโอกาสจะได้เจอคนที่ชอบหรือเปล่า",
-  "การงานในช่วงนี้จะเป็นอย่างไร มีโอกาสก้าวหน้าหรือไม่",
-  // เพิ่มคำถามเพิ่มเติมได้ที่นี่
-];
 
 const renderStatus = (status) => {
   switch (status) {
@@ -210,14 +214,31 @@ const DetailsAppointment = () => {
               ข้อมูลผู้จอง
             </h2>
             <div className="space-y-4 text-[18px]">
-              {renderInfoSection(
-                "ชื่อ-นามสกุล",
-                appointmentDetails.client.display_name
-              )}
-              {renderInfoSection(
-                "วันเกิด",
-                formatDate(appointmentDetails.client.required.birthdate)
-              )}
+              {appointmentDetails.client.display_name &&
+                renderInfoSection(
+                  "ชื่อ-นามสกุล",
+                  appointmentDetails.client.display_name
+                )}
+
+              {appointmentDetails.client.required.birthdate &&
+                renderInfoSection(
+                  "วันเกิด",
+                  formatDate(appointmentDetails.client.required.birthdate)
+                )}
+
+              {appointmentDetails.client.required.birthdate &&
+                renderInfoSection(
+                  "เวลาเกิด",
+                  formatTime(appointmentDetails.client.required.birthdate)
+                )}
+
+              {appointmentDetails.client.required.phone_number &&
+                renderInfoSection(
+                  "เบอร์โทรศัพท์",
+                  formatPhoneNumber(
+                    appointmentDetails.client.required.phone_number
+                  )
+                )}
             </div>
           </div>
         </div>
