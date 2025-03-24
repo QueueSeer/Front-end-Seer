@@ -21,10 +21,10 @@ const RequiredSelector = ({ selectedRequired, setSelectedRequired }) => {
 
   return (
     <div className="mb-4">
-      <label className="block text-gray-700 font-medium pb-1">
-        ข้อมูลผู้ใช้ที่ต้องการ{" "}
+      <label className="block text-gray-700 font-medium">
+        ข้อมูลผู้ใช้ที่ต้องการ
       </label>
-      <div className="block text-gray-500 font-regular mb-3">
+      <div className="block text-gray-400 font-regular mb-3 text-[16px]">
         (สามารถเลือกได้มากกว่า 1)
       </div>
       <div className="flex flex-wrap gap-2">
