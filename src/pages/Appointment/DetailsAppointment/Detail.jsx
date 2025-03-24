@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../../components/Button/BackButton";
 import QuestionCard from "../../../components/Card/QuestionCard";
 import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
-
+import { fetchAppointmentDetails } from "../../../Data/Appointment/Appointments";
+import Layout from "../../Appointment/Layout";
 
 // ฟังก์ชันแปลงวันที่
 const formatDate = (isoDate) => {
@@ -36,22 +37,28 @@ const questions = [
 
 const renderStatus = (status) => {
   switch (status) {
-    case "รอเข้ารับบริการ":
+    case "pending":
       return (
         <div className="inline-block w-[140px] py-2 bg-white text-secondary2/90 text-base font-medium rounded-full">
           รอเข้ารับบริการ
         </div>
       );
-    case "บริการสำเร็จ":
+    case "completed":
       return (
         <div className="inline-block w-[140px] py-2 bg-primary text-white text-base font-medium rounded-full border border-secondary2">
           บริการสำเร็จ
         </div>
       );
-    case "ยกเลิกบริการ":
+    case "s_cancelled":
       return (
         <div className="inline-block w-[140px] py-2 bg-cancel text-white/90 text-base font-medium rounded-full border border-bordercancel">
           ยกเลิกบริการ
+        </div>
+      );
+    case "u_cancelled":
+      return (
+        <div className="inline-block w-[140px] py-2 bg-cancel text-white/90 text-base font-medium rounded-full border border-bordercancel">
+          ยกเลิกโดยผู้ใช้
         </div>
       );
     default:
@@ -59,11 +66,13 @@ const renderStatus = (status) => {
   }
 };
 
-const Detail = () => {
-  const { id } = useParams();
-  const location = useLocation();
-  const appointmentDetails = location.state;
+const DetailsAppointment = () => {
+  const { apmt_id } = useParams();
+  console.log("Appointment ID: ", apmt_id); // ตรวจสอบค่า apmt_id
 
+  const [appointmentDetails, setAppointmentDetails] = useState(null); // Changed to null
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [popupAction, setPopupAction] = useState("");
 
@@ -90,19 +99,50 @@ const Detail = () => {
     setIsPopupVisible(false); // ซ่อน Popup
   };
 
+  useEffect(() => {
+    const getAppointmentDetails = async () => {
+      try {
+        const data = await fetchAppointmentDetails(apmt_id);
+        console.log("Fetched appointment details:", data); // ตรวจสอบข้อมูลที่ได้จาก API
+        setAppointmentDetails(data);
+      } catch (err) {
+        console.error("Error fetching appointment details:", err);
+        setError("ไม่สามารถดึงข้อมูลได้");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (apmt_id) {
+      getAppointmentDetails();
+    }
+  }, [apmt_id]);
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        กำลังโหลด...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex items-center justify-center h-screen text-red-500">
+        {error}
+      </div>
+    );
+
   if (!appointmentDetails) {
     return (
       <div className="flex items-center justify-center h-screen">
         <p className="text-xl font-medium text-gray-600 text-center">
-          ไม่มีข้อมูลสำหรับ ID {id}
+          ไม่มีข้อมูลสำหรับ ID {apmt_id}
         </p>
       </div>
     );
   }
 
   return (
-    <div >
-      
+    <Layout>
       <div className="pt-6 flex items-start">
         <BackButton />
       </div>
@@ -112,7 +152,7 @@ const Detail = () => {
         <div className="text-center text-2xl md:text-3xl font-medium text-gray-700 flex items-center gap-2">
           รหัสยืนยันคิว คือ
           <span className="text-4xl md:text-5xl font-bold text-secondary">
-            {appointmentDetails.code}
+            {appointmentDetails.confirmation_code}
           </span>
         </div>
       </div>
@@ -127,7 +167,7 @@ const Detail = () => {
                   วันที่นัดหมาย
                 </p>
                 <p className="text-[18px] md:text-[24px] font-bold">
-                  {formatDate(appointmentDetails.dateappointment)}
+                  {formatDate(appointmentDetails.start_time)}
                 </p>
               </div>
               <div className="text-center space-y-2 sm:border-x-2">
@@ -135,23 +175,32 @@ const Detail = () => {
                   เวลานัดหมาย
                 </p>
                 <p className="text-[18px] md:text-[24px] font-bold">
-                  {formatTime(appointmentDetails.dateappointment)} น.
+                  {formatTime(appointmentDetails.start_time)} น.
                 </p>
               </div>
               <div className="text-center space-y-2">
                 <p className="text-[16px] md:text-[20px] font-medium">สถานะ</p>
-                <div className="mt-4">{renderStatus(appointmentDetails.status_service)}</div>
+                <div className="mt-4">
+                  {renderStatus(appointmentDetails.status)}
+                </div>
               </div>
             </div>
             <div className="text-center mt-4 py-2">
               <p className="text-[24px] sm:text-[32px] font-semibold">
-                {appointmentDetails.packageName}
+                {appointmentDetails.package.name}
               </p>
-              <p className="text-lg font-medium">หมอดู เพียงฟ้า พยวัจญ</p>
+              <p className="text-lg font-medium">
+                {appointmentDetails.seer.name}
+              </p>
             </div>
-            <div className="text-center mt-6 py-2">
-              <p className="text-sm py-2">ช่องทางติดต่อ</p>
-              <p className="text-lg font-bold break-words">thrthrthtjtryjiyy</p>
+
+            <div className="text-center mt-4 py-2">
+              <p className="text-[16px] sm:text-[24px] font-semibold">
+                รูปแบบดูดวง
+              </p>
+              <p className="text-[16px] font-medium">
+                {appointmentDetails.seer.name}
+              </p>
             </div>
           </div>
 
@@ -161,16 +210,14 @@ const Detail = () => {
               ข้อมูลผู้จอง
             </h2>
             <div className="space-y-4 text-[18px]">
-              {renderInfoSection("ชื่อ-นามสกุล", appointmentDetails.name)}
               {renderInfoSection(
-                "วันเดือนปีเกิด",
-                formatDate(appointmentDetails.birthdate)
+                "ชื่อ-นามสกุล",
+                appointmentDetails.client.display_name
               )}
               {renderInfoSection(
-                "เวลาเกิด",
-                `${formatTime(appointmentDetails.birthdate)} น.`
+                "วันเกิด",
+                formatDate(appointmentDetails.client.required.birthdate)
               )}
-              {renderInfoSection("อีเมล", appointmentDetails.email)}
             </div>
           </div>
         </div>
@@ -179,9 +226,15 @@ const Detail = () => {
         <div className="pt-8 text-[26px] md:text-2xl font-semibold text-gray-800 mb-5">
           คำถามดูดวง
         </div>
-        {questions.map((question, index) => (
-          <QuestionCard key={index} questionText={question} index={index} />
-        ))}
+        {/* Check if questions exist and map through them */}
+        {appointmentDetails.questions &&
+        appointmentDetails.questions.length > 0 ? (
+          appointmentDetails.questions.map((question, index) => (
+            <QuestionCard key={index} questionText={question} index={index} />
+          ))
+        ) : (
+          <p className="text-gray-500">ไม่มีคำถามในตอนนี้</p> // Display a message if there are no questions
+        )}
 
         {/* Buttons */}
         <div className="flex justify-end space-x-6 mt-6">
@@ -240,8 +293,8 @@ const Detail = () => {
           </div>
         )}
       </div>
-    </div>
+    </Layout>
   );
 };
 
-export default Detail;
+export default DetailsAppointment;

@@ -20,7 +20,7 @@ const categories = [
 const CategorySelector = ({ selectedCategory, setSelectedCategory }) => {
   return (
     <div className="mb-4">
-      <label className="block text-gray-700 font-medium mb-2">
+      <label className="block text-gray-700 font-medium mb-3">
         หมวดหมู่
       </label>
       <div className="flex flex-wrap gap-2">
@@ -28,9 +28,9 @@ const CategorySelector = ({ selectedCategory, setSelectedCategory }) => {
           <button
             key={category}
             onClick={() => setSelectedCategory(category)}
-            className={`px-4 py-2 rounded-full border ${
+            className={`px-6 py-2 rounded-full border ${
               selectedCategory === category
-                ? "bg-purple-600 text-white"
+                ? "bg-primary text-white"
                 : "bg-white text-gray-700 border-gray-300"
             }`}
           >

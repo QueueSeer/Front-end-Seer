@@ -6,14 +6,12 @@ import TimeInput from "./PackageFrom/TimeInput";
 import PriceInput from "./PackageFrom/PriceInput";
 import CategorySelector from "./PackageFrom/CategorySelector";
 import QuestionCountSelector from "./PackageFrom/QuestionCountSelector";
-import PackageDetailsTextarea from "./PackageFrom/PackageDetailsTextarea";
-import SaveButton from "./PackageFrom/SaveButton";
 import ChannelSelectDropdown from "../../components/Dropdown/ChannelSelectDropdown";
-import QuestionCountDropdown from "../../components/Dropdown/QuestionCountDropdown";
 import ShowExampleCard from "../../components/Card/ShowExampleCard";
 import { fetchUserData } from "../../Data/Profile/ProfileApi";
 import { createPackagedraft } from "../../Data/Package/PackageApi";
 import { postImagepackage } from "../../Data/Image/ImagesApi";
+import RequiredSelector from "./PackageFrom/requiredSelector";
 
 // Helper function for input validation
 const validateInput = (value, fieldName) => {
@@ -37,6 +35,7 @@ const Package = () => {
   const [timeError, setTimeError] = useState("");
   const [packageName, setPackageName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedRequired, setSelectedRequired] = useState([]);
   const [primarySkill, setPrimarySkill] = useState("");
   const [questionCount, setQuestionCount] = useState(null);
   const [channel, setChannel] = useState("chat");
@@ -121,7 +120,7 @@ const Package = () => {
       foretell_channel: channel,
       reading_type: primarySkill,
       category: selectedCategory,
-      required_data: ["name"],
+      required_data: selectedRequired,
     };
   
     console.log("ข้อมูลที่กรอก:", newPackage);
@@ -176,6 +175,12 @@ const Package = () => {
           <CategorySelector
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
+          />
+
+          {/* RequiredSelector */}
+          <RequiredSelector
+            selectedRequired={selectedRequired}
+            setSelectedRequired={setSelectedRequired}
           />
 
           {/* Question Count */}

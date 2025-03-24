@@ -23,7 +23,6 @@ export const postImagepackage = async (imageFile, packageId) => {
       },
     });
 
-    console.log("✅ Image uploaded successfully:", response.data);
     return response.data;
   } catch (error) {
     console.error("❌ Error uploading image:", error.response?.data || error);

@@ -39,7 +39,7 @@ const Appointment = () => {
   const handleCardClick = (id) => {
     const appointment = appointments.find((a) => a.id === id);
     if (appointment) {
-      navigate(`/appointment/${id}`, { state: appointment });
+      navigate(`/appointment/${id}`);
     }
   };
 

@@ -16,6 +16,7 @@ import {
 import { postImagepackage } from "../../../Data/Image/ImagesApi";
 import { fetchUserData } from "../../../Data/Profile/ProfileApi";
 import ChannelSelectDropdown from "../../../components/Dropdown/ChannelSelectDropdown";
+import RequiredSelector from "../PackageFrom/requiredSelector";
 
 const DetailPackage = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const DetailPackage = () => {
   const [packageName, setPackageName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [primarySkill, setPrimarySkill] = useState("");
+  const [selectedRequired, setSelectedRequired] = useState("");
   const [questionCount, setQuestionCount] = useState(null);
   const [channel, setChannel] = useState("chat");
   const [details, setDetails] = useState("");
@@ -66,6 +68,7 @@ const DetailPackage = () => {
           setChannel(data.foretell_channel);
           setImagespackage(data.image);
           setSelectedCategory(data.category);
+          setSelectedRequired(data.required_data);
           setPrimarySkill(data.reading_type);
           setStatus(data.status); // กำหนดสถานะของ package
         }
@@ -107,25 +110,22 @@ const DetailPackage = () => {
       price: price.toString(), // Convert price to string
       duration: `PT${parseInt(time, 10)}M`, // Convert to ISO 8601 format
       description: details,
-      question_limit: parseInt(questionCount, 10) || 0, // Ensure questionCount is a valid number, fallback to 0 if invalid
+      question_limit: parseInt(questionCount, 10) || 0,
       foretell_channel: channel,
       reading_type: primarySkill,
       category: selectedCategory,
-      required_data: ["name"],
+      required_data: selectedRequired,
     };
 
     try {
-      const response = await updatePackageDetailsData(id, newPackage);
+      setIsLoading(true);
+      await updatePackageDetailsData(id, newPackage);
 
-      if (uploadedImage) {
-        const responseImage = await postImagepackage(
-          uploadedImage,
-          response?.id
-        );
-        console.log("บันทึกรูปภาพสำเร็จ:", responseImage);
+      if (uploadedImage && id) {
+        await postImagepackage(uploadedImage, id);
       }
-
-      navigate("/package/drafted");
+      navigate("/package/drafted", { replace: true }); 
+      window.location.reload(); 
     } catch (error) {
       console.error("Error saving package:", error);
       setIsLoading(false);
@@ -154,6 +154,11 @@ const DetailPackage = () => {
           <CategorySelector
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
+          />
+
+          <RequiredSelector
+            selectedRequired={selectedRequired}
+            setSelectedRequired={setSelectedRequired}
           />
           <QuestionCountSelector setQuestionCount={setQuestionCount} />
         </div>
