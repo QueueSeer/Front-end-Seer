@@ -19,7 +19,7 @@ import EmailVerification from "./pages/membership/EmailVerification";
 import Reviewpage from "./pages/Review/Reviewpage.jsx";
 import Timetable from "./pages/Timetable/timetable.jsx";
 import Appointment from "./pages/Appointment/Appointment";
-import DetailsAppointment from "./pages/Appointment/DetailsAppointment";
+import DetailsAppointment from "./pages/Appointment/DetailsAppointment/Detail.jsx";
 import Package from "./pages/Package";
 import Drafted from "./pages/Package/DraftPackage/Drafted";
 import Published from "./pages/Package/DraftPackage/Published";
@@ -81,7 +81,7 @@ export default function App() {
 
           {/* Appointments */}
           <Route path="/appointment" element={<Appointment />} />
-          <Route path="/appointment/:id" element={<DetailsAppointment />} />
+          <Route path="/appointment/:apmt_id" element={<DetailsAppointment />} />
 
           {/* Package Management */}
           <Route path="/package" element={<Package />} />
