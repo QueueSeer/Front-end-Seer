@@ -99,7 +99,7 @@ const DetailsAppointment = () => {
         <div className="pb-8 border-b-2 border-gray-300">
           <AppointmentInfoCard appointmentDetails={appointmentDetails} />
           {/* Booking Information */}
-          <BookingInfoCard client={appointmentDetails.client} />{" "}
+          <BookingInfoCard client={appointmentDetails.client} />
           {/* Use BookingInfoCard here */}
         </div>
 
