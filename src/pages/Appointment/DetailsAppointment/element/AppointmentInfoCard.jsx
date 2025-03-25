@@ -15,7 +15,7 @@ const AppointmentInfoCard = ({ appointmentDetails }) => {
         <div className="text-center space-y-2 sm:border-x-2">
           <p className="text-[16px] md:text-[20px] font-medium">เวลานัดหมาย</p>
           <p className="text-[18px] md:text-[24px] font-bold">
-            {formatTime(appointmentDetails.start_time)} น.
+            {formatTime(appointmentDetails.start_time)}
           </p>
         </div>
         <div className="text-center space-y-2">

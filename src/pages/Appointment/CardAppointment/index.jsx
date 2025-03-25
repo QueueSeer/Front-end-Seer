@@ -18,10 +18,12 @@ const formatTime = (isoDate) => {
 
 const Appointment = () => {
   const navigate = useNavigate();
-
+  
   // สถานะสำหรับจัดการการคัดลอก
   const [copiedCode, setCopiedCode] = useState("");
   const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,49 +31,68 @@ const Appointment = () => {
         const data = await fetchAppointmentReceivedData();
         setAppointments(data);
       } catch (error) {
+        setError("ไม่สามารถดึงข้อมูลการนัดหมายได้");
         console.error("Error fetching appointments:", error);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
-  // ฟังก์ชันสำหรับจัดการการคลิกบน Card
   const handleCardClick = (id) => {
-    const appointment = appointments.find((a) => a.id === id);
-    if (appointment) {
-      navigate(`/appointment/${id}`);
-    }
+    navigate(`/appointment/${id}`);
   };
 
   // ฟังก์ชันสำหรับจัดการการคัดลอก
   const handleCopy = (code) => {
     setCopiedCode(code);
-    setTimeout(() => setCopiedCode(""), 15000);
+    setTimeout(() => setCopiedCode(""), 15000); // Clear copied code after 15 seconds
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        กำลังโหลด...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen text-red-500">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div>
       <div className="py-8 flex items-start space-y-0 flex-row space-x-[100px]">
         <DateDropdown />
       </div>
+
       <div className="space-y-5">
-        {appointments.map((appointment) => (
-          <div key={appointment.id} onClick={() => handleCardClick(appointment.id)}>
-            <AppointmentCard
-              icon={null}
-              name={appointment.client.display_name}
-              birthdate={"-"} // ไม่มีข้อมูลวันเกิด
-              birthtime={"-"} // ไม่มีข้อมูลเวลาเกิด
-              date={formatDate(appointment.start_time)}
-              time={formatTime(appointment.start_time)}
-              packageName={appointment.package.name}
-              code={appointment.confirmation_code}
-              email={"-"} // ไม่มีข้อมูลอีเมล
-              isCopied={copiedCode === appointment.confirmation_code}
-              onCopy={() => handleCopy(appointment.confirmation_code)}
-            />
-          </div>
-        ))}
+        {appointments.length === 0 ? (
+          <div className="text-center text-gray-500">ยังไม่มีการนัดหมาย</div>
+        ) : (
+          appointments.map((appointment) => (
+            <div key={appointment.id} onClick={() => handleCardClick(appointment.id)}>
+              <AppointmentCard
+                icon={null}
+                name={appointment.client.display_name}
+                date={formatDate(appointment.start_time)}
+                time={formatTime(appointment.start_time)}
+                packageName={appointment.package.name}
+                status={appointment.status}
+                code={appointment.confirmation_code}
+                isCopied={copiedCode === appointment.confirmation_code}
+                onCopy={() => handleCopy(appointment.confirmation_code)}
+              />
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

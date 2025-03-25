@@ -3,8 +3,11 @@ import { useParams } from "react-router-dom";
 import BackButton from "../../../components/Button/BackButton";
 import QuestionCard from "../../../components/Card/QuestionCard";
 import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
-import ConfirmationPopup from "./element/ConfirmationPopup";
-import { fetchAppointmentDetails } from "../../../Data/Appointment/Appointments";
+import ConfirmationPopup from "../../../components/Popup/ConfirmationPopup";
+import {
+  fetchAppointmentDetails,
+  updateAppointmentStatus,
+} from "../../../Data/Appointment/Appointments";
 import Layout from "../../Appointment/Layout";
 import AppointmentInfoCard from "./element/AppointmentInfoCard";
 import BookingInfoCard from "./element/BookingInfoCard";
@@ -27,16 +30,26 @@ const DetailsAppointment = () => {
     setIsPopupVisible(true);
   };
 
-  const confirmAction = () => {
-    if (popupAction === "cancel") {
-      console.log("Canceled the service");
-    } else if (popupAction === "save") {
-      console.log("Completed the service");
-    }
-    setIsPopupVisible(false);
-  };
+  const handleUpdateStatus = async () => {
+    try {
+      let newStatus = "";
+      if (popupAction === "cancel") {
+        newStatus = "seer-cancel"; // เปลี่ยนสถานะให้ตรงกับ API
+      } else if (popupAction === "save") {
+        newStatus = "completed";
+      }
 
-  const closePopup = () => {
+      await updateAppointmentStatus(apmt_id, newStatus);
+
+      setAppointmentDetails((prev) => ({
+        ...prev,
+        status: newStatus,
+      }));
+
+      console.log(`สถานะถูกเปลี่ยนเป็น: ${newStatus}`);
+    } catch (error) {
+      console.error("เกิดข้อผิดพลาดขณะอัปเดตสถานะ:", error);
+    }
     setIsPopupVisible(false);
   };
 
@@ -85,7 +98,7 @@ const DetailsAppointment = () => {
       </div>
 
       {/* Confirmation Code */}
-      <div className="flex justify-center items-center py-4">
+      <div className="flex justify-center items-center py-5">
         <div className="text-center text-2xl md:text-3xl font-medium text-gray-700 flex items-center gap-2">
           รหัสยืนยันคิว คือ
           <span className="text-4xl md:text-5xl font-bold text-secondary">
@@ -98,9 +111,7 @@ const DetailsAppointment = () => {
       <div className="px-4 sm:px-8">
         <div className="pb-8 border-b-2 border-gray-300">
           <AppointmentInfoCard appointmentDetails={appointmentDetails} />
-          {/* Booking Information */}
           <BookingInfoCard client={appointmentDetails.client} />
-          {/* Use BookingInfoCard here */}
         </div>
 
         {/* Question Section */}
@@ -116,37 +127,50 @@ const DetailsAppointment = () => {
           <p className="text-gray-500">ไม่มีคำถามในตอนนี้</p>
         )}
 
-        {/* Buttons */}
-        <div className="flex justify-end space-x-6 mt-6">
-          {/* Cancel Button */}
-          <ButtonComponent
-            label={
-              <div className="flex items-center gap-2">
-                <span className="material-icons">ยกเลิกให้บริการ</span>
-              </div>
-            }
-            onClick={handleCancel}
-            className="flex items-center justify-center px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-full"
-          />
+        <div className="flex justify-end space-x-6 mt-6 mb-2">
+          {appointmentDetails.status === "s_cancelled" ||
+          appointmentDetails.status === "u_cancelled" ||
+          appointmentDetails.status === "completed" ? (
+            <div className="text-[20px] font-semibold text-secondary2/80 italic">
+              คุณได้ยืนยันการให้บริการเรียบร้อย
+            </div>
+          ) : (
+            <>
+              {/* Cancel Button */}
+              <ButtonComponent
+                label="ยกเลิกให้บริการ"
+                onClick={handleCancel}
+                className="flex items-center justify-center px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-full"
+              />
 
-          {/* Complete Service Button */}
-          <ButtonComponent
-            label={
-              <div className="flex items-center gap-2">
-                <span className="material-icons">บริการเสร็จสิ้น</span>
-              </div>
-            }
-            onClick={handleSave}
-            className="flex items-center justify-center px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
-          />
+              {/* Complete Service Button */}
+              <ButtonComponent
+                label="บริการเสร็จสิ้น"
+                onClick={handleSave}
+                className="flex items-center justify-center px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
+              />
+            </>
+          )}
         </div>
 
         {/* Confirmation Popup */}
         <ConfirmationPopup
-          isVisible={isPopupVisible}
-          action={popupAction}
-          onConfirm={confirmAction}
-          onClose={closePopup}
+          isOpen={isPopupVisible}
+          onClose={() => setIsPopupVisible(false)}
+          onConfirm={handleUpdateStatus}
+          title={
+            popupAction === "cancel"
+              ? "คุณต้องการยกเลิกบริการใช่ไหม?"
+              : "คุณต้องการยืนยันว่าบริการเสร็จสิ้น?"
+          }
+          message={
+            popupAction === "cancel"
+              ? "การยกเลิกจะไม่สามารถย้อนกลับได้"
+              : "กรุณายืนยันว่าคุณได้ให้บริการเสร็จสมบูรณ์แล้ว"
+          }
+          confirmText={
+            popupAction === "cancel" ? "ยืนยันยกเลิก" : "ยืนยันเสร็จสิ้น"
+          }
         />
       </div>
     </Layout>

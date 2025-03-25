@@ -61,5 +61,24 @@ const fetchAppointmentDetails = async (apmt_id) => {
   }
 };
 
+const updateAppointmentStatus = async (apmt_id, status) => {
+  try {
+    if (!apmt_id) throw new Error("ต้องระบุ apmt_id");
+    if (!status) throw new Error("ต้องระบุสถานะ");
 
-export { fetchAppointmentReceivedData, fetchAppointmentDetails };
+    const response = await axiosInstance.patch(`/${apmt_id}/status/${status}`);
+    
+    if (response.status === 200) {
+      console.log(`Appointment ${apmt_id} updated to ${status}`);
+      return response.data;
+    } else {
+      throw new Error("ไม่สามารถอัปเดตสถานะการนัดหมายได้");
+    }
+  } catch (error) {
+    console.error("Error updating appointment status:", error);
+    throw new Error("ไม่สามารถอัปเดตสถานะการนัดหมายได้");
+  }
+};
+
+
+export { fetchAppointmentReceivedData, fetchAppointmentDetails, updateAppointmentStatus };

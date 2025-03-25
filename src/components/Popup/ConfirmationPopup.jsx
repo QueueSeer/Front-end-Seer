@@ -1,4 +1,3 @@
-// ConfirmationPopup.js
 import React from "react";
 
 const ConfirmationPopup = ({
@@ -17,14 +16,14 @@ const ConfirmationPopup = ({
       onClick={onClose}
     >
       <div
-        className="bg-white px-8 py-6 rounded-xl shadow-lg w-[450px] h-auto flex flex-col justify-between text-center space-y-4"
+        className="bg-white px-8 py-8 rounded-xl shadow-lg w-[450px] h-auto flex flex-col justify-between text-center space-y-4"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-[22px] font-semibold text-gray-900 pt-3">
           {title}
         </h2>
         <p className="text-[18px] text-gray-600">{message}</p>
-        <div className="flex justify-center gap-4 pt-1">
+        <div className="flex justify-center gap-5 pt-1">
           <button
             className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80"
             onClick={onConfirm}
