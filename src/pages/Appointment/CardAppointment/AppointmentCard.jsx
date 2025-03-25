@@ -3,17 +3,16 @@ import ProfileInfo from "../../../components/Appointment/ProfileInfo";
 import DateInfo from "../../../components/Appointment/DateInfo";
 import CopyButton from "../../../components/Appointment/CopyButton";
 import DetailsButton from "../../../components/Appointment/DetailsButton";
-
+import {truncateText, AmpStatus} from "../DetailsAppointment/utils/utils";
 
 const AppointmentCard = ({
   icon,
   name,
-  birthdate,
   date,
   time,
   packageName,
   code,
-  email,
+  status,
   onNameChange,
   onBirthdateChange,
   onDateChange,
@@ -30,24 +29,24 @@ const AppointmentCard = ({
       <ProfileInfo
         icon={icon}
         name={name}
-        birthdate={birthdate} // ใช้ฟังก์ชันจัดรูปแบบ
+        packageName={truncateText(packageName, 20)}
         onNameChange={onNameChange}
         onBirthdateChange={onBirthdateChange}
       />
 
       {/* Section 2: วันที่และเวลา */}
       <DateInfo
-        date={date} // ใช้ฟังก์ชันจัดรูปแบบ
-        time={time} // ใช้ฟังก์ชันจัดรูปแบบ
+        date={date}
+        time={time}
         onDateChange={onDateChange}
         onTimeChange={onTimeChange}
       />
 
       {/* Section 3: แพ็กเกจและปุ่ม */}
       <div className="hidden xl:flex items-center space-x-10">
-        <div className="flex flex-col space-y-[4px] items-center">
-          <p className="text-[16px] font-regular text-white">{packageName}</p>
-          <CopyButton text={code} isCopied={isCopied} onCopy={onCopy} />
+        <div className="flex flex-col  items-center">
+        <div className="text-[16px] font-regular text-white">{AmpStatus(status)}</div>
+        <CopyButton text={code} isCopied={isCopied} onCopy={onCopy} />
         </div>
         <DetailsButton />
       </div>
@@ -62,11 +61,7 @@ const AppointmentCard = ({
           stroke="currentColor"
           className="w-6 h-6 text-white"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M8.25 4.5l7.5 7.5-7.5 7.5"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
       </div>
     </div>
