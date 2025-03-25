@@ -1,14 +1,6 @@
 import React from "react";
-import { formatDate, formatTime, formatPhoneNumber } from "../utils/utils";
+import { formatDate, formatTime, formatPhoneNumber, renderInfoSection } from "../utils/utils";
 
-const renderInfoSection = (title, content) => (
-  <div className="flex flex-col sm:flex-row">
-    <div className="w-full sm:w-40 font-medium text-gray-800 mb-1 sm:mb-0">
-      {title}
-    </div>
-    <div className="flex-1">{content}</div>
-  </div>
-);
 
 const BookingInfoCard = ({ client }) => {
   return (

@@ -47,3 +47,16 @@ export const formatDate = (isoDate) => {
         return <div className="py-2  text-white text-base font-medium rounded-md">ไม่ทราบสถานะ</div>;
     }
   };
+
+  export const getChannelLabel = (channel) => {
+    switch (channel) {
+      case "chat":
+        return "ช่องทางสนทนา";
+      case "phone":
+        return "การโทร";
+      case "video":
+        return "การวิดีโอคอล";
+      default:
+        return "ไม่ระบุช่องทาง";
+    }
+  };

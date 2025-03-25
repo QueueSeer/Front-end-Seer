@@ -8,9 +8,11 @@ import {
   fetchAppointmentDetails,
   updateAppointmentStatus,
 } from "../../../Data/Appointment/Appointments";
+import { fetchPackageDetailsData } from "../../../Data/Package/PackageApi";
 import Layout from "../../Appointment/Layout";
 import AppointmentInfoCard from "./element/AppointmentInfoCard";
 import BookingInfoCard from "./element/BookingInfoCard";
+import DetailPackage from "./element/DetailPackage";
 
 const DetailsAppointment = () => {
   const { apmt_id } = useParams();
@@ -19,6 +21,7 @@ const DetailsAppointment = () => {
   const [error, setError] = useState(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [popupAction, setPopupAction] = useState("");
+  const [packageDetails, setPackageDetails] = useState(null);
 
   const handleCancel = () => {
     setPopupAction("cancel");
@@ -32,43 +35,76 @@ const DetailsAppointment = () => {
 
   const handleUpdateStatus = async () => {
     try {
-      let newStatus = "";
-      if (popupAction === "cancel") {
-        newStatus = "seer-cancel"; // เปลี่ยนสถานะให้ตรงกับ API
-      } else if (popupAction === "save") {
-        newStatus = "completed";
-      }
-
+      const newStatus = popupAction === "cancel" ? "seer-cancel" : "complete";
       await updateAppointmentStatus(apmt_id, newStatus);
-
-      setAppointmentDetails((prev) => ({
-        ...prev,
-        status: newStatus,
-      }));
-
-      console.log(`สถานะถูกเปลี่ยนเป็น: ${newStatus}`);
+      setAppointmentDetails((prev) => ({ ...prev, status: newStatus }));
+      window.location.reload(); 
+      window.scrollTo(0, 0); 
     } catch (error) {
       console.error("เกิดข้อผิดพลาดขณะอัปเดตสถานะ:", error);
     }
     setIsPopupVisible(false);
   };
 
+  // ✅ ดึงข้อมูลนัดหมาย
   useEffect(() => {
     const getAppointmentDetails = async () => {
       try {
+        setLoading(true);
         const data = await fetchAppointmentDetails(apmt_id);
         setAppointmentDetails(data);
       } catch (err) {
-        setError("ไม่สามารถดึงข้อมูลได้");
+        setError("ไม่สามารถดึงข้อมูลการนัดหมายได้");
       } finally {
         setLoading(false);
       }
     };
 
-    if (apmt_id) {
-      getAppointmentDetails();
-    }
+    if (apmt_id) getAppointmentDetails();
   }, [apmt_id]);
+
+  // ✅ ดึงข้อมูล Package
+  useEffect(() => {
+    const fetchPackageDetails = async () => {
+      if (!appointmentDetails?.package?.id) return; // ตรวจสอบก่อน
+
+      try {
+        const data = await fetchPackageDetailsData(
+          appointmentDetails.package.id
+        );
+        if (data) {
+          setPackageDetails({
+            price: data.price ? parseInt(data.price, 10) : 0,
+            duration: data.duration ? data.duration / 60 : 0,
+            foretellChannel: data.foretell_channel || "chat",
+            description: data.description || "",
+            questionLimit: data.question_limit || 0,
+            category: data.category || "",
+            requiredData: data.required_data || "",
+            readingType: data.reading_type || "",
+            image: data.image || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching package details:", error);
+      }
+    };
+
+    fetchPackageDetails();
+  }, [appointmentDetails?.package?.id]);
+
+  // ✅ กำหนดค่าเริ่มต้นเพื่อป้องกัน Error
+  const defaultPackageDetails = {
+    price: 0,
+    duration: 0,
+    foretellChannel: " ",
+    description: "",
+    questionLimit: 0,
+    category: "",
+    requiredData: "",
+    readingType: "",
+    image: "",
+  };
 
   if (loading)
     return (
@@ -82,14 +118,12 @@ const DetailsAppointment = () => {
         {error}
       </div>
     );
-
-  if (!appointmentDetails) {
+  if (!appointmentDetails)
     return (
       <div className="flex items-center justify-center h-screen">
         ไม่มีข้อมูลสำหรับ ID {apmt_id}
       </div>
     );
-  }
 
   return (
     <Layout>
@@ -97,7 +131,6 @@ const DetailsAppointment = () => {
         <BackButton />
       </div>
 
-      {/* Confirmation Code */}
       <div className="flex justify-center items-center py-5">
         <div className="text-center text-2xl md:text-3xl font-medium text-gray-700 flex items-center gap-2">
           รหัสยืนยันคิว คือ
@@ -107,19 +140,21 @@ const DetailsAppointment = () => {
         </div>
       </div>
 
-      {/* Appointment Information */}
       <div className="px-4 sm:px-8">
         <div className="pb-8 border-b-2 border-gray-300">
-          <AppointmentInfoCard appointmentDetails={appointmentDetails} />
+          <AppointmentInfoCard
+            appointmentDetails={appointmentDetails}
+            packageDetails={packageDetails || defaultPackageDetails}
+          />
+          <DetailPackage appointmentDetails={appointmentDetails} packageDetails={packageDetails || defaultPackageDetails}
+          />
           <BookingInfoCard client={appointmentDetails.client} />
         </div>
 
-        {/* Question Section */}
         <div className="pt-8 text-[26px] md:text-2xl font-semibold text-gray-800 mb-5">
           คำถามดูดวง
         </div>
-        {appointmentDetails.questions &&
-        appointmentDetails.questions.length > 0 ? (
+        {appointmentDetails.questions?.length ? (
           appointmentDetails.questions.map((question, index) => (
             <QuestionCard key={index} questionText={question} index={index} />
           ))
@@ -128,32 +163,28 @@ const DetailsAppointment = () => {
         )}
 
         <div className="flex justify-end space-x-6 mt-6 mb-2">
-          {appointmentDetails.status === "s_cancelled" ||
-          appointmentDetails.status === "u_cancelled" ||
-          appointmentDetails.status === "completed" ? (
-            <div className="text-[20px] font-semibold text-secondary2/80 italic">
+          {["s_cancelled", "u_cancelled", "completed"].includes(
+            appointmentDetails.status
+          ) ? (
+            <div className="text-[20px] font-semibold text-secondary2/60 italic">
               คุณได้ยืนยันการให้บริการเรียบร้อย
             </div>
           ) : (
             <>
-              {/* Cancel Button */}
               <ButtonComponent
                 label="ยกเลิกให้บริการ"
                 onClick={handleCancel}
-                className="flex items-center justify-center px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-full"
+                className="px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-full"
               />
-
-              {/* Complete Service Button */}
               <ButtonComponent
                 label="บริการเสร็จสิ้น"
                 onClick={handleSave}
-                className="flex items-center justify-center px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
+                className="px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
               />
             </>
           )}
         </div>
 
-        {/* Confirmation Popup */}
         <ConfirmationPopup
           isOpen={isPopupVisible}
           onClose={() => setIsPopupVisible(false)}
@@ -161,7 +192,7 @@ const DetailsAppointment = () => {
           title={
             popupAction === "cancel"
               ? "คุณต้องการยกเลิกบริการใช่ไหม?"
-              : "คุณต้องการยืนยันว่าบริการเสร็จสิ้น?"
+              : "คุณต้องการยืนยันว่าเสร็จสิ้นการให้บริการ?"
           }
           message={
             popupAction === "cancel"

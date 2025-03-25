@@ -6,9 +6,9 @@ const ChannelSelectDropdown = ({ selectedChannel, onChannelChange }) => {
   const [isOpen, setIsOpen] = useState(false); // สร้างสถานะเพื่อควบคุมการแสดงผลของ Dropdown
 
   const options = [
-    { value: "chat", label: "ช่องทางสนทนา" },
-    { value: "phone", label: "การโทร" },
-    { value: "video", label: "การวิดีโอคอล" },
+    { value: "chat", label: "ช่องทางสนทนา (chat)" },
+    { value: "phone", label: "การโทร (call)" },
+    { value: "video", label: "การวิดีโอคอล (video call)" },
   ];
 
   useEffect(() => {
