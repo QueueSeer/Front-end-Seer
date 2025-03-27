@@ -12,7 +12,7 @@ const ConfirmationPopup = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+      className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50 z-50"
       onClick={onClose}
     >
       <div

@@ -125,14 +125,12 @@ const ContentUser = () => {
         }
       );
 
-      window.location.reload(); 
-
+      window.location.reload();
     } catch (err) {
       console.error("Error uploading profile image:", err);
       alert("ไม่สามารถอัปโหลดรูปภาพได้ โปรดลองใหม่อีกครั้ง");
 
       window.location.reload(); // รีเฟรชหน้าจอ
-
     } finally {
       setIsUpdating(false);
       setIsConfirmModalOpen(false); // ปิด modal หลังจากอัปโหลดเสร็จ
@@ -142,7 +140,6 @@ const ContentUser = () => {
   const handleCancelUpload = () => {
     setIsConfirmModalOpen(false);
     window.location.reload(); // รีเฟรชหน้าจอ
-
   };
 
   const handleSave = (updatedData) => {
@@ -178,7 +175,10 @@ const ContentUser = () => {
   }
 
   return (
-    <div className="py-8 flex flex-col items-center lg:items-start space-y-8 lg:flex-row lg:space-y-0  lg:px-[30px]">
+    <>
+    <div
+      className={`py-8 flex flex-col items-center lg:items-start lg:flex-row lg:space-x-[100px] space-y-8  lg:space-y-0  lg:px-[30px]`}
+    >
       {/* Column 1 */}
       <div className="flex-2 flex items-start">
         <div className="flex flex-col items-center">
@@ -220,15 +220,12 @@ const ContentUser = () => {
           </div>
         </div>
       </div>
-      <div className="hidden lg:block lg:mr-[100px]"></div>
-
       {/* Column 2 */}
       <InfoUser
         userData={userData}
         email={userInfo?.email}
         phoneNumber={userInfo?.phone_number}
       />
-
       {/* Popup for editing profile */}
       <PopupEditProfile
         isOpen={isEditOpen}
@@ -239,8 +236,9 @@ const ContentUser = () => {
         phoneNumber={userInfo?.phone_number}
         onSave={handleSave}
       />
-
-      <ConfirmationPopup
+     
+    </div> 
+    <ConfirmationPopup
         isOpen={isConfirmModalOpen}
         onClose={handleCancelUpload}
         onConfirm={handleConfirmUpload}
@@ -248,8 +246,8 @@ const ContentUser = () => {
         confirmText="บันทึก"
         cancelText="ยกเลิก"
       />
-        
-    </div>
+    </>
+    
   );
 };
 
