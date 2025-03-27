@@ -16,6 +16,7 @@ const SocialLinkFormPopup = ({ isOpen, onClose, onSave, name, url, title }) => {
       alert("กรุณากรอกข้อมูลให้ครบถ้วน");
     }
   };
+  
 
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
@@ -23,6 +24,7 @@ const SocialLinkFormPopup = ({ isOpen, onClose, onSave, name, url, title }) => {
         <h2 className="text-[24px] font-semibold text-primary mb-4">
           {title} {/* แสดงชื่อ Popup ตาม title ที่ส่งมาจาก PopupSocialLinks */}
         </h2>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">ชื่อ</label>
           <input
@@ -33,6 +35,7 @@ const SocialLinkFormPopup = ({ isOpen, onClose, onSave, name, url, title }) => {
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">ลิงก์</label>
           <input
@@ -43,27 +46,15 @@ const SocialLinkFormPopup = ({ isOpen, onClose, onSave, name, url, title }) => {
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2">
-            ตั้งค่าเริ่มต้น
-          </label>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              checked={isDefault}
-              onChange={(e) => setIsDefault(e.target.checked)}
-              className="mr-2"
-            />
-            <span>ช่องทางสำหรับการดูดวงกับลูกค้า</span>
-          </div>
-        </div>
-        <div className="flex justify-between">
-          
-        <BackButton onClose={onClose} />
 
+        <div className="flex justify-between items-center pt-5">
+          {/* ปุ่มยกเลิก */}
+          <BackButton onClose={onClose} />
+
+          {/* ปุ่มบันทึก */}
           <button
             onClick={handleSave}
-            className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90"
+            className="bg-primary text-white px-8 py-2 rounded-full hover:bg-primary/90"
           >
             บันทึก
           </button>
