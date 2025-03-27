@@ -1,13 +1,12 @@
 import React from "react";
 
-// Mapping the UI display names to their respective field values
 const required = [
   { label: "ชื่อ-นามสกุล", value: "name" },
   { label: "วันเดือนปีเกิด", value: "birthdate" },
   { label: "หมายเลขโทรศัพท์", value: "phone_number" },
 ];
 
-const RequiredSelector = ({ selectedRequired, setSelectedRequired }) => {
+const RequiredDataSelector = ({ selectedRequired, setSelectedRequired }) => {
   const handleSelect = (item) => {
     // เช็คว่าข้อมูลถูกเลือกหรือไม่
     if (selectedRequired.includes(item.value)) {
@@ -46,4 +45,4 @@ const RequiredSelector = ({ selectedRequired, setSelectedRequired }) => {
   );
 };
 
-export default RequiredSelector;
+export default RequiredDataSelector;
