@@ -218,7 +218,7 @@ const ContentUser = () => {
         </div>
       </div>
       {/* Column 2 */}
-      <div className="mb-8 lg:block lg:mr-[100px]"></div>
+      <div className="mb-8 lg:mb-0 lg:block lg:mr-[100px]"></div>
       <InfoUser
         userData={userData}
         email={userInfo?.email}
