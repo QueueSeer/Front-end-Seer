@@ -175,7 +175,7 @@ const ContentUser = () => {
   }
 
   return (
-    <div className="py-8 flex flex-col items-center lg:items-start space-y-8 lg:flex-row lg:space-y-0  lg:px-[30px]">
+    <div className="py-8 flex flex-col items-center lg:items-start lg:flex-row lg:space-y-0  lg:px-[30px]">
       {/* Column 1 */}
       <div className="flex-2 flex items-start">
         <div className="flex flex-col items-center">
@@ -218,7 +218,7 @@ const ContentUser = () => {
         </div>
       </div>
       {/* Column 2 */}
-      <div className="hidden lg:block lg:mr-[100px]"></div>
+      <div className="mb-8 lg:block lg:mr-[100px]"></div>
       <InfoUser
         userData={userData}
         email={userInfo?.email}
