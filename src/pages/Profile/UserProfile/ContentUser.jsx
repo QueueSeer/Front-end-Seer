@@ -177,7 +177,7 @@ const ContentUser = () => {
   return (
     <div
       className={`py-8 flex flex-col items-center lg:items-start lg:flex-row 
-      lg:space-x-[100px]
+       ${isEditOpen ? '' : 'lg:space-x-[100px]'}
       space-y-8  lg:space-y-0  lg:px-[30px]`}
     >
       {/* Column 1 */}
