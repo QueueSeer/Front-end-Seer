@@ -125,14 +125,12 @@ const ContentUser = () => {
         }
       );
 
-      window.location.reload(); 
-
+      window.location.reload();
     } catch (err) {
       console.error("Error uploading profile image:", err);
       alert("ไม่สามารถอัปโหลดรูปภาพได้ โปรดลองใหม่อีกครั้ง");
 
       window.location.reload(); // รีเฟรชหน้าจอ
-
     } finally {
       setIsUpdating(false);
       setIsConfirmModalOpen(false); // ปิด modal หลังจากอัปโหลดเสร็จ
@@ -142,7 +140,6 @@ const ContentUser = () => {
   const handleCancelUpload = () => {
     setIsConfirmModalOpen(false);
     window.location.reload(); // รีเฟรชหน้าจอ
-
   };
 
   const handleSave = (updatedData) => {
@@ -221,12 +218,12 @@ const ContentUser = () => {
         </div>
       </div>
       {/* Column 2 */}
+      <div className="hidden lg:block lg:mr-[100px]"></div>
       <InfoUser
         userData={userData}
         email={userInfo?.email}
         phoneNumber={userInfo?.phone_number}
       />
-
       {/* Popup for editing profile */}
       <PopupEditProfile
         isOpen={isEditOpen}
@@ -246,7 +243,6 @@ const ContentUser = () => {
         confirmText="บันทึก"
         cancelText="ยกเลิก"
       />
-        
     </div>
   );
 };
