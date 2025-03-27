@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
         <div className="hidden lg:block w-72">
-          <Sidebar  activeOverride={4} />
+          <Sidebar  activeOverride={3} />
         </div>
         {/* Content */}
         <div className="flex-1 pb-10">
