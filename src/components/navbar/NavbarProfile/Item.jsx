@@ -4,44 +4,49 @@ import Images from "../../../assets";
 
 const menuItems = [
   {
+    icon: Images.UserIcon,
+    label: "โปรไฟล์",
+    to: "/profile",
+  },
+  {
     icon: Images.calendarIcon,
     label: "จองคิว",
-    to: "/appointment", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/appointment",
   },
   {
     icon: Images.BoxIcon,
     label: "แพ็กเกจ",
-    to: "/package", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/package",
   },
   // {
   //   icon: Images.BoltIcon,
   //   label: "ดูดวงทันที",
-  //   to: "/fortuneNow", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+  //   to: "/fortuneNow",
   // },
   {
     icon: Images.SledgehammerIcon,
     label: "ประมูล",
-    to: "/auction", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/auction",
   },
   {
     icon: Images.Clock_CircleIcon,
     label: "ตารางเวลา",
-    to: "/schedule", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/schedule",
   },
   {
     icon: Images.OutlineIcon,
     label: "รายรับของฉัน",
-    to: "/revenue", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/revenue",
   },
   {
     icon: Images.Users_GroupIcon,
     label: "ผู้ติดตาม",
-    to: "/followers", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/followers",
   },
   {
     icon: Images.Star_Icon,
     label: "จัดการรีวิว",
-    to: "/reviews", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+    to: "/reviews",
   },
 ];
 
