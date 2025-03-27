@@ -11,7 +11,6 @@ const DetailPackage = ({ appointmentDetails, packageDetails }) => {
 
   return (
     <div>
-      {/* ปุ่มกดเพื่อแสดง/ซ่อนรายละเอียด */}
       <button
         onClick={toggleVisibility}
         className="relative px-4 py-2 mt-4 text-black w-full text-center border-none"
