@@ -8,7 +8,7 @@ const QuestionCountDropdown = ({ onQuestionCountChange }) => {
     { value: "4", label: "4 คำถาม" },
     { value: "5", label: "5 คำถาม" },
     { value: "6", label: "6 คำถาม" },
-    { value: "99", label: "ไม่จำกัดคำถาม" }
+    { value: "-1", label: "ไม่จำกัดคำถาม" }
   ];
 
   const [selectedCount, setSelectedCount] = useState(options[0]); // ค่าเริ่มต้นจาก options ที่เลือก "1 คำถาม"
