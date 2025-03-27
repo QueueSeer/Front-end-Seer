@@ -175,7 +175,7 @@ const ContentUser = () => {
   }
 
   return (
-    <div className="py-8 flex flex-col items-center lg:items-start lg:flex-row lg:space-y-0  lg:px-[30px]">
+    <div className="py-8 flex flex-col items-center lg:items-start lg:flex-row lg:px-[30px]">
       {/* Column 1 */}
       <div className="flex-2 flex items-start">
         <div className="flex flex-col items-center">
