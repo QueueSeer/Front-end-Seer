@@ -175,8 +175,9 @@ const ContentUser = () => {
   }
 
   return (
-    <div className="py-8 flex flex-col items-center lg:items-start lg:flex-row lg:px-[30px]">
-      {/* Column 1 */}
+<div
+  className={`py-8 flex flex-col items-center lg:items-start lg:flex-row ${isConfirmModalOpen ? '' : 'lg:space-x-[100px]'} space-y-[16px] lg:px-[30px]`}
+>      {/* Column 1 */}
       <div className="flex-2 flex items-start">
         <div className="flex flex-col items-center">
           <div className="relative">
@@ -218,7 +219,6 @@ const ContentUser = () => {
         </div>
       </div>
       {/* Column 2 */}
-      <div className="mb-8 lg:mb-0 lg:block lg:mr-[100px]"></div>
       <InfoUser
         userData={userData}
         email={userInfo?.email}
