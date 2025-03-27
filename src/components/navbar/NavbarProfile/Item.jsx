@@ -13,11 +13,11 @@ const menuItems = [
     label: "แพ็กเกจ",
     to: "/package", // กำหนดเส้นทางที่จะไปเมื่อคลิก
   },
-  {
-    icon: Images.BoltIcon,
-    label: "ดูดวงทันที",
-    to: "/fortuneNow", // กำหนดเส้นทางที่จะไปเมื่อคลิก
-  },
+  // {
+  //   icon: Images.BoltIcon,
+  //   label: "ดูดวงทันที",
+  //   to: "/fortuneNow", // กำหนดเส้นทางที่จะไปเมื่อคลิก
+  // },
   {
     icon: Images.SledgehammerIcon,
     label: "ประมูล",
