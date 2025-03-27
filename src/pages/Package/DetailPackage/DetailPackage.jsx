@@ -16,7 +16,7 @@ import {
 import { postImagepackage } from "../../../Data/Image/ImagesApi";
 import { fetchUserData } from "../../../Data/Profile/ProfileApi";
 import ChannelSelectDropdown from "../../../components/Dropdown/ChannelSelectDropdown";
-import RequiredSelector from "../PackageFrom/requiredSelector";
+import RequiredDataSelector from "../PackageFrom/RequiredDataSelector";
 
 const DetailPackage = () => {
   const navigate = useNavigate();
@@ -156,7 +156,7 @@ const DetailPackage = () => {
             setSelectedCategory={setSelectedCategory}
           />
 
-          <RequiredSelector
+          <RequiredDataSelector
             selectedRequired={selectedRequired}
             setSelectedRequired={setSelectedRequired}
           />
