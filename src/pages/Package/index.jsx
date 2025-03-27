@@ -11,7 +11,7 @@ import ShowExampleCard from "../../components/Card/ShowExampleCard";
 import { fetchUserData } from "../../Data/Profile/ProfileApi";
 import { createPackagedraft } from "../../Data/Package/PackageApi";
 import { postImagepackage } from "../../Data/Image/ImagesApi";
-import RequiredSelector from "./PackageFrom/requiredSelector";
+import RequiredDataSelector from "./PackageFrom/RequiredDataSelector";
 
 // Helper function for input validation
 const validateInput = (value, fieldName) => {
@@ -177,8 +177,8 @@ const Package = () => {
             setSelectedCategory={setSelectedCategory}
           />
 
-          {/* RequiredSelector */}
-          <RequiredSelector
+          {/* RequiredDataSelector */}
+          <RequiredDataSelector
             selectedRequired={selectedRequired}
             setSelectedRequired={setSelectedRequired}
           />
