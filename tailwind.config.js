@@ -1,7 +1,7 @@
 module.exports = {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{html,js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -18,6 +18,9 @@ module.exports = {
       },
       screens: {
         'xxl': '1800px', // สร้างคีย์ xxl สำหรับ 1800px
+      },
+      spacing: {
+        '100px': '100px',
       },
     },
   },
