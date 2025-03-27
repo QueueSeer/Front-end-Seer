@@ -220,7 +220,6 @@ const ContentUser = () => {
           </div>
         </div>
       </div>
-      <div className="hidden lg:block lg:mr-[100px]"></div>
       {/* Column 2 */}
       <InfoUser
         userData={userData}

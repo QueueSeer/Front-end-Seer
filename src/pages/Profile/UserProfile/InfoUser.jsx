@@ -22,7 +22,7 @@ const InfoUser = ({ userData, email, phoneNumber }) => {
   );
 
   return (
-    <div className="flex-1 text-base">
+    <div className="flex-1 text-base ml-[100px]">
       <h2 className="text-[24px] text-gray-800 font-semibold mb-6">ข้อมูลส่วนตัว</h2>
       <div className="space-y-4 text-[18px]">
         {renderInfo("ชื่อหมอดู", userData?.display_name)}
