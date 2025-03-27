@@ -21,6 +21,44 @@ export const Updateexperienceseer = async (experience) => {
     throw new Error("ไม่สามารถอัปเดตคำอธิบายได้");
   }
 };
+
+export const Updatesocialsseer = async (socials) => {
+  try {
+    if (!socials.name || !socials.url) {
+      throw new Error("ข้อมูลไม่ครบถ้วน");
+    }
+
+    const response = await axiosInstance.patch("/me", {
+      socials_name: socials.name,
+      socials_link: socials.url,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error updating socials:", error);
+    throw new Error(error.message || "ไม่สามารถอัปเดตคำอธิบายได้");
+  }
+};
+
+export const UpdateBanksseer = async (prompay) => {
+  try {
+    if (!prompay.name || !prompay.num) {
+      throw new Error("ข้อมูลไม่ครบถ้วน");
+    }
+
+    const response = await axiosInstance.patch("/me", {
+      bank_name: prompay.name,
+      bank_no: prompay.num,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error updating prompay:", error);
+    throw new Error(error.message || "ไม่สามารถอัปเดตคำอธิบายได้");
+  }
+};
+
+
 // API call to update the description
 export const updateDescription = async (description) => {
   try {

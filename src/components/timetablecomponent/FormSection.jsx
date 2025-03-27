@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import ActionButtons from "./ActionButtons"; // Import ปุ่มล้างและบันทึก
+import ActionButtons from "./ActionButtons"; // ปุ่มล้างและบันทึก
 
 const FormSection = () => {
   const [formData, setFormData] = useState({
     workingHours: "",
-    breakTime: "",
+    closingHours: "",
     maxCustomers: "",
     holiday: "",
   });
@@ -19,14 +19,14 @@ const FormSection = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const timeRegex = /^\d{2}:\d{2}-\d{2}:\d{2}$/;
+    const timeRegex = /^\d{2}:\d{2}$/;
 
     if (!formData.workingHours.match(timeRegex)) {
-      newErrors.workingHours = "กรุณากรอกเวลาในรูปแบบ HH:mm-HH:mm";
+      newErrors.workingHours = "กรุณากรอกเวลาเปิดในรูปแบบ HH:mm";
     }
 
-    if (!formData.breakTime.match(timeRegex)) {
-      newErrors.breakTime = "กรุณากรอกเวลาพักในรูปแบบ HH:mm-HH:mm";
+    if (!formData.closingHours.match(timeRegex)) {
+      newErrors.closingHours = "กรุณากรอกเวลาปิดในรูปแบบ HH:mm";
     }
 
     if (!formData.maxCustomers || isNaN(Number(formData.maxCustomers))) {
@@ -45,43 +45,33 @@ const FormSection = () => {
     if (!validateForm()) {
       return; // หยุดการทำงานหากข้อมูลไม่ผ่านการตรวจสอบ
     }
-  
-    const [start, end] = formData.workingHours.split("-");
-    const [breakStart, breakEnd] = formData.breakTime.split("-");
+
     const workingHours = [
-      { start_time: `${start.trim()}:00+07:00`, end_time: `${breakStart.trim()}:00+07:00` },
-      { start_time: `${breakEnd.trim()}:00+07:00`, end_time: `${end.trim()}:00+07:00` },
+      { start_time: `${formData.workingHours}:00+07:00`, end_time: `${formData.closingHours}:00+07:00` },
     ];
-  
+
     const requestData = {
       working_hours: workingHours,
       break_between_queue: `${formData.maxCustomers} นาที`,
     };
-  
+
     try {
-      // 1. ส่งข้อมูลตารางเวลา
       const scheduleResponse = await axios.post(
         "https://backend.qseer.app/api/seer/me/schedule",
         requestData,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
       console.log("Schedules created:", scheduleResponse.data);
-  
-      // 2. ส่งข้อมูลวันหยุด (ถ้ามี)
+
       if (formData.holiday.trim()) {
-        console.log("Holiday to be sent:", formData.holiday); // ตรวจสอบค่าที่จะส่ง
         const dayOffResponse = await axios.post(
           "https://backend.qseer.app/api/seer/me/dayoff",
           { day: formData.holiday },
           {
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             withCredentials: true,
           }
         );
@@ -103,16 +93,11 @@ const FormSection = () => {
       }
     }
   };
-  
-  
-  
-  
-  
 
   const handleReset = () => {
     setFormData({
       workingHours: "",
-      breakTime: "",
+      closingHours: "",
       maxCustomers: "",
       holiday: "",
     });
@@ -133,34 +118,26 @@ const FormSection = () => {
             name="workingHours"
             value={formData.workingHours}
             onChange={handleInputChange}
-            placeholder="09:00-17:00"
-            className={`w-full border ${
-              errors.workingHours ? "border-red-500" : "border-gray-300"
-            } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+            placeholder="09:00"
+            className={`w-full border ${errors.workingHours ? "border-red-500" : "border-gray-300"} rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
           />
-          {errors.workingHours && (
-            <p className="text-red-500 text-sm mt-1">{errors.workingHours}</p>
-          )}
+          {errors.workingHours && <p className="text-red-500 text-sm mt-1">{errors.workingHours}</p>}
         </div>
 
-        {/* เวลาพักเที่ยง */}
+        {/* เวลาปิดทำการ */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            เวลาพักเที่ยง
+            เวลาปิดทำการ <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            name="breakTime"
-            value={formData.breakTime}
+            name="closingHours"
+            value={formData.closingHours}
             onChange={handleInputChange}
-            placeholder="12:00-13:00"
-            className={`w-full border ${
-              errors.breakTime ? "border-red-500" : "border-gray-300"
-            } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+            placeholder="17:00"
+            className={`w-full border ${errors.closingHours ? "border-red-500" : "border-gray-300"} rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
           />
-          {errors.breakTime && (
-            <p className="text-red-500 text-sm mt-1">{errors.breakTime}</p>
-          )}
+          {errors.closingHours && <p className="text-red-500 text-sm mt-1">{errors.closingHours}</p>}
         </div>
 
         {/* เวลาพักระหว่างคิว */}
@@ -174,13 +151,9 @@ const FormSection = () => {
             value={formData.maxCustomers}
             onChange={handleInputChange}
             placeholder="10 นาที"
-            className={`w-full border ${
-              errors.maxCustomers ? "border-red-500" : "border-gray-300"
-            } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+            className={`w-full border ${errors.maxCustomers ? "border-red-500" : "border-gray-300"} rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
           />
-          {errors.maxCustomers && (
-            <p className="text-red-500 text-sm mt-1">{errors.maxCustomers}</p>
-          )}
+          {errors.maxCustomers && <p className="text-red-500 text-sm mt-1">{errors.maxCustomers}</p>}
         </div>
 
         {/* วันหยุด */}
@@ -194,17 +167,13 @@ const FormSection = () => {
             value={formData.holiday}
             onChange={handleInputChange}
             placeholder="2025-01-14"
-            className={`w-full border ${
-              errors.holiday ? "border-red-500" : "border-gray-300"
-            } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+            className={`w-full border ${errors.holiday ? "border-red-500" : "border-gray-300"} rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
           />
-          {errors.holiday && (
-            <p className="text-red-500 text-sm mt-1">{errors.holiday}</p>
-          )}
+          {errors.holiday && <p className="text-red-500 text-sm mt-1">{errors.holiday}</p>}
         </div>
       </div>
 
-      {/* Action Buttons */}
+      {/* ปุ่มบันทึกและล้างข้อมูล */}
       <ActionButtons onSave={handleSubmit} onReset={handleReset} />
     </div>
   );

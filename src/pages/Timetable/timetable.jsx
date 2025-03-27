@@ -55,7 +55,7 @@ const timetable = () => {
               <CalendarHeader toggleOption={toggleOption} />
 
               {/* ToggleSwitch: วางถัดจาก CalendarHeader */}
-              <div className="mt-4 flex justify-end">
+              <div className="mt-4 mb-6 flex justify-end">
                 <ToggleSwitch
                   options={[
                     { label: "ใช้เฉพาะวันนี้" },

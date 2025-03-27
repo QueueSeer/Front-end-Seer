@@ -3,6 +3,7 @@ import BankFormpopup from "./Prompay/BankFormpopup";
 import CloseButton from "../../Button/CloseButton";
 import AddButton from "./Social/AddButton";
 import Images from "../../../assets"; // ตรวจสอบให้แน่ใจว่าไฟล์นี้มี PlusIcon
+import { UpdateBanksseer } from "../../../Data/Profile/ProfileApi"; // Import UpdateBanksseer function
 
 const PopupBank = ({ isOpen, onClose, bankName, bankNo }) => {
   const [prompay, setPrompay] = useState([]); // เก็บข้อมูลบัญชีผู้ใช้
@@ -14,6 +15,7 @@ const PopupBank = ({ isOpen, onClose, bankName, bankNo }) => {
   useEffect(() => {
     if (bankName && bankNo) {
       setPrompay([{ name: bankName, num: bankNo }]);
+      setCurrentLinkData({ name: bankName, num: bankNo }); // Set initial values
     }
   }, [bankName, bankNo]);
 
@@ -29,19 +31,28 @@ const PopupBank = ({ isOpen, onClose, bankName, bankNo }) => {
     setShowFormPopup(true);
   };
 
-  const handleSaveLink = (newLink) => {
-    // ตรวจสอบว่าเป็นการเพิ่มใหม่หรือแก้ไขข้อมูล
-    if (currentLinkData.name) {
-      // แก้ไขข้อมูล
-      const updatedLinks = prompay.map((link) =>
-        link.name === currentLinkData.name ? { ...link, ...newLink } : link
-      );
-      setPrompay(updatedLinks);
-    } else {
-      // เพิ่มบัญชีใหม่
-      setPrompay((prevLinks) => [...prevLinks, newLink]);
+  const handleSaveLink = async (newLink) => {
+    try {
+      // ตรวจสอบว่าเป็นการเพิ่มใหม่หรือแก้ไขข้อมูล
+      if (currentLinkData.name) {
+        // แก้ไขข้อมูล
+        const updatedLinks = prompay.map((link) =>
+          link.name === currentLinkData.name ? { ...link, ...newLink } : link
+        );
+        setPrompay(updatedLinks);
+      } else {
+        // เพิ่มบัญชีใหม่
+        setPrompay((prevLinks) => [...prevLinks, newLink]);
+      }
+
+      // Call API to update the bank information
+      await UpdateBanksseer({ name: newLink.name, num: newLink.num });
+
+      setShowFormPopup(false); // ปิด popup หลังบันทึก
+    } catch (error) {
+      console.error("Failed to save bank account:", error);
+      // Optionally, you can display an error message to the user here
     }
-    setShowFormPopup(false); // ปิด popup หลังบันทึก
   };
 
   if (!isOpen) return null;
@@ -73,7 +84,6 @@ const PopupBank = ({ isOpen, onClose, bankName, bankNo }) => {
                     onClick={() => handleEditLink(link.name, link.num)}
                     className="flex w-full border-b py-2 hover:bg-black/10"
                   >
-                    {/* ส่วนของไอคอน */}
                     <div className="flex items-start space-x-4">
                       <img
                         src={Images.ThaiqrIcon} // เปลี่ยนเป็นรูปไอคอนที่เหมาะสม
@@ -81,10 +91,8 @@ const PopupBank = ({ isOpen, onClose, bankName, bankNo }) => {
                         className="w-8 h-8 rounded-full"
                       />
                       <div className="flex flex-col items-start">
-                        {/* ส่วนของชื่อ */}
                         <p className="text-gray-800 font-medium">{link.name}</p>
-                        {/* ส่วนของเบอร์พร้อมเพย์ */}
-                        <p className="text-gray-500 text-sm">
+                        <p className="text-gray-500 text-[18px]">
                           พร้อมเพย์ {link.num}
                         </p>
                       </div>
@@ -96,7 +104,6 @@ const PopupBank = ({ isOpen, onClose, bankName, bankNo }) => {
               )}
             </ul>
 
-            {/* ซ่อน AddButton เมื่อมีบัญชีแล้ว */}
             {prompay.length === 0 && (
               <AddButton
                 icon={Images.PlusIcon}
@@ -106,6 +113,7 @@ const PopupBank = ({ isOpen, onClose, bankName, bankNo }) => {
             )}
           </>
         )}
+
         {!showFormPopup && (
           <div className="flex justify-end mt-6">
             <CloseButton label="เสร็จสิ้น" onClose={onClose} />
