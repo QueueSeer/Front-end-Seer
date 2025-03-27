@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // Import AnimatePresence
+import { motion, AnimatePresence } from "framer-motion";
 import { renderInfoSection, getChannelLabel } from "../utils/utils";
 
 const DetailPackage = ({ appointmentDetails, packageDetails }) => {
