@@ -5,7 +5,11 @@ import Layout from "../OverviewPackage/Layout";
 import PackageList from "./PackageList/PackageList";
 import ConfirmationPopup from "../../../components/Popup/ConfirmationPopup";
 import { fetchUserData } from "../../../Data/Profile/ProfileApi";
-import { fetchPackagePublishedData, updatePackageStatus, deletePackages } from "../../../Data/Package/PackageApi";
+import {
+  fetchPackagePublishedData,
+  updatePackageStatus,
+  deletePackages,
+} from "../../../Data/Package/PackageApi";
 
 const Published = () => {
   const navigate = useNavigate();
@@ -65,7 +69,7 @@ const Published = () => {
         await updatePackageStatus(pkgId, "hidden");
       }
       setSelectedPackages([]);
-      setIsPopupOpen(false);    
+      setIsPopupOpen(false);
       navigate("/package/hiddenPackage");
     } catch (error) {
       console.error("Error hiding packages:", error);
@@ -84,16 +88,38 @@ const Published = () => {
       />
 
       <div className="flex justify-end mt-6 space-x-4">
-        <button className="text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white" onClick={() => setIsPopupOpendelete(true)} disabled={selectedPackages.length === 0}>
+        <button
+          className="text-primary py-2 w-[120px] rounded-full border-2 border-primary hover:bg-primary/60 hover:text-white"
+          onClick={() => setIsPopupOpendelete(true)}
+          disabled={selectedPackages.length === 0}
+        >
           ลบ
         </button>
-        <button className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80" onClick={() => setIsPopupOpen(true)} disabled={selectedPackages.length === 0}>
+        <button
+          className="bg-primary text-white py-2 w-[130px] border-2 border-secondary rounded-full hover:bg-primary/80"
+          onClick={() => setIsPopupOpen(true)}
+          disabled={selectedPackages.length === 0}
+        >
           ซ่อน
         </button>
       </div>
 
-      <ConfirmationPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} onConfirm={handleHidden} title="คุณยืนยันที่จะซ่อนแพ็กเกจใช่ไหม?" message="แพ็กเกจที่เลือกจะไม่สามารถมองเห็นได้โดยคนทั่วไป" confirmText="ซ่อน" />
-      <ConfirmationPopup isOpen={isPopupOpendelete} onClose={() => setIsPopupOpendelete(false)} onConfirm={handleDelete} title="คุณต้องการที่ลบแพ็กเกจใช่ไหม?" message="แพ็กเกจที่เลือกจะไม่สามารถกู้คืนได้หลังจากการลบ" confirmText="ลบ" />
+      <ConfirmationPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onConfirm={handleHidden}
+        title="คุณยืนยันที่จะซ่อนแพ็กเกจใช่ไหม?"
+        message="แพ็กเกจที่เลือกจะไม่สามารถมองเห็นได้โดยคนทั่วไป"
+        confirmText="ซ่อน"
+      />
+      <ConfirmationPopup
+        isOpen={isPopupOpendelete}
+        onClose={() => setIsPopupOpendelete(false)}
+        onConfirm={handleDelete}
+        title="คุณต้องการที่ลบแพ็กเกจใช่ไหม?"
+        message="แพ็กเกจที่เลือกจะไม่สามารถกู้คืนได้หลังจากการลบ"
+        confirmText="ลบ"
+      />
     </Layout>
   );
 };

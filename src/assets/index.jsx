@@ -38,6 +38,7 @@ import XIcon from './icon/Profile/XIcon.png';
 import TiktokIcon from './icon/Profile/TiktokIcon.png';
 import PlusIcon from './icon/Profile/PlusIcon.png';
 import ThaiqrIcon from './icon/Profile/ThaiqrIcon.png';
+import PencilIcon from './icon/Profile/PencilIcon.png';
 
 // ✅ รูปภาพหน้า Landing Page
 import OracleCards1 from './images/landingpage/OracleCards1.png';
@@ -167,6 +168,7 @@ const images = {
     TiktokIcon,
     PlusIcon,
     ThaiqrIcon,
+    PencilIcon,
 
     //ไอคอน package
     videoIcon,
