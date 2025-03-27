@@ -175,9 +175,12 @@ const ContentUser = () => {
   }
 
   return (
-<div
-  className={`py-8 flex flex-col items-center lg:items-start lg:flex-row ${isConfirmModalOpen ? '' : 'lg:space-x-[100px]'} space-y-[16px] lg:px-[30px]`}
->      {/* Column 1 */}
+    <div
+      className={`py-8 flex flex-col items-center lg:items-start lg:flex-row 
+      lg:space-x-[100px]
+      space-y-8  lg:space-y-0  lg:px-[30px]`}
+    >
+      {/* Column 1 */}
       <div className="flex-2 flex items-start">
         <div className="flex flex-col items-center">
           <div className="relative">
@@ -234,7 +237,6 @@ const ContentUser = () => {
         phoneNumber={userInfo?.phone_number}
         onSave={handleSave}
       />
-
       <ConfirmationPopup
         isOpen={isConfirmModalOpen}
         onClose={handleCancelUpload}
