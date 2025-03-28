@@ -54,17 +54,6 @@ const timetable = () => {
               {/* Calendar Header */}
               <CalendarHeader toggleOption={toggleOption} />
 
-              {/* ToggleSwitch: วางถัดจาก CalendarHeader */}
-              <div className="mt-4 mb-6 flex justify-end">
-                <ToggleSwitch
-                  options={[
-                    { label: "ใช้เฉพาะวันนี้" },
-                    { label: "ใช้ทั้งสัปดาห์" },
-                  ]}
-                  onChange={handleToggleChange}
-                />
-              </div>
-
               {/* Other components */}
               <FormSection
                 onSave={(data) => setFormData(data)} // รับข้อมูลจากฟอร์มและบันทึกลง state
