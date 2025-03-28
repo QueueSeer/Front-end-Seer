@@ -7,10 +7,10 @@ const axiosInstance = axios.create({
 
 const fetchAppointmentReceivedData = async ({
   last_id,
-  limit = 10,
+  limit = 90,
   client_id,
   status,
-  direction = "desc",
+  direction = "asc",
 } = {}) => {
   try {
     const params = {

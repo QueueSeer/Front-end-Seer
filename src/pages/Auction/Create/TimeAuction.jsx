@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TimeRangePicker from "../../../components/RangePicker/TimeRangePicker"; // นำเข้า TimeRangePicker
 
-const CreateAuction = () => {
+const TimeAuction = () => {
   const [timeRange, setTimeRange] = useState({
     startTime: "08:00",
     endTime: "17:00",
@@ -26,4 +26,4 @@ const CreateAuction = () => {
   );
 };
 
-export default CreateAuction;
+export default TimeAuction;
