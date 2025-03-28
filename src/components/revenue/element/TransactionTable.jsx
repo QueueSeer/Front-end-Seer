@@ -1,5 +1,5 @@
 import React from "react";
-import { formatDate, formatTime } from "../utils/formatDate";
+import { formatDate, formatTime } from "../../../utils/utils";
 
 const TransactionTable = ({ transactions }) => {
   return (
@@ -9,8 +9,8 @@ const TransactionTable = ({ transactions }) => {
           <tr>
             <th className="px-4 py-3">Transaction ID</th>
             <th className="px-4 py-3">วันที่ชำระเงิน</th>
-            <th className="px-4 py-3">รายรับ</th>
             <th className="px-4 py-3">ประเภทรายการ</th>
+            <th className="px-4 py-3">รายรับ-รายจ่าย</th>
           </tr>
         </thead>
         <tbody>
@@ -22,19 +22,8 @@ const TransactionTable = ({ transactions }) => {
               <td className="px-4 py-3">{item.id}</td>
               <td className="px-4 py-3">{`${formatDate(
                 item.date_created
-              )} ${formatTime(item.date_created)} น.`}</td>
-              <td
-                className={`px-4 py-3 ${
-                  item.amount < 0
-                    ? "text-red-500"
-                    : "text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                {item.amount < 0
-                  ? `-${Math.abs(item.amount).toLocaleString()}`
-                  : item.amount.toLocaleString()}{" "}
-                คอยน์
-              </td>
+              )} ${formatTime(item.date_created)}`}</td>
+
               <td className="px-4 py-3">
                 <button
                   className={`w-[120px] px-4 py-2 text-white rounded-md ${
@@ -45,6 +34,22 @@ const TransactionTable = ({ transactions }) => {
                 >
                   {item.type}
                 </button>
+              </td>
+              <td
+                className={`px-4 py-3 ${
+                  item.amount < 0
+                    ? "text-red-500"
+                    : "text-gray-700 dark:text-gray-300"
+                } text-left`}
+              >
+                <div className="w-full flex justify-start ">
+                  <span className="w-[20px] text-[15px] mr-6 text-right">
+                    {item.amount < 0
+                      ? `-${Math.abs(item.amount).toLocaleString()}`
+                      : item.amount.toLocaleString()}
+                  </span>
+                  <span className="w-2/3">coins</span>
+                </div>
               </td>
             </tr>
           ))}

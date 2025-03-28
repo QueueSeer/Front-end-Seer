@@ -36,7 +36,7 @@ const timetable = () => {
   };
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen dark:bg-gray-900 flex flex-col pb-10">
       <Navbar />
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}

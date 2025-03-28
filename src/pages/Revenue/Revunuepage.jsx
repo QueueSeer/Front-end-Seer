@@ -14,7 +14,7 @@ export default function RevenuePage() {
           <Sidebar />
         </div>
         {/* Revenue Content */}
-        <div className="flex-1   rounded-lg border border-gray-200  ">
+        <div className="flex-1   rounded-lg border border-gray-200 mb-10">
           <Revenue />
         </div>
       </div>

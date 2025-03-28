@@ -5,19 +5,34 @@ import { fetchSelfTransactions } from "../../Data/Transaction/Transaction";
 import TransactionTable from "./element/TransactionTable";
 import Pagination from "./element/Pagination";
 import FilterBar from "./element/FilterBar";
+import { fetchCoinsUser } from "../../Data/Profile/InfoDataUser";
 
 const Revenue = () => {
   const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [accountBalance, setAccountBalance] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [dateFilter, setDateFilter] = useState("month"); // Initial date filter state
-  const itemsPerPage = 10; // กำหนดจำนวนรายการต่อหน้า
+  const [dateFilter, setDateFilter] = useState("month");
+  const itemsPerPage = 10;
 
   const handleDateFilterChange = (event) => {
     setDateFilter(event.target.value);
   };
+
+  useEffect(() => {
+    const getAccountBalance = async () => {
+      try {
+        const balance = await fetchCoinsUser();
+        setAccountBalance(balance); // Set the fetched balance
+      } catch (error) {
+        console.error("Error fetching account balance:", error);
+      }
+    };
+
+    getAccountBalance(); 
+  }, []);
 
   // ฟังก์ชันสำหรับกรองข้อมูล
   const filteredTransactions = transactions.filter((item) => {
@@ -36,12 +51,15 @@ const Revenue = () => {
   });
 
   // คำนวณจำนวนหน้า
-  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage); 
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
 
   // คำนวณช่วงของรายการที่จะถูกแสดงในแต่ละหน้า
   const indexOfLastTransaction = currentPage * itemsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - itemsPerPage;
-  const currentTransactions = filteredTransactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+  const currentTransactions = filteredTransactions.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
+  );
 
   // โหลดข้อมูล
   useEffect(() => {
@@ -98,38 +116,36 @@ const Revenue = () => {
   const uniqueMonths = getUniqueMonths(transactions);
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 flex justify-center items-start">
-      <div className="bg-white dark:bg-gray-800 w-full lg:w-[105%] rounded-lg p-6 pb-10">
+    <div className="min-h-screen dark:bg-gray-900 flex justify-center items-start ">
+      <div className="bg-white dark:bg-gray-800 w-full lg:w-[105%] rounded-lg p-6 ">
         <h1 className="text-xl font-bold text-[#65558F] dark:text-purple-400 mb-4 flex items-center">
           <img src={Images.Wallet} alt="Wallet Icon" className="w-6 h-6 mr-2" />
           รายรับของฉัน
         </h1>
-
         <hr className="border-gray-300 dark:border-gray-700 mb-6" />
-
         <FilterBar
           dateFilter={dateFilter}
           handleDateFilterChange={handleDateFilterChange}
           uniqueMonths={uniqueMonths}
         />
-
-        <TransactionTable transactions={currentTransactions} /> {/* เปลี่ยนจาก filteredTransactions เป็น currentTransactions */}
-
+        <TransactionTable transactions={currentTransactions} />{" "}
+        {/* เปลี่ยนจาก filteredTransactions เป็น currentTransactions */}
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           totalPages={totalPages}
         />
-
         <div className="flex items-center justify-between">
           <div className="bg-[#8677A7] flex justify-between items-center w-full p-4 rounded-md shadow-md">
-            <span className="text-white font-semibold text-lg">รวม</span>
-            <span className="text-white font-semibold text-lg">259 ฿</span>
+            <span className="text-white font-semibold text-[22px]">รวม</span>
+            <span className="text-white font-semibold text-[22px]">
+              {accountBalance !== null ? accountBalance.toLocaleString() : "Loading..."} coins
+            </span>
           </div>
-          <div className="flex flex-col items-center ml-4">
+          <div className="flex flex-col items-center ml-5">
             <button
               onClick={() => navigate("/withdraw-money")}
-              className="w-16 h-16 flex items-center justify-center bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-700 rounded-full shadow-md hover:shadow-lg"
+              className="w-16 h-16 flex items-center  justify-center bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-700 rounded-full shadow-md hover:shadow-lg"
             >
               <img src={Images.Wallet} alt="Wallet Icon" className="w-8 h-8" />
             </button>
