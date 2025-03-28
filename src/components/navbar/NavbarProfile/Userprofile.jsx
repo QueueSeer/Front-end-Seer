@@ -73,7 +73,7 @@ export default function UserProfile() {
           />
         ) : (
           <img
-            className="w-8 h-8 rounded-full"
+            className="w-9 h-9 rounded-full"
             src={userData.image} // ใช้ userData.image จาก API
             alt="User profile"
           />
