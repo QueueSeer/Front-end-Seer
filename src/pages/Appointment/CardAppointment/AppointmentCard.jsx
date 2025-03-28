@@ -3,7 +3,7 @@ import ProfileInfo from "../../../components/Appointment/ProfileInfo";
 import DateInfo from "../../../components/Appointment/DateInfo";
 import CopyButton from "../../../components/Appointment/CopyButton";
 import DetailsButton from "../../../components/Appointment/DetailsButton";
-import {truncateText, AmpStatus} from "../DetailsAppointment/utils/utils";
+import {truncateText, AmpStatus} from "../../../utils/utils";
 
 const AppointmentCard = ({
   icon,

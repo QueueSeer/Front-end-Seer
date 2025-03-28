@@ -5,7 +5,7 @@ import Sidebar from "../../components/Sidebar"; // เรียกใช้ path
 import Images from "../../assets";
 import Header from "../../components/Profile/Header";
 
-const Package = ({ children }) => {
+const Appointment = ({ children }) => {
   return (
     <div>
       {/* Navbar */}
@@ -28,4 +28,4 @@ const Package = ({ children }) => {
   );
 };
 
-export default Package;
+export default Appointment;

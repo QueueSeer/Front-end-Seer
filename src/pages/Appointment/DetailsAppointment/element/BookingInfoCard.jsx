@@ -1,5 +1,5 @@
 import React from "react";
-import { formatDate, formatTime, formatPhoneNumber, renderInfoSection } from "../utils/utils";
+import { formatDate, formatTime, formatPhoneNumber, renderInfoSection } from "../../../../utils/utils";
 
 
 const BookingInfoCard = ({ client }) => {

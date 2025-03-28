@@ -17,6 +17,17 @@ const fetchInfoUserData = async () => {
   }
 };
 
+const fetchCoinsUser = async () => {
+  try {
+    const response = await axiosInstance.get("/me");
+    return response.data.coins;  // Only return the 'coins' value
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw new Error("ไม่สามารถดึงข้อมูลผู้ใช้ได้");
+  }
+};
+
+
 const UpdateInfoUserData = async (display_name, first_name, last_name, phone_number) => {
   try {
     const userData = { display_name, first_name, last_name, phone_number };
@@ -28,4 +39,4 @@ const UpdateInfoUserData = async (display_name, first_name, last_name, phone_num
   }
 };
 
-export { fetchInfoUserData, UpdateInfoUserData };
+export { fetchInfoUserData, UpdateInfoUserData, fetchCoinsUser };

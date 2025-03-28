@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { UpdateInfoUserData } from "../../../Data/Profile/InfoDataUser";
 import { Updateexperienceseer } from "../../../Data/Profile/ProfileApi";
+import { formatPhoneNumber } from "../../../utils/utils";
 
 const PopupEditProfile = ({
   isOpen,
@@ -83,15 +84,7 @@ const PopupEditProfile = ({
     }
   };
 
-  const formatPhoneNumber = (value) => {
-    if (value.length <= 3) {
-      return value;
-    } else if (value.length <= 6) {
-      return `${value.slice(0, 3)}-${value.slice(3)}`;
-    } else {
-      return `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6)}`;
-    }
-  };
+
 
   const handleSubmit = async () => {
     try {

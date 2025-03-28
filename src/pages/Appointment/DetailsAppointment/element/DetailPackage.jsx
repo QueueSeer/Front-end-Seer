@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { renderInfoSection, getChannelLabel } from "../utils/utils";
+import { renderInfoSection, getChannelLabel } from "../../../../utils/utils";
 
 const DetailPackage = ({ appointmentDetails, packageDetails }) => {
   const [isVisible, setIsVisible] = useState(false);

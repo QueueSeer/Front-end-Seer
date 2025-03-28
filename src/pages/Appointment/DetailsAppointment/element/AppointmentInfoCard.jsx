@@ -1,6 +1,5 @@
 import React from "react";
-import AppointmentStatus from "./AppointmentStatus";
-import { formatDate, formatTime, getChannelLabel } from "../utils/utils";
+import { formatDate, formatTime, getChannelLabel, AppointmentStatus } from "../../../../utils/utils";
 
 const AppointmentInfoCard = ({ appointmentDetails, packageDetails }) => {
   const { foretellChannel, price, duration } = packageDetails; // Destructure ข้อมูลจาก object

@@ -1,4 +1,3 @@
-// src/components/PackageForm/SaveButton.js
 import React from "react";
 
 const SaveButton = ({ status, handleSave, isLoading }) => {

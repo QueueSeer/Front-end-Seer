@@ -11,7 +11,7 @@ const DateFilter = ({ dateFilter, handleDateFilterChange, uniqueMonths }) => {
         name="date-filter"
         value={dateFilter}
         onChange={handleDateFilterChange}
-        className="border border-gray-300 dark:border-gray-700 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+        className="border border-gray-300 dark:border-gray-700 rounded-md p-2  bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300"
       >
         <option value="today">วันนี้</option>
         

@@ -1,19 +1,8 @@
 import React from "react";
+import { formatDate, formatPhoneNumber } from "../../../utils/utils";
 
 const InfoUser = ({ userData, email, phoneNumber }) => {
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    const date = new Date(dateString);
-    return date.toLocaleDateString("th-TH", options);
-  };
-
-  const formatPhoneNumber = (number) => {
-    if (!number) return "ไม่มีข้อมูล";
-    const rawNumber = number.replace(/\D/g, "");
-    if (rawNumber.length !== 10) return number;
-    return `${rawNumber.slice(0, 3)}-${rawNumber.slice(3, 6)}-${rawNumber.slice(6)}`;
-  };
-
+ 
   const renderInfo = (label, value) => (
     <div className="flex">
       <div className="w-40 font-medium text-black">{label}</div>
