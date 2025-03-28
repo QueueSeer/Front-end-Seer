@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Images from "../../../assets";
-import SocialLinkItem from "./Social/SocialLinkItem";
 import AddButton from "./Social/AddButton"; // Make sure this import is correct
 import SocialLinkFormPopup from "./Social/SocialLinkFormPopup";
 import CloseButton from "../../Button/CloseButton";
@@ -29,6 +28,10 @@ const PopupSocialLinks = ({ isOpen, onClose, socialName, socialLink }) => {
     setCurrentLinkData({ name: "", url: "" });
     setPopupTitle("เพิ่มลิงก์ใหม่");
     setShowFormPopup(true);
+  };
+
+  const formatURL = (url) => {
+    return url.replace(/^https?:\/\/(www\.)?/, ""); // ลบ https:// หรือ http:// และ www.
   };
 
   const handleSaveLink = async (newLink) => {
@@ -92,7 +95,7 @@ const PopupSocialLinks = ({ isOpen, onClose, socialName, socialLink }) => {
                       />
                       <div className="flex flex-col items-start">
                         <p className="text-gray-800 font-medium">{link.name}</p>
-                        <p className="text-gray-500 text-[18px]">{link.url}</p>
+                        <p className="text-gray-500 text-[18px]">{formatURL(link.url)}</p>
                       </div>
                     </div>
                   </button>
