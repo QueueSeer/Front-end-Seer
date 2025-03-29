@@ -10,7 +10,9 @@ const TransactionTable = ({ transactions }) => {
             <th className="px-4 py-3">Transaction ID</th>
             <th className="px-4 py-3">วันที่ชำระเงิน</th>
             <th className="px-4 py-3">ประเภทรายการ</th>
-            <th className="px-4 py-3">จำนวนเงิน</th>
+            <th className="px-4 py-3 text-center">จำนวนคอยน์</th>
+            <th className="px-4 py-3 text-center"></th>
+
           </tr>
         </thead>
         <tbody>
@@ -26,7 +28,7 @@ const TransactionTable = ({ transactions }) => {
 
               <td className="px-4 py-3">
                 <button
-                  className={`w-[120px] px-4 py-2 text-white rounded-md ${
+                  className={`w-[120px] px-4 py-2 text-white rounded-full ${
                     item.status === "completed"
                       ? "bg-[#8677A7] hover:bg-[#755c97]"
                       : "bg-[#990033] hover:bg-[#7a0028]"
@@ -40,15 +42,12 @@ const TransactionTable = ({ transactions }) => {
                   item.amount < 0
                     ? "text-red-500"
                     : "text-gray-700 dark:text-gray-300"
-                } text-left`}
+                } text-start`}
               >
-                <div className="w-full flex justify-start ">
-                  <span className="w-[20px] text-[15px] mr-6 text-right">
+                <div className=" flex justify-center text-[16px] ">
                     {item.amount < 0
                       ? `-${Math.abs(item.amount).toLocaleString()}`
                       : item.amount.toLocaleString()}
-                  </span>
-                  <span className="w-2/3">coins</span>
                 </div>
               </td>
             </tr>
