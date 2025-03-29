@@ -9,11 +9,13 @@ import TimeAuction from "./TimeAuction";
 import TimeFortune from "./TimeFortune";
 import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
 import { createAuctionSeer } from "../../../Data/Auction/Auction";
+import { postImageauction } from "../../../Data/Image/ImageAuction";
+import { useNavigate  } from "react-router-dom";
 
 const CreateAuction = () => {
   const [price, setPrice] = useState("");
   const [increment, setIncrement] = useState("");
-
+  const navigate = useNavigate();
   const [packageName, setPackageName] = useState("");
   const [description, setDescription] = useState("");
   const [details, setDetails] = useState("");
@@ -156,10 +158,23 @@ const CreateAuction = () => {
     }
   }, [resetImage]);
 
-  const handleSubmit = () => {
-    console.log("Handle submit function called");
+  const handleSubmit = async () => {
+    event.preventDefault();
 
-    // ตรวจสอบว่าไม่มีข้อมูลครบหรือไม่
+    console.log("Handle submit function called");
+    console.log(packageName);
+    console.log(description);
+    console.log(increment);
+    console.log(details);
+    console.log(image);
+    console.log(dateTimeappoint.startDateappoint);
+    console.log(dateTimeappoint.endDateappoint);
+    console.log(dateTime.startDate );
+    console.log(dateTime.endDate);
+    console.log(timeAuction.startTime);    
+    console.log(timeAuction.endTime);
+
+
     if (
       !packageName ||
       !description ||
@@ -181,19 +196,16 @@ const CreateAuction = () => {
       if (!image) setIsImageValid(false);
       return;
     }
-
+  
     setIsFormValid(true);
     setIsPriceValid(true);
     setIsImageValid(true);
-
-    // สร้าง start_time โดยรวม dateTime.startDate และ timeAuction.startTime
+  
     const startTimeString = `${dateTime.startDate}T${timeAuction.startTime}:00.000+07:00`;
-    const startTimeAppoint = `${dateTimeappoint.startDateappoint}T${timeAppoint.startTimeAppoint}:00.000+07:00`;
-    // สร้าง end_time ด้วยวิธีเดียวกัน (สามารถใช้ timeAuction.endTime)
     const endTimeString = `${dateTime.endDate}T${timeAuction.endTime}:00.000+07:00`;
+    const startTimeAppoint = `${dateTimeappoint.startDateappoint}T${timeAppoint.startTimeAppoint}:00.000+07:00`;
     const endTimeAppoint = `${dateTimeappoint.endDateappoint}T${timeAppoint.endTimeAppoint}:00.000+07:00`;
-
-    // สร้างข้อมูลที่จะส่ง
+  
     const auctionData = {
       name: packageName,
       short_description: description,
@@ -205,10 +217,31 @@ const CreateAuction = () => {
       initial_bid: parseFloat(price),
       min_increment: parseFloat(increment),
     };
+  
+    console.log("📌 ส่งข้อมูลไปยัง API:", auctionData);
+    try {
+      const response = await createAuctionSeer(auctionData);
 
-    console.log("ข้อมูลที่กรอกครบ:", JSON.stringify(auctionData, null, 2));
-    alert("บันทึกคำตอบเรียบร้อย!");
+      if (image) {
+        const responseImage = await postImageauction(
+          image,
+          response?.id
+        );
+        console.log("บันทึกรูปภาพสำเร็จ:", responseImage);
+      }
+
+      console.log("✅ Response จาก API:", response);
+      navigate("/auction");
+    } catch (error) {
+      console.error("❌ Error:", error);
+      alert("❌ ไม่สามารถสร้างประมูลได้ กรุณาลองใหม่");
+    }finally {
+      // เปิดการเลื่อนหน้าจอเมื่อบันทึกเสร็จ
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto"; // เปิดการเลื่อนใน html
+    }
   };
+  
 
   return (
     <Layout>
