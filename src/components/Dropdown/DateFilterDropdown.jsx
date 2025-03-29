@@ -37,8 +37,8 @@ const DateFilterDropdown = ({
         break;
 
       case "สัปดาห์นี้":
-        startDate = dayjs().startOf("isoWeek").toISOString();
-        endDate = dayjs().endOf("isoWeek").toISOString();
+        startDate = dayjs().startOf("day").toISOString();
+        endDate = dayjs().add(6, "day").endOf("day").toISOString();
         break;
 
       case "เดือนนี้":

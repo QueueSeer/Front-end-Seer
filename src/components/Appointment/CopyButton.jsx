@@ -16,21 +16,25 @@ const CopyButton = ({ text, isCopied, onCopy }) => {
     }
   };
 
+  const isCancel = text === "CANCEL";
+
   return (
     <button
       className={`w-[120px] h-[36px] py-1 rounded-full shadow-sm border flex items-center justify-center ${
-        isCopied
-          ? "bg-secondary2 text-white "
+        isCancel
+          ? "bg-white text-cancel border-bordercancel"
+          : isCopied
+          ? "bg-secondary2 text-white"
           : isHovered
           ? "bg-secondary2 text-white"
           : "bg-white text-secondary2"
       }`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleCopy} // ใช้ handleCopy แทน
+      onClick={isCancel ? undefined : handleCopy} // ปิดการคัดลอกหากเป็น CANCEL
     >
       <p className="text-[14px] font-bold">
-        {isCopied ? "คัดลอกแล้ว" : isHovered ? "คัดลอก" : text}
+        {isCancel ? "CANCEL" : isCopied ? "คัดลอกแล้ว" : isHovered ? "คัดลอก" : text}
       </p>
     </button>
   );

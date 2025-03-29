@@ -36,15 +36,15 @@ export const formatDate = (isoDate) => {
   export const AmpStatus = (status) => {
     switch (status) {
       case "pending":
-        return <div className="py-2 text-white text-base font-medium rounded-md">รอเข้ารับบริการ</div>;
+        return <div className="py-2  text-base font-medium rounded-md">รอเข้ารับบริการ</div>;
       case "completed":
-        return <div className="py-2 text-white text-base font-medium rounded-md">บริการสำเร็จ</div>;
+        return <div className="py-2  text-base font-medium rounded-md">บริการสำเร็จ</div>;
       case "s_cancelled":
-        return <div className="py-2 text-white text-base font-medium rounded-md">ยกเลิกบริการ</div>;
+        return <div className="py-2  text-base font-medium rounded-md">ยกเลิกบริการ</div>;
       case "u_cancelled":
-        return <div className="py-2 text-white text-base font-medium rounded-md">ยกเลิกโดยผู้ใช้</div>;
+        return <div className="py-2  text-base font-medium rounded-md">ยกเลิกโดยผู้ใช้</div>;
       default:
-        return <div className="py-2  text-white text-base font-medium rounded-md">ไม่ทราบสถานะ</div>;
+        return <div className="py-2   text-base font-medium rounded-md">ไม่ทราบสถานะ</div>;
     }
   };
 

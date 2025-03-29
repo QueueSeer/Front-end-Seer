@@ -10,8 +10,8 @@ const ProfileInfo = ({ image, name, packageName }) => {
 
       {/* ชื่อและวันเกิด (ให้อยู่กึ่งกลางแนวตั้ง) */}
       <div className="flex flex-col justify-center text-left space-y-1">
-        <p className="text-[18px] font-semibold text-white">{name}</p>
-        <p className="text-[16px] text-white opacity-80">{packageName}</p>
+        <p className="text-[18px] font-semibold ">{name}</p>
+        <p className="text-[16px]  opacity-80">{packageName}</p>
       </div>
     </div>
   );
