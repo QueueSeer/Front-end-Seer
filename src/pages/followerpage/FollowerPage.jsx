@@ -54,7 +54,7 @@ const FollowerPage = () => {
       {/* Layout */}
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
-        <div className="hidden lg:block w-72">
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
           <Sidebar active="ผู้ติดตาม" />
         </div>
 

@@ -81,7 +81,7 @@ const Appointment = () => {
           appointments.map((appointment) => (
             <div key={appointment.id} onClick={() => handleCardClick(appointment.id)}>
               <AppointmentCard
-                icon={appointment.client.image || images.UserIcon}
+                image={appointment.client.image || images.UserIcon}
                 name={appointment.client.display_name}
                 date={formatDate(appointment.start_time)}
                 time={formatTime(appointment.start_time)}

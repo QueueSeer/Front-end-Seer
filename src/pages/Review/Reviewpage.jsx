@@ -1,10 +1,10 @@
 import React from "react";
 
-import Navbar from "../../components/navbar"; 
-import Sidebar from "../../components/Sidebar"; 
-import ReviewHeader from "../../components/Reviewcomponent/ReviewHeader"; 
-import ReviewFilter from "../../components/Reviewcomponent/ReviewFilter"; 
-import ReviewList from "../../components/Reviewcomponent/ReviewList"; 
+import Navbar from "../../components/navbar";
+import Sidebar from "../../components/Sidebar";
+import ReviewHeader from "../../components/Reviewcomponent/ReviewHeader";
+import ReviewFilter from "../../components/Reviewcomponent/ReviewFilter";
+import ReviewList from "../../components/Reviewcomponent/ReviewList";
 
 const ReviewPage = () => {
   return (
@@ -12,7 +12,7 @@ const ReviewPage = () => {
       <Navbar />
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
-        <div className="hidden lg:block w-72">
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
           <Sidebar />
         </div>
         {/* Main Content */}
