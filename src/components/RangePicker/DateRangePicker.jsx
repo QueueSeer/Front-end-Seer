@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import { DateRange } from "react-date-range";
+import React, { useState, useEffect } from "react";
 import { isSaturday, isSunday, isSameMonth } from "date-fns";
 import { th } from "date-fns/locale";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
 import dayjs from "dayjs";
 import "dayjs/locale/th";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import CalendarPopup from "./CalendarPopup";
 
 dayjs.extend(localizedFormat);
 
@@ -37,7 +35,7 @@ const predefinedRanges = [
     label: "30 วันถัดไป",
     getValue: () => {
       const today = dayjs();
-      const next30Days = today.add(30, "day"); // เพิ่ม 30 วันจากวันนี้
+      const next30Days = today.add(30, "day");
       return [today.toDate(), next30Days.toDate()];
     },
   },
@@ -54,39 +52,97 @@ const predefinedRanges = [
   },
 ];
 
-const DateRangePicker = () => {
+const DateRangePicker = ({ onDateChange, label }) => {
+  if (typeof onDateChange !== "function") {
+    console.error(
+      "onDateChange is not a function. Please pass a valid callback."
+    );
+  }
+
   const today = dayjs();
-  const [state, setState] = useState([
+  const [selectedRange, setSelectedRange] = useState([
     {
       startDate: today.toDate(),
       endDate: today.toDate(),
       key: "selection",
     },
   ]);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [selectedRange, setSelectedRange] = useState(state);
 
-  const handleSelect = (ranges) => {
-    setSelectedRange([ranges.selection]);
-  };
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  useEffect(() => {
+    if (onDateChange && selectedRange) {
+      const startDate = dayjs(selectedRange[0].startDate)
+        .locale("th")
+        .format("YYYY-MM-DD");
+      const endDate = dayjs(selectedRange[0].endDate)
+        .locale("th")
+        .format("YYYY-MM-DD");
+
+      if (dayjs(startDate).isValid() && dayjs(endDate).isValid()) {
+        onDateChange({
+          start_time: startDate,
+          end_time: endDate,
+        });
+      } else {
+        console.error("Invalid date object", {
+          start_time: startDate,
+          end_time: endDate,
+        });
+      }
+    }
+  }, [selectedRange, onDateChange]);
 
   const handlePredefinedRange = (range) => {
+    const [startDate, endDate] = range.getValue();
     setSelectedRange([
       {
-        startDate: range.getValue()[0],
-        endDate: range.getValue()[1],
+        startDate: startDate,
+        endDate: endDate,
         key: "selection",
       },
     ]);
+
+    // ตรวจสอบว่า startDate และ endDate เป็น valid date หรือไม่
+    const startDayjs = dayjs(startDate);
+    const endDayjs = dayjs(endDate);
+
+    const startTime = startDayjs.locale("th").format("YYYY-MM-DD");
+    const endTime = endDayjs.locale("th").format("YYYY-MM-DD");
+
+    if (startDayjs.isValid() && endDayjs.isValid()) {
+      if (onDateChange) {
+        onDateChange({
+          start_time: startTime,
+          end_time: endTime,
+        });
+      }
+    } else {
+      console.error("Invalid date object", {
+        start_time: startTime,
+        end_time: endTime,
+      });
+    }
+  };
+
+  const handleSelect = (ranges) => {
+    const { startDate, endDate } = ranges.selection;
+    setSelectedRange([ranges.selection]);
+
+    // ส่งข้อมูลไปยัง onDateChange โดยใช้ format "YYYY-MM-DD"
+    if (onDateChange) {
+      onDateChange({
+        start_time: dayjs(startDate).locale("th").format("YYYY-MM-DD"),
+        end_time: dayjs(endDate).locale("th").format("YYYY-MM-DD"),
+      });
+    }
   };
 
   const handleConfirm = () => {
-    setState(selectedRange);
     setIsCalendarOpen(false);
   };
 
   const handleCancel = () => {
-    setSelectedRange(state);
     setIsCalendarOpen(false);
   };
 
@@ -99,6 +155,14 @@ const DateRangePicker = () => {
         key: "selection",
       },
     ]);
+    if (onDateChange) {
+      onDateChange({
+        start_time: dayjs(today)
+          .locale("th")
+          .format("YYYY-MM-DDTHH:mm:ss+07:00"),
+        end_time: dayjs(today).locale("th").format("YYYY-MM-DDTHH:mm:ss+07:00"),
+      });
+    }
   };
 
   const isWeekend = (date) => isSaturday(date) || isSunday(date);
@@ -106,15 +170,9 @@ const DateRangePicker = () => {
   const dayClassName = (date) => {
     const isInSameMonth = isSameMonth(date, new Date());
     if (isWeekend(date)) {
-      if (isInSameMonth) {
-        return "bg-red-700 text-white";
-      } else {
-        return "bg-red-200 text-white";
-      }
-    } else if (!isInSameMonth) {
-      return "text-gray-200";
+      return isInSameMonth ? "bg-red-700 text-white" : "bg-red-200 text-white";
     }
-    return "";
+    return !isInSameMonth ? "text-gray-200" : "";
   };
 
   const renderCustomDayContent = (date) => {
@@ -131,89 +189,34 @@ const DateRangePicker = () => {
   return (
     <div className="flex flex-col mb-6">
       <label className="text-lg font-semibold text-gray-900 mb-4">
-        วันที่ประมูล
+        {label}
       </label>
-
-      {/* Input ที่ใช้แสดง Popup */}
       <button
         onClick={() => setIsCalendarOpen(!isCalendarOpen)}
         className="w-full px-4 py-3 border rounded-lg text-left focus:outline-none focus:ring focus:ring-primary"
       >
-        {state[0].startDate === state[0].endDate
-          ? `${dayjs(state[0].startDate).locale("th").format("D MMMM YYYY")}`
-          : `${dayjs(state[0].startDate)
+        {selectedRange[0].startDate === selectedRange[0].endDate
+          ? `${dayjs(selectedRange[0].startDate)
               .locale("th")
-              .format("D MMMM YYYY")} - ${dayjs(state[0].endDate)
+              .format("D MMMM YYYY")}`
+          : `${dayjs(selectedRange[0].startDate)
+              .locale("th")
+              .format("D MMMM YYYY")} - ${dayjs(selectedRange[0].endDate)
               .locale("th")
               .format("D MMMM YYYY")}`}
       </button>
-
-      {/* Popup Calendar */}
       {isCalendarOpen && (
-        <div className="bg-white border rounded-lg shadow-lg mt-2 p-4 w-auto max-w-[850px]">
-          {/* Dropdown ช่วงวันที่ลัด */}
-          <div className="flex flex-col space-y-2 w-[180px]">
-            <select
-              className="border rounded-lg px-3 py-1 mb-1 bg-white focus:outline-none focus:ring focus:ring-primary"
-              onChange={(e) => {
-                const selectedRange = predefinedRanges.find(
-                  (range) => range.label === e.target.value
-                );
-                if (selectedRange) handlePredefinedRange(selectedRange);
-              }}
-            >
-              <option value="" disabled selected>
-                เลือกช่วงวันที่ลัด
-              </option>
-              {predefinedRanges.map((range, index) => (
-                <option key={index} value={range.label}>
-                  {range.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* ปฏิทิน */}
-          <div className="flex justify-center mt-4">
-            <div className="w-auto max-w-[800px]">
-              <DateRange
-                editableDateInputs={true}
-                onChange={handleSelect}
-                ranges={selectedRange}
-                locale={th}
-                months={2} // กำหนดจำนวนเดือนที่แสดงในปฏิทิน
-                className="border rounded-lg text-gray-800 h-[430px] text-lg w-auto mx-4" // ปรับขนาดอัตโนมัติ
-                direction="horizontal"
-                dayClassName={(date) => `${dayClassName(date)} text-[16px] `}
-                renderDayContents={renderCustomDayContent}
-                showDateDisplay={true}
-                moveRangeOnFirstSelection={false}
-              />
-            </div>
-          </div>
-
-          {/* ปุ่ม ยืนยัน และ ยกเลิก */}
-          <div className="flex justify-end space-x-3 mt-4">
-            <button
-              onClick={handleCancel}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-            >
-              ยกเลิก
-            </button>
-            <button
-              onClick={handleReset}
-              className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-            >
-              รีเซ็ต
-            </button>
-            <button
-              onClick={handleConfirm}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              ยืนยัน
-            </button>
-          </div>
-        </div>
+        <CalendarPopup
+          predefinedRanges={predefinedRanges}
+          handlePredefinedRange={handlePredefinedRange}
+          selectedRange={selectedRange}
+          handleSelect={handleSelect}
+          handleConfirm={handleConfirm}
+          handleCancel={handleCancel}
+          handleReset={handleReset}
+          dayClassName={dayClassName}
+          renderCustomDayContent={renderCustomDayContent}
+        />
       )}
     </div>
   );

@@ -5,6 +5,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+// ฟังก์ชันค้นหาประมูล
 const searchAuctions = async ({
   last_id,
   limit = 10,
@@ -36,6 +37,7 @@ const searchAuctions = async ({
   }
 };
 
+// ฟังก์ชันดึงประมูลของหมอดู
 const getSeerAuctions = async ({
   last_id,
   limit = 10,
@@ -63,4 +65,37 @@ const getSeerAuctions = async ({
   }
 };
 
-export { searchAuctions, getSeerAuctions };
+// ✅ ฟังก์ชันสร้างประมูลใหม่
+const createAuctionSeer = async ({
+  name,
+  short_description,
+  description,
+  start_time,
+  end_time,
+  appoint_start_time,
+  appoint_end_time,
+  initial_bid,
+  min_increment,
+}) => {
+  try {
+    const payload = {
+      name,
+      short_description,
+      description,
+      start_time,
+      end_time,
+      appoint_start_time,
+      appoint_end_time,
+      initial_bid,
+      min_increment,
+    };
+
+    const response = await axiosInstance.post("/", payload);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating auction:", error);
+    throw new Error("ไม่สามารถสร้างประมูลได้");
+  }
+};
+
+export { searchAuctions, getSeerAuctions, createAuctionSeer };
