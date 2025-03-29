@@ -19,7 +19,7 @@ const formatTime = (isoDate) => {
 
 const Appointment = () => {
   const navigate = useNavigate();
-  
+
   // สถานะสำหรับจัดการการคัดลอก
   const [copiedCode, setCopiedCode] = useState("");
   const [appointments, setAppointments] = useState([]);
@@ -75,24 +75,41 @@ const Appointment = () => {
       </div>
 
       <div className="space-y-5">
-        {appointments.length === 0 ? (
+        {appointments
+          .filter(
+            (appointment) =>
+              appointment.status === "pending" ||
+              appointment.status === "u_cancelled"
+          )
+          .sort((a, b) => new Date(a.start_time) - new Date(b.start_time)) // เรียงวันจากใกล้สุดไปไกลสุด
+          .length === 0 ? (
           <div className="text-center text-gray-500">ยังไม่มีการนัดหมาย</div>
         ) : (
-          appointments.map((appointment) => (
-            <div key={appointment.id} onClick={() => handleCardClick(appointment.id)}>
-              <AppointmentCard
-                image={appointment.client.image || images.UserIcon}
-                name={appointment.client.display_name}
-                date={formatDate(appointment.start_time)}
-                time={formatTime(appointment.start_time)}
-                packageName={appointment.package.name}
-                status={appointment.status}
-                code={appointment.confirmation_code}
-                isCopied={copiedCode === appointment.confirmation_code}
-                onCopy={() => handleCopy(appointment.confirmation_code)}
-              />
-            </div>
-          ))
+          appointments
+            .filter(
+              (appointment) =>
+                appointment.status === "pending" ||
+                appointment.status === "u_cancelled"
+            )
+            .sort((a, b) => new Date(a.start_time) - new Date(b.start_time)) // เรียงวัน
+            .map((appointment) => (
+              <div
+                key={appointment.id}
+                onClick={() => handleCardClick(appointment.id)}
+              >
+                <AppointmentCard
+                  image={appointment.client.image || images.UserIcon}
+                  name={appointment.client.display_name}
+                  date={formatDate(appointment.start_time)}
+                  time={formatTime(appointment.start_time)}
+                  packageName={appointment.package.name}
+                  status={appointment.status}
+                  code={appointment.confirmation_code}
+                  isCopied={copiedCode === appointment.confirmation_code}
+                  onCopy={() => handleCopy(appointment.confirmation_code)}
+                />
+              </div>
+            ))
         )}
       </div>
     </div>
