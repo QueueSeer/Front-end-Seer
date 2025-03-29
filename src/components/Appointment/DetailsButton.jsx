@@ -2,7 +2,7 @@ import React from "react";
 
 const DetailsButton = () => {
   return (
-    <button className="flex items-center text-sm text-white opacity-80 hover:opacity-100 space-x-2">
+    <button className="flex items-center text-sm  opacity-80 hover:opacity-100 space-x-2">
       <span>รายละเอียด</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
