@@ -6,7 +6,7 @@ import DetailsButton from "../../../components/Appointment/DetailsButton";
 import {truncateText, AmpStatus} from "../../../utils/utils";
 
 const AppointmentCard = ({
-  icon,
+  image,
   name,
   date,
   time,
@@ -27,7 +27,7 @@ const AppointmentCard = ({
     >
       {/* Section 1: ข้อมูลไอคอนและชื่อ */}
       <ProfileInfo
-        icon={icon}
+        image={image}
         name={name}
         packageName={truncateText(packageName, 20)}
         onNameChange={onNameChange}

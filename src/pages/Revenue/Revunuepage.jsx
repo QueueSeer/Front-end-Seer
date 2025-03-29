@@ -1,14 +1,14 @@
 import React from "react";
 import Navbar from "../../components/navbar";
-import Sidebar from "../../components/Sidebar"; 
-import Revenue from "../../components/revenue"; 
+import Sidebar from "../../components/Sidebar";
+import Revenue from "../../components/revenue";
 
 export default function RevenuePage() {
   return (
     <div>
-      <Navbar /> 
+      <Navbar />
       <div className="flex px-12 pt-12 gap-14">
-        <div className="hidden lg:block w-72">
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
           <Sidebar />
         </div>
         {/* Revenue Content */}
