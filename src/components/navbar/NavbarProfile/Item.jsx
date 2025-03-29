@@ -41,7 +41,7 @@ const menuItems = [
   {
     icon: Images.Users_GroupIcon,
     label: "ผู้ติดตาม",
-    to: "/followers",
+    to: "/follower",
   },
   {
     icon: Images.Star_Icon,

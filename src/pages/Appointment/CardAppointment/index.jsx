@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import DateDropdown from "./DateDropdown";
 import AppointmentCard from "./AppointmentCard";
 import { fetchAppointmentReceivedData } from "../../../Data/Appointment/Appointments";
+import images from "../../../assets";
 
 // ฟังก์ชันจัดรูปแบบวันที่
 const formatDate = (isoDate) => {
@@ -80,7 +81,7 @@ const Appointment = () => {
           appointments.map((appointment) => (
             <div key={appointment.id} onClick={() => handleCardClick(appointment.id)}>
               <AppointmentCard
-                icon={null}
+                icon={appointment.client.image || images.UserIcon}
                 name={appointment.client.display_name}
                 date={formatDate(appointment.start_time)}
                 time={formatTime(appointment.start_time)}

@@ -32,7 +32,7 @@ const AppointmentInfoCard = ({ appointmentDetails, packageDetails }) => {
         <p className="text-[24px] sm:text-[32px] font-semibold">
           {appointmentDetails.package.name}
         </p>
-        <p className="text-lg font-medium">{appointmentDetails.seer.name}</p>
+        <p className="text-lg font-medium">{appointmentDetails.seer.display_name}</p>
       </div>
       <div className="justify-items-center items-center">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-4 mt-9 text-[18px]">

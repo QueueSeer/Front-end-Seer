@@ -10,7 +10,7 @@ const TransactionTable = ({ transactions }) => {
             <th className="px-4 py-3">Transaction ID</th>
             <th className="px-4 py-3">วันที่ชำระเงิน</th>
             <th className="px-4 py-3">ประเภทรายการ</th>
-            <th className="px-4 py-3">รายรับ-รายจ่าย</th>
+            <th className="px-4 py-3">จำนวนเงิน</th>
           </tr>
         </thead>
         <tbody>

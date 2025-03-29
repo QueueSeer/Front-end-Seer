@@ -98,7 +98,7 @@ const WithdrawMoney = () => {
           </div>
 
           {/* User Information Card */}
-          <div className="bg-[#8677A7] text-white rounded-lg p-4 shadow-md mb-6 max-w-2xl mx-auto ml-5">
+          <div className="bg-[#8677A7] text-white rounded-lg py-6 px-6 shadow-md mb-6 max-w-2xl mx-auto ml-5">
             <h2 className="text-[20px] font-semibold">{userData.bank_name}</h2>
             <p className="text-[16px]">
               พร้อมเพย์ {formatPhoneNumber(userData.bank_no)}
