@@ -74,7 +74,8 @@ export default function App() {
           <Route path="/EmailVerification" element={<EmailVerification />} />
 
           {/* เส้นทางสำหรับหน้า LandingPage */}
-          <Route path="/landing" element={<LandingPage />} />
+          <Route path="/landingpage" element={<LandingPage />} />
+
 
           {/* เส้นทางสำหรับหน้า Timetable */}
           <Route path="/timetable" element={<Timetable />} />
