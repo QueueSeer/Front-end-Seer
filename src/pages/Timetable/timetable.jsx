@@ -1,37 +1,47 @@
-import Navbar from "../../components/navbar"; 
-import Sidebar from "../../components/Sidebar"; 
-import CalendarHeader from "../../components/timetablecomponent/CalendarHeader"; 
-import FormSection from "../../components/timetablecomponent/FormSection"; 
-import TimeSlots from "../../components/timetablecomponent/TimeSlots"; 
-import ActionButtons from "../../components/timetablecomponent/ActionButtons"; 
+import Navbar from "../../components/navbar";
+import Sidebar from "../../components/Sidebar";
+import CalendarHeader from "../../components/timetablecomponent/CalendarHeader";
+import FormSection from "../../components/timetablecomponent/FormSection";
+import TimeSlots from "../../components/timetablecomponent/TimeSlots";
+import ActionButtons from "../../components/timetablecomponent/ActionButtons";
 import ToggleSwitch from "../../components/timetablecomponent/ToggleSwitchComponent";
-import FullCalendarPage from "../../components/timetablecomponent/FullCalendarPage"; // เพิ่ม FullCalendarPage
+import FullCalendarPage from "../../components/timetablecomponent/FullCalendarPage";
+import { useState, useEffect } from "react";
+import { fetchUserData } from "../../Data/Profile/ProfileApi";
 
-import { useState } from "react";
-
-const timetable = () => {
-  const [showFullCalendar, setShowFullCalendar] = useState(false); // State สำหรับสลับหน้า
-  const [formData, setFormData] = useState(null); // เก็บข้อมูลที่กรอกจาก FormSection
-  const [toggleOption, setToggleOption] = useState(0); // เก็บสถานะของ ToggleSwitch (วันนี้/ทั้งสัปดาห์)
+const Timetable = () => {
+  const [showFullCalendar, setShowFullCalendar] = useState(false);
+  const [formData, setFormData] = useState(null);
+  const [toggleOption, setToggleOption] = useState(0);
+  const [userId, setUserId] = useState(null);
+  
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const userData = await fetchUserData();
+        setUserId(userData.id);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+    getUserData();
+  }, []);
 
   const handleToggleChange = (index) => {
-    setToggleOption(index); // เก็บสถานะของ ToggleSwitch
+    setToggleOption(index);
     console.log(`Toggle switched to: ${index === 0 ? "Today" : "This Week"}`);
   };
 
   const handleSave = (data) => {
-    // บันทึกข้อมูลฟอร์มและสลับไปยังหน้า FullCalendarPage
     setFormData(data);
     setShowFullCalendar(true);
   };
 
   const handleEdit = () => {
-    // กลับไปที่หน้าฟอร์ม
     setShowFullCalendar(false);
   };
 
   const handlePost = () => {
-    // แสดง Popup แจ้งว่าโพสต์สำเร็จ
     alert("โพสต์ข้อมูลสำเร็จ!");
   };
 
@@ -39,26 +49,18 @@ const timetable = () => {
     <div className="min-h-screen dark:bg-gray-900 flex flex-col pb-10">
       <Navbar />
       <div className="flex px-12 pt-12 gap-14">
-        {/* Sidebar */}
         <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
           <Sidebar />
         </div>
 
-        {/* Main Content */}
         <div className="relative flex-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 shadow-lg p-6">
           {showFullCalendar ? (
-            // แสดงหน้า FullCalendarPage
             <FullCalendarPage onEdit={handleEdit} onPost={handlePost} formData={formData} />
           ) : (
             <>
-              {/* Calendar Header */}
-              <CalendarHeader toggleOption={toggleOption} />
-
-              {/* Other components */}
-              <FormSection
-                onSave={(data) => setFormData(data)} // รับข้อมูลจากฟอร์มและบันทึกลง state
-              />
-              <TimeSlots formData={formData} toggleOption={toggleOption} /> {/* ส่ง toggleOption เพื่อปรับการแสดงผล */}
+              <CalendarHeader toggleOption={toggleOption} seerId={userId} />
+              <FormSection onSave={(data) => setFormData(data)} userId={userId} />
+              <TimeSlots formData={formData} toggleOption={toggleOption} />
               <ActionButtons onSave={() => handleSave(formData)} />
             </>
           )}
@@ -68,4 +70,4 @@ const timetable = () => {
   );
 };
 
-export default timetable;
+export default Timetable;

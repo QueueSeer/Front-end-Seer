@@ -117,12 +117,14 @@ const DetailsAppointment = () => {
     );
   };
 
-  // Function to check if the appointment is past
-  const isAppointmentPast = () => {
-    const currentTime = new Date();
-    const appointmentEndTime = new Date(appointmentDetails.end_time);
-    return currentTime > appointmentEndTime;
-  };
+  // Function to check if the appointment is past 7 days from end_time
+const isAppointmentPast = () => {
+  const currentTime = new Date();
+  const appointmentEndTime = new Date(appointmentDetails.end_time);
+  appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
+  return currentTime > appointmentEndTime;
+};
+
 
   // Check if the appointment is past and update the status
   useEffect(() => {
