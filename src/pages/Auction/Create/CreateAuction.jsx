@@ -11,6 +11,7 @@ import ButtonComponent from "../../../components/Popup/profile/ButtonComponent";
 import { createAuctionSeer } from "../../../Data/Auction/Auction";
 import { postImageauction } from "../../../Data/Image/ImageAuction";
 import { useNavigate  } from "react-router-dom";
+import Loading from "../../../components/isloading/loading";
 
 const CreateAuction = () => {
   const [price, setPrice] = useState("");
@@ -41,6 +42,7 @@ const CreateAuction = () => {
   const [image, setImage] = useState(null);
   const [isImageValid, setIsImageValid] = useState(true);
   const [resetImage, setResetImage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // New state for loading
 
   const handleImageUpload = (file) => {
     setImage(file);
@@ -79,21 +81,17 @@ const CreateAuction = () => {
   };
 
   const handleDateAppointChange = (date) => {
-    // ตรวจสอบว่า start_time และ end_time เป็นวันที่ที่ถูกต้อง
     const newStartDate = new Date(date.start_time);
     const newEndDate = new Date(date.end_time);
 
-    // ถ้าแปลงแล้วเป็นวันที่ที่ไม่ถูกต้อง, จะได้ "Invalid Date"
     if (isNaN(newStartDate.getTime()) || isNaN(newEndDate.getTime())) {
       console.error("Invalid date received:", date);
-      return; // ถ้าเป็นวันที่ไม่ถูกต้อง, ไม่ให้ดำเนินการต่อ
+      return; 
     }
 
-    // แปลงค่าจาก start_time และ end_time ให้อยู่ในรูปแบบ YYYY-MM-DD
     const formattedStartDate = newStartDate.toISOString().split("T")[0]; // ได้ค่าในรูปแบบ '2025-03-30'
     const formattedEndDate = newEndDate.toISOString().split("T")[0]; // ได้ค่าในรูปแบบ '2025-03-30'
 
-    // ถ้ามีการเปลี่ยนแปลงใน startDateappoint หรือ endDateappoint ก็อัพเดท state
     setDateTimeappoint((prevDateTime) => {
       if (
         prevDateTime.startDateappoint !== formattedStartDate ||
@@ -160,19 +158,20 @@ const CreateAuction = () => {
 
   const handleSubmit = async () => {
     event.preventDefault();
+    setIsLoading(true)
 
-    console.log("Handle submit function called");
-    console.log(packageName);
-    console.log(description);
-    console.log(increment);
-    console.log(details);
-    console.log(image);
-    console.log(dateTimeappoint.startDateappoint);
-    console.log(dateTimeappoint.endDateappoint);
-    console.log(dateTime.startDate );
-    console.log(dateTime.endDate);
-    console.log(timeAuction.startTime);    
-    console.log(timeAuction.endTime);
+    // console.log("Handle submit function called");
+    // console.log(packageName);
+    // console.log(description);
+    // console.log(increment);
+    // console.log(details);
+    // console.log(image);
+    // console.log(dateTimeappoint.startDateappoint);
+    // console.log(dateTimeappoint.endDateappoint);
+    // console.log(dateTime.startDate );
+    // console.log(dateTime.endDate);
+    // console.log(timeAuction.startTime);    
+    // console.log(timeAuction.endTime);
 
 
     if (
@@ -190,6 +189,7 @@ const CreateAuction = () => {
       !timeAuction.endTime
     ) {
       console.log("Form validation failed");
+      setIsLoading(false);
       setIsFormValid(false);
       if (!price) setIsPriceValid(false);
       if (!increment) setIsPriceValid(false);
@@ -236,6 +236,7 @@ const CreateAuction = () => {
       console.error("❌ Error:", error);
       alert("❌ ไม่สามารถสร้างประมูลได้ กรุณาลองใหม่");
     }finally {
+      setIsLoading(false);
       // เปิดการเลื่อนหน้าจอเมื่อบันทึกเสร็จ
       document.body.style.overflow = "auto";
       document.documentElement.style.overflow = "auto"; // เปิดการเลื่อนใน html
@@ -245,6 +246,7 @@ const CreateAuction = () => {
 
   return (
     <Layout>
+         <Loading isVisible={isLoading} message="กำลังบันทึกข้อมูล..." /> 
       <div className="pt-6 flex items-start pb-6">
         <BackButton />
       </div>
