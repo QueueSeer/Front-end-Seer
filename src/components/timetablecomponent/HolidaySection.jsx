@@ -5,7 +5,7 @@ import {
   getSeerCalendar,
   deleteSeerDayoff,
 } from "../../Data/Schedule/Timetable";
-import DatePicker from "react-datepicker/dist/react-datepicker.esm";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { th } from "date-fns/locale";
 
