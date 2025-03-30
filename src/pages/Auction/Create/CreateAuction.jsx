@@ -251,7 +251,7 @@ const CreateAuction = () => {
         <BackButton />
       </div>
 
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">ชื่อแพคเกจ</h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">ชื่อแพ็กเกจ</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2 space-y-6">
@@ -269,7 +269,7 @@ const CreateAuction = () => {
               onChange={(e) => setPackageName(e.target.value)}
             />
             {!packageName && !isFormValid && (
-              <p className="text-sm text-bordercancel">กรุณากรอกชื่อแพคเกจ</p>
+              <p className="text-sm text-bordercancel">กรุณากรอกชื่อแพ็กเกจ</p>
             )}
           </div>
 
