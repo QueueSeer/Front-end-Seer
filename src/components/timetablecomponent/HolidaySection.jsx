@@ -39,6 +39,15 @@ const HolidaySection = ({
     onHolidayChange(value);
   };
 
+  const formatThaiDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("th-TH", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   const handleDateChange = (date) => {
     if (date instanceof Date && !isNaN(date.getTime())) {
       const formattedDate = date.toISOString().split("T")[0];
@@ -73,26 +82,25 @@ const HolidaySection = ({
 
   const handleDelete = async () => {
     if (!holidayInput) {
-        alert("กรุณาเลือกวันหยุดที่ต้องการลบ");
-        return;
+      alert("กรุณาเลือกวันหยุดที่ต้องการลบ");
+      return;
     }
 
     const confirmDelete = window.confirm(
-        `ต้องการลบวันหยุด ${holidayInput} ใช่หรือไม่?`
+      `ต้องการลบวันหยุด ${holidayInput} ใช่หรือไม่?`
     );
     if (!confirmDelete) return;
 
     try {
-        await deleteSeerDayoff(holidayInput);
-        // ✅ รีเฟรชหน้าหลังจากลบสำเร็จ
-        window.location.reload();
-        window.scrollTo(0, 0);
-
+      await deleteSeerDayoff(holidayInput);
+      // ✅ รีเฟรชหน้าหลังจากลบสำเร็จ
+      window.location.reload();
+      window.scrollTo(0, 0);
     } catch (error) {
-        console.error("Error deleting day off:", error);
-        alert(error.message || "เกิดข้อผิดพลาดในการลบวันหยุด");
+      console.error("Error deleting day off:", error);
+      alert(error.message || "เกิดข้อผิดพลาดในการลบวันหยุด");
     }
-};
+  };
 
   return (
     <div>
@@ -121,16 +129,15 @@ const HolidaySection = ({
         {/* ซ่อน DatePicker ถ้าเลือกวันจาก dropdown */}
         {!dayOffs.includes(holidayInput) && (
           <div className="mt-2">
-            <DatePicker
-              selected={
-                holidayInput && !isNaN(new Date(holidayInput).getTime())
-                  ? new Date(holidayInput)
-                  : null
-              }
-              onChange={handleDateChange}
-              dateFormat="yyyy-MM-dd"
-              locale={th}
-              placeholderText="กรุณาเลือกวันที่"
+            <input
+              type="date"
+              value={holidayInput}
+              onChange={(e) => {
+                const newDate = new Date(e.target.value);
+                setHolidayInput(e.target.value);
+                console.log("วันที่เลือก:", formatThaiDate(e.target.value)); // แสดงวันที่เป็นภาษาไทย
+              }}
+              lang="th"
               className={`w-[400px] border ${
                 holidayError ? "border-red-500" : "border-gray-300"
               } rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
