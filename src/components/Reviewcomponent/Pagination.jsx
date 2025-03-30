@@ -1,11 +1,11 @@
 import React from "react";
-import Images from "../../assets"; // Replace with the correct path to your images
+import Images from "../../assets";
 
-const Pagination = ({ currentPage, totalPages, onPrevious, onNext }) => {
+const Pagination = ({ currentPage, setCurrentPage, totalPages }) => {
   return (
     <div className="flex items-center justify-end mt-6 mb-4">
       <button
-        onClick={onPrevious}
+        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
         className="p-2 mx-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
         disabled={currentPage === 1}
       >
@@ -19,18 +19,15 @@ const Pagination = ({ currentPage, totalPages, onPrevious, onNext }) => {
         {currentPage} of {totalPages}
       </span>
       <button
-        onClick={onNext}
+        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
         className="p-2 mx-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
         disabled={currentPage === totalPages}
       >
-        <img
-          src={Images.next}
-          alt="Next Icon"
-          className="w-10 h-10"
-        />
+        <img src={Images.next} alt="Next Icon" className="w-10 h-10" />
       </button>
     </div>
   );
 };
+
 
 export default Pagination;

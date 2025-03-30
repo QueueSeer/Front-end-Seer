@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReportConfirmationPopup from "./ReportConfirmationPopup";
+import { reportReview } from "../../Data/Report/Report";
 
 const ReportReviewPopup = ({ review, onClose }) => {
   const [selectedReasons, setSelectedReasons] = useState([]);
@@ -26,15 +27,28 @@ const ReportReviewPopup = ({ review, onClose }) => {
     );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+  
     if (isReportButtonEnabled) {
       console.log("Reported Review:", review);
       console.log("Selected Reasons:", selectedReasons);
       console.log("Additional Details:", additionalDetails);
-
-      setConfirmationVisible(true);
+  
+      try {
+        const response = await reportReview({
+          review_id: review.id, // Assuming the review object contains an 'id' field
+          reasons: selectedReasons, // Passing the array of selected reasons
+        });
+  
+        setConfirmationVisible(true); // Show confirmation popup
+      } catch (error) {
+        console.error("Error reporting review:", error);
+      }
+    } else {
+      console.log("Report button is disabled.");
     }
   };
+  
 
   const handleCloseConfirmation = () => {
     setConfirmationVisible(false);
