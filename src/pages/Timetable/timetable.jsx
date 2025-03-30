@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/navbar";
 import Sidebar from "../../components/Sidebar";
 import CalendarHeader from "../../components/timetablecomponent/CalendarHeader";
@@ -6,7 +7,7 @@ import TimeSlots from "../../components/timetablecomponent/TimeSlots";
 import ActionButtons from "../../components/timetablecomponent/ActionButtons";
 import ToggleSwitch from "../../components/timetablecomponent/ToggleSwitchComponent";
 import FullCalendarPage from "../../components/timetablecomponent/FullCalendarPage";
-import { useState, useEffect } from "react";
+import HolidaySection from "../../components/timetablecomponent/HolidaySection"; // Import the HolidaySection
 import { fetchUserData } from "../../Data/Profile/ProfileApi";
 
 const Timetable = () => {
@@ -14,7 +15,10 @@ const Timetable = () => {
   const [formData, setFormData] = useState(null);
   const [toggleOption, setToggleOption] = useState(0);
   const [userId, setUserId] = useState(null);
-  
+  const [holiday, setHoliday] = useState(""); // State for holiday
+  const [holidayError, setHolidayError] = useState(""); // Error for holiday
+  const [holidaySaved, setHolidaySaved] = useState(false); // Track if holiday is saved successfully
+
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -45,6 +49,18 @@ const Timetable = () => {
     alert("โพสต์ข้อมูลสำเร็จ!");
   };
 
+  const handleHolidayChange = (value) => {
+    setHoliday(value);
+    setHolidayError(""); // Clear holiday error on change
+  };
+
+  const handleHolidayReset = () => {
+    setHoliday("");
+    setHolidayError("");
+    setHolidaySaved(false);
+    alert("ล้างข้อมูลวันหยุดสำเร็จ!");
+  };
+
   return (
     <div className="min-h-screen dark:bg-gray-900 flex flex-col pb-10">
       <Navbar />
@@ -62,6 +78,17 @@ const Timetable = () => {
               <FormSection onSave={(data) => setFormData(data)} userId={userId} />
               <TimeSlots formData={formData} toggleOption={toggleOption} />
               <ActionButtons onSave={() => handleSave(formData)} />
+
+              {/* Include the Holiday Section */}
+              <HolidaySection
+                holiday={holiday}
+                onHolidayChange={handleHolidayChange}
+                onHolidaySave={setHolidaySaved} // Only pass the saved state as a callback
+                onResetHoliday={handleHolidayReset}
+                error={holidayError}
+                userId={userId}
+              />
+              {holidaySaved && <p className="text-green-500 mt-2">วันหยุดถูกบันทึกแล้ว</p>}
             </>
           )}
         </div>

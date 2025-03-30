@@ -7,43 +7,44 @@ const FormSection = () => {
     workingHours: "",
     closingHours: "",
     maxCustomers: "",
-    holiday: "",
   });
   const [errors, setErrors] = useState({});
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" })); // ล้างข้อความ error เมื่อกรอกข้อมูลใหม่
+    setErrors((prev) => ({ ...prev, [name]: "" })); // Clear errors on input change
   };
 
+  // Validate form before submission
   const validateForm = () => {
     const newErrors = {};
     const timeRegex = /^\d{2}:\d{2}$/;
 
+    // Validate working hours
     if (!formData.workingHours.match(timeRegex)) {
       newErrors.workingHours = "กรุณากรอกเวลาเปิดในรูปแบบ HH:mm";
     }
 
+    // Validate closing hours
     if (!formData.closingHours.match(timeRegex)) {
       newErrors.closingHours = "กรุณากรอกเวลาปิดในรูปแบบ HH:mm";
     }
 
+    // Validate max customers
     if (!formData.maxCustomers || isNaN(Number(formData.maxCustomers))) {
       newErrors.maxCustomers = "กรุณากรอกเวลาพักระหว่างคิวเป็นตัวเลข";
     }
 
-    if (!formData.holiday) {
-      newErrors.holiday = "กรุณากรอกวันหยุด";
-    }
-
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // ถ้าไม่มี error ถือว่าผ่าน
+    return Object.keys(newErrors).length === 0; // Return true if no errors
   };
 
+  // Handle form submission
   const handleSubmit = async () => {
     if (!validateForm()) {
-      return; // หยุดการทำงานหากข้อมูลไม่ผ่านการตรวจสอบ
+      return; // Stop if validation fails
     }
 
     const workingHours = [
@@ -65,28 +66,11 @@ const FormSection = () => {
         }
       );
       console.log("Schedules created:", scheduleResponse.data);
-
-      if (formData.holiday.trim()) {
-        const dayOffResponse = await axios.post(
-          "https://backend.qseer.app/api/seer/me/dayoff",
-          { day: formData.holiday },
-          {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          }
-        );
-        console.log("Day off added:", dayOffResponse.data);
-        alert("บันทึกตารางเวลาและวันหยุดสำเร็จ!");
-      } else {
-        alert("บันทึกตารางเวลาสำเร็จ (ไม่มีวันหยุด)");
-      }
+      alert("บันทึกตารางเวลาสำเร็จ!");
     } catch (error) {
       if (error.response) {
         console.error("Error response:", error.response.data);
         alert(`เกิดข้อผิดพลาด: ${error.response.data.detail}`);
-      } else if (error.request) {
-        console.error("No response from server:", error.request);
-        alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
       } else {
         console.error("Error:", error.message);
         alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
@@ -94,12 +78,12 @@ const FormSection = () => {
     }
   };
 
+  // Handle resetting the form
   const handleReset = () => {
     setFormData({
       workingHours: "",
       closingHours: "",
       maxCustomers: "",
-      holiday: "",
     });
     setErrors({});
     alert("ล้างข้อมูลสำเร็จ!");
@@ -155,25 +139,9 @@ const FormSection = () => {
           />
           {errors.maxCustomers && <p className="text-red-500 text-sm mt-1">{errors.maxCustomers}</p>}
         </div>
-
-        {/* วันหยุด */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            วันหยุด <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="holiday"
-            value={formData.holiday}
-            onChange={handleInputChange}
-            placeholder="2025-01-14"
-            className={`w-full border ${errors.holiday ? "border-red-500" : "border-gray-300"} rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
-          />
-          {errors.holiday && <p className="text-red-500 text-sm mt-1">{errors.holiday}</p>}
-        </div>
       </div>
 
-      {/* ปุ่มบันทึกและล้างข้อมูล */}
+      {/* Buttons for saving and resetting all form data */}
       <ActionButtons onSave={handleSubmit} onReset={handleReset} />
     </div>
   );
