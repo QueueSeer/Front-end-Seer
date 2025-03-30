@@ -80,7 +80,7 @@ const FollowerPage = () => {
                 <img
                   src={follower.image || Images.defaultAvatar} // Fallback image if no image provided
                   alt={follower.display_name}
-                  className="w-16 h-16 rounded-full shadow-md"
+                  className="w-16 h-16 rounded-full shadow-md object-cover"
                 />
                 <div>
                   <h2 className="text-lg font-bold text-gray-800">{follower.display_name}</h2>
