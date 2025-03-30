@@ -62,6 +62,23 @@ export const formatDate = (isoDate) => {
   };
 
 
+  export const AmpStatusDropdown = (status) => {
+    switch (status) {
+      case "pending":
+        return "รอดำเนินการ";  // "Pending" in Thai
+      case "completed":
+        return "เสร็จสิ้น";  // "Completed" in Thai
+      case "s_cancelled":
+        return "ยกเลิก (ผู้ใช้)";
+      case "u_cancelled":
+        return "ยกเลิก (ผู้ให้บริการ)";
+      default:
+        return "ทั้งหมด";
+    }
+  };
+  
+
+
   export const AppointmentStatus = ({ status }) => {
     switch (status) {
       case "pending":

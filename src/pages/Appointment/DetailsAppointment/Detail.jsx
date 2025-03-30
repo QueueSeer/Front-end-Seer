@@ -38,8 +38,8 @@ const DetailsAppointment = () => {
       const newStatus = popupAction === "cancel" ? "seer-cancel" : "complete";
       await updateAppointmentStatus(apmt_id, newStatus);
       setAppointmentDetails((prev) => ({ ...prev, status: newStatus }));
-      window.location.reload(); 
-      window.scrollTo(0, 0); 
+      window.location.reload();
+      window.scrollTo(0, 0);
     } catch (error) {
       console.error("เกิดข้อผิดพลาดขณะอัปเดตสถานะ:", error);
     }
@@ -106,6 +106,44 @@ const DetailsAppointment = () => {
     image: "",
   };
 
+  // Function to check if the appointment is today
+  const isAppointmentToday = () => {
+    const today = new Date();
+    const appointmentDate = new Date(appointmentDetails.start_time);
+    return (
+      today.getDate() === appointmentDate.getDate() &&
+      today.getMonth() === appointmentDate.getMonth() &&
+      today.getFullYear() === appointmentDate.getFullYear()
+    );
+  };
+
+  // Function to check if the appointment is past 7 days from end_time
+const isAppointmentPast = () => {
+  const currentTime = new Date();
+  const appointmentEndTime = new Date(appointmentDetails.end_time);
+  appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
+  return currentTime > appointmentEndTime;
+};
+
+
+  // Check if the appointment is past and update the status
+  useEffect(() => {
+    if (appointmentDetails && isAppointmentPast()) {
+      const updateStatusToCancelled = async () => {
+        try {
+          await updateAppointmentStatus(apmt_id, "seer-cancel");
+          setAppointmentDetails((prev) => ({
+            ...prev,
+            status: "seer-cancel",
+          }));
+        } catch (error) {
+          console.error("Error updating status to 'seer-cancel':", error);
+        }
+      };
+      updateStatusToCancelled();
+    }
+  }, [appointmentDetails]);
+
   if (loading)
     return (
       <div className="flex items-center justify-center h-screen">
@@ -146,7 +184,9 @@ const DetailsAppointment = () => {
             appointmentDetails={appointmentDetails}
             packageDetails={packageDetails || defaultPackageDetails}
           />
-          <DetailPackage appointmentDetails={appointmentDetails} packageDetails={packageDetails || defaultPackageDetails}
+          <DetailPackage
+            appointmentDetails={appointmentDetails}
+            packageDetails={packageDetails || defaultPackageDetails}
           />
           <BookingInfoCard client={appointmentDetails.client} />
         </div>
@@ -166,9 +206,16 @@ const DetailsAppointment = () => {
           {["s_cancelled", "u_cancelled", "completed"].includes(
             appointmentDetails.status
           ) ? (
-            <div className="text-[20px] font-semibold text-secondary2/60 italic">
-              คุณได้ยืนยันการให้บริการเรียบร้อย
-            </div>
+            // Add condition for u_cancelled status
+            appointmentDetails.status === "u_cancelled" ? (
+              <div className="text-[20px] font-semibold text-secondary2/60 italic">
+                ลูกค้าได้ยกเลิกบริการ
+              </div>
+            ) : (
+              <div className="text-[20px] font-semibold text-secondary2/60 italic">
+                คุณได้ยืนยันการให้บริการเรียบร้อย
+              </div>
+            )
           ) : (
             <>
               <ButtonComponent
@@ -176,11 +223,19 @@ const DetailsAppointment = () => {
                 onClick={handleCancel}
                 className="px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-full"
               />
-              <ButtonComponent
-                label="บริการเสร็จสิ้น"
-                onClick={handleSave}
-                className="px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
-              />
+              {isAppointmentToday() ? (
+                <>
+                  <ButtonComponent
+                    label="บริการเสร็จสิ้น"
+                    onClick={handleSave}
+                    className="px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
+                  />
+                </>
+              ) : (
+                <div className="mt-[16px] py-3 text-base font-semibold text-gray-500 rounded-full">
+                  ยังไม่ถึงเวลาให้บริการ
+                </div>
+              )}
             </>
           )}
         </div>

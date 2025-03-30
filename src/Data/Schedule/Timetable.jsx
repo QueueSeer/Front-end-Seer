@@ -7,45 +7,66 @@ const axiosInstance = axios.create({
 
 const updateSeerSchedule = async (schedules) => {
   try {
-    const response = await axiosInstance.put("seer/me/schedule", { schedules });
-    return response.data; // ส่งคืนข้อมูลที่ได้รับหลังจากอัปเดตสำเร็จ
+    console.log("📤 Sending schedules:", JSON.stringify(schedules, null, 2));
+
+    const response = await axiosInstance.put("seer/me/schedule", schedules);
+    
+    console.log("✅ Schedule updated successfully:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error updating seer schedule:", error.response?.data || error);
+    throw new Error("ไม่สามารถแก้ไขตารางเวลาหมอดูได้");
+  }
+};
+
+
+const addSeerDayoff = async (dayoffDate) => {
+  try {
+    // Ensure the dayoffDate is passed correctly as a string in the required format
+    if (!dayoffDate) {
+      throw new Error("วันหยุดไม่สามารถเป็นค่าว่างได้"); // Ensure the date is not empty
+    }
+
+    const response = await axiosInstance.post(
+      "seer/me/dayoff", 
+      { day_off: dayoffDate },
+    );
+
+    return response.data; // Return the response data from the API
   } catch (error) {
     console.error("Error updating seer schedule:", error);
     throw new Error("ไม่สามารถแก้ไขตารางเวลาหมอดูได้"); // ข้อความแจ้งเตือนข้อผิดพลาด
   }
 };
 
-const addSeerDayoff = async (dayoffDates) => {
-  try {
-    const response = await axiosInstance.post("seer/me/dayoff", {
-      dayoffDates,
-    });
-    return response.data; // ส่งคืนข้อมูลที่ได้รับหลังจากเพิ่มวันหยุดสำเร็จ
-  } catch (error) {
-    console.error("Error adding seer dayoff:", error);
-    throw new Error("ไม่สามารถเพิ่มวันหยุดหมอดูได้"); // ข้อความแจ้งเตือนข้อผิดพลาด
-  }
-};
+
 
 const getSeerCalendar = async (seerId) => {
+  if (!seerId) {
+    console.error("seerId is missing!");
+    throw new Error("ไม่มี ID ของหมอดู");
+  }
   try {
     const response = await axiosInstance.get(`seer/${seerId}/calendar`);
-    return response.data; // ส่งคืนข้อมูลตารางเวลาของหมอดู
+    return response.data;
   } catch (error) {
     console.error("Error fetching seer calendar:", error);
-    throw new Error("ไม่สามารถดึงข้อมูลตารางเวลาหมอดูได้"); // ข้อความแจ้งเตือนข้อผิดพลาด
+    throw new Error("ไม่สามารถดึงข้อมูลตารางเวลาหมอดูได้");
   }
 };
 
-const deleteSeerDayoff = async (dayOff) => {
+
+const deleteSeerDayoff = async (dayoffDate) => {
   try {
-    const response = await axiosInstance.delete(`seer/me/dayoff/${dayOff}`);
-    return response.data; // ส่งคืนข้อมูลหลังจากลบวันหยุดสำเร็จ
+    const response = await axiosInstance.delete(`seer/me/dayoff/${dayoffDate}`);
+    return response.data;
   } catch (error) {
     console.error("Error deleting seer dayoff:", error);
-    throw new Error("ไม่สามารถลบวันหยุดหมอดูได้"); // ข้อความแจ้งเตือนข้อผิดพลาด
+    throw new Error("ไม่สามารถลบวันหยุดหมอดูได้");
   }
 };
+
+
 
 const updateSeerBreakDuration = async (breakDuration) => {
     try {

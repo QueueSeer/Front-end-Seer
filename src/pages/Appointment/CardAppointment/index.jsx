@@ -5,18 +5,7 @@ import AppointmentCard from "./AppointmentCard";
 import { fetchAppointmentReceivedData } from "../../../Data/Appointment/Appointments";
 import images from "../../../assets";
 import dayjs from "dayjs"; // import dayjs
-
-// ฟังก์ชันจัดรูปแบบวันที่
-const formatDate = (isoDate) => {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return new Date(isoDate).toLocaleDateString("th-TH", options);
-};
-
-// ฟังก์ชันจัดรูปแบบเวลา
-const formatTime = (isoDate) => {
-  const options = { hour: "2-digit", minute: "2-digit" };
-  return new Date(isoDate).toLocaleTimeString("th-TH", options);
-};
+import { formatDate, formatTime } from "../../../utils/utils";
 
 const Appointment = () => {
   const navigate = useNavigate();
@@ -82,14 +71,6 @@ const Appointment = () => {
     );
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        กำลังโหลด...
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen text-red-500">
@@ -122,11 +103,11 @@ const Appointment = () => {
               onClick={() => handleCardClick(appointment.id)}
             >
               <AppointmentCard
-                image={appointment.client.image || images.UserIcon}
-                name={appointment.client.display_name}
+                image={appointment.client?.image || images.UserIcon} // เพิ่มการเช็คให้แน่ใจว่า client มีข้อมูล
+                name={appointment.client.display_name } 
                 date={formatDate(appointment.start_time)}
                 time={formatTime(appointment.start_time)}
-                packageName={appointment.package.name}
+                packageName={appointment.package?.name || "แพ็คเกจไม่ระบุ"} // เพิ่มการเช็คให้แน่ใจว่า package มีข้อมูล
                 status={appointment.status}
                 code={appointment.confirmation_code}
                 isCopied={copiedCode === appointment.confirmation_code} // ใช้ copiedCode

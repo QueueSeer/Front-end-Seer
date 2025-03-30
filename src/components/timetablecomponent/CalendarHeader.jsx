@@ -1,182 +1,167 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import "dayjs/locale/th"; // ใช้ภาษาไทย
-import Images from "../../assets";
+import "dayjs/locale/th";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { getSeerCalendar } from "../../Data/Schedule/Timetable";
 
-dayjs.locale("th"); // ตั้งค่าภาษาไทย
+dayjs.locale("th");
 
-const CalendarHeader = () => {
-  const [currentDate, setCurrentDate] = useState(dayjs()); // วันที่ปัจจุบัน
-  const [selectedDate, setSelectedDate] = useState(dayjs()); // วันที่ที่เลือก
-  const [showFullCalendar, setShowFullCalendar] = useState(false); // เปิด/ปิดปฏิทินแบบเต็ม
-  const [showDropdown, setShowDropdown] = useState(false); // เปิด/ปิด dropdown
-  const [toggleOption, setToggleOption] = useState(0);
+const CalendarHeader = ({ seerId }) => {
+  const [currentDate, setCurrentDate] = useState(dayjs());
+  const [calendarData, setCalendarData] = useState({
+    schedules: [],
+    day_offs: [],
+  });
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  const days = ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."]; // ชื่อวันภาษาไทย
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!seerId) return;
+      try {
+        const data = await getSeerCalendar(seerId);
+        setCalendarData({
+          schedules: data?.schedules || { full: [] },
+          day_offs: data?.day_offs || [],
+        });
+      } catch (error) {
+        console.error("Error fetching calendar data:", error);
+      }
+    };
+    fetchData();
+  }, [seerId]);
 
-  // คำนวณวันแรกของเดือน
-  const firstDayOfMonth = currentDate.startOf("month").day(); // วันแรกของเดือน (0 = อาทิตย์)
-  const daysInMonth = currentDate.daysInMonth(); // จำนวนวันในเดือนปัจจุบัน
+  const daysInMonth = currentDate.daysInMonth();
+  const firstDayOfMonth = currentDate.startOf("month").day();
+  const days = ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."];
 
-  // วันที่ในสัปดาห์ที่เลือก
-  const startOfWeek = selectedDate.startOf("week");
-  const weekDates = Array.from({ length: 7 }, (_, index) =>
-    startOfWeek.add(index, "day")
-  );
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date); // อัปเดตวันที่ที่เลือก
-    setCurrentDate(date); // อัปเดตเดือนและปี
-    setShowDropdown(false); // ปิด dropdown
+  const getStatus = (date) => {
+    const formattedDate = date.format("YYYY-MM-DD");
+    const isOlderThan90Days = dayjs().subtract(90, "days").isAfter(date);
+  
+    if (isOlderThan90Days) return "past"; // เกิน 90 วัน
+  
+    if (calendarData.day_offs?.includes(formattedDate)) {
+      return "day-off"; // วันหยุด
+    }
+  
+    if (calendarData.schedules?.full?.includes(formattedDate)) {
+      return "full"; // วันเต็ม
+    }
+  
+    // 🔹 ตรวจสอบว่าวันที่นี้มีให้บริการหรือไม่
+    const seerDay = convertDayToSeerFormat(date.day()); // แปลงค่า dayjs().day() เป็น 0-6 ตามระบบ Seer
+    const isAvailable = calendarData.schedules?.some((schedule) => schedule.day === seerDay);
+  
+    return isAvailable ? "available" : "none"; // ถ้ามีวันให้บริการ แสดงว่า "available", ถ้าไม่มีเลยให้เป็น "none"
+  };
+  
+  // 🔄 ฟังก์ชันช่วยแปลงค่า dayjs().day() (0 = อาทิตย์) เป็น 0 = จันทร์, 6 = อาทิตย์
+  const convertDayToSeerFormat = (dayjsDay) => (dayjsDay + 6) % 7;
+  
+  
+  const handleMonthChange = (amount) => {
+    setCurrentDate(currentDate.add(amount, "month"));
   };
 
-  const toggleFullCalendar = () => {
-    setShowFullCalendar(!showFullCalendar); // สลับโหมดแสดงผลระหว่างสัปดาห์และเดือน
-  };
-  const handleToggleChange = (index) => {
-    setToggleOption(index);
-    console.log(
-      "Toggle changed to:",
-      index === 0 ? "ใช้เฉพาะวันนี้" : "ใช้ทั้งสัปดาห์"
+  const handleSelectMonth = (event) => {
+    setCurrentDate(
+      dayjs().month(parseInt(event.target.value)).year(currentDate.year())
     );
+    setShowDropdown(false);
   };
 
   return (
-    <div className="mb-6">
-      {/* Header Section */}
-      <div className="flex items-center space-x-2 mb-4">
-        <img
-          src={Images.Clock_CircleIcon}
-          alt="Star Icon"
-          className="w-6 h-6"
-        />
-        <h1 className="text-xl sm:text-2xl font-bold text-[#65558F]">
-          ตารางเวลา
-        </h1>
-      </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div className=" p-4 mb-6 border rounded-lg  bg-white relative">
+        {/* Header พร้อม Dropdown เลือกเดือน */}
 
-      {/* Divider Under Header */}
-      <hr className="border-t border-gray-300 mb-4" />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <div className="mb-6">
-          {/* Card ปฏิทิน */}
-          <div className="relative bg-white border border-gray-200 rounded-lg p-4 shadow-md">
-            {/* ปุ่ม Back และ Next */}
-            <img
-              src={Images.backtostep}
-              alt="Back Icon"
-              className="absolute top-2 left-2 w-6 h-6 cursor-pointer"
-              onClick={() => setSelectedDate(selectedDate.subtract(7, "day"))}
-            />
-            <img
-              src={Images.nextstep}
-              alt="Next Icon"
-              className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
-              onClick={() => setSelectedDate(selectedDate.add(7, "day"))}
-            />
-
-            {/* Header Section */}
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="relative">
-                <button
-                  onClick={() => setShowDropdown(!showDropdown)}
-                  className="flex items-center gap-1 border-none bg-transparent text-[#615E83] text-lg font-semibold focus:outline-none"
-                >
-                  {`${currentDate.format("MMMM")} ${currentDate.format(
-                    "YYYY"
-                  )}`}
-                  <span className="text-sm">▼</span>
-                </button>
-                {showDropdown && (
-                  <div className="absolute top-10 left-0 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
-                    <DateCalendar
-                      value={currentDate}
-                      onChange={handleDateChange}
-                      views={["year", "month"]}
-                      openTo="year"
-                    />
-                  </div>
-                )}
-              </div>
-              <img
-                src={Images.calendartimetable}
-                alt="Calendar Icon"
-                className="w-6 h-6 cursor-pointer ml-6" // ขยับไอคอนไปทางขวาเพิ่มอีกนิด
-                onClick={toggleFullCalendar}
-              />
-            </div>
-
-            {/* Days and Dates */}
-            <div className="grid grid-cols-7 text-center">
-              {/* Days */}
-              {days.map((day, index) => (
-                <div
-                  key={index}
-                  className="text-[#8677A7] text-sm font-medium flex items-center justify-center h-10"
-                >
-                  {day}
-                </div>
-              ))}
-
-              {/* Display Dates */}
-              {!showFullCalendar
-                ? // แสดงเฉพาะสัปดาห์
-                  weekDates.map((date, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setSelectedDate(date)}
-                      className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full mx-auto my-1  ${
-                        toggleOption === 0 && date.isSame(selectedDate, "day")
-                          ? "border-2 border-[#420F75] text-[#420F75] font-semibold" // ล้อมรอบเฉพาะวันที่เลือก
-                          : toggleOption === 1 &&
-                            weekDates.some((d) => d.isSame(date, "day"))
-                          ? "bg-purple-100 border-2 border-[#420F75] text-[#420F75] font-semibold" // ล้อมรอบทั้งสัปดาห์
-                          : "text-gray-800"
-                      }`}
-                      style={{
-                        marginTop: "4px", // ขยับวงกลมลงเล็กน้อย
-                        lineHeight: "2.2rem", // ปรับตำแหน่งตัวเลขให้อยู่กึ่งกลางวงกลม
-                      }}
-                    >
-                      {date.date()}
-                    </div>
-                  ))
-                : // แสดงทั้งเดือน
-                  [
-                    // ช่องว่างก่อนวันที่ 1 ของเดือน
-                    ...Array.from({ length: firstDayOfMonth }, (_, index) => (
-                      <div key={`empty-${index}`} className="w-10 h-10"></div>
-                    )),
-                    // วันที่ในเดือน
-                    ...Array.from({ length: daysInMonth }, (_, index) => (
-                      <div
-                        key={index + 1}
-                        onClick={() =>
-                          setSelectedDate(currentDate.date(index + 1))
-                        }
-                        className={`flex items-center justify-center cursor-pointer w-10 h-10 rounded-full mx-auto my-1  ${
-                          toggleOption === 0 &&
-                          index + 1 === selectedDate.date()
-                            ? "border-2 border-[#420F75] text-[#420F75] font-semibold" // ล้อมรอบเฉพาะวันที่เลือก
-                            : "text-gray-800"
-                        }`}
-                        style={{
-                          marginTop: "4px",
-                          lineHeight: "2.2rem",
-                        }}
-                      >
-                        {index + 1}
-                      </div>
-                    )),
-                  ]}
-            </div>
+        <div className="flex justify-between items-center mb-6">
+          <button
+            onClick={() => handleMonthChange(-1)}
+            className="text-lg text-gray-700"
+          >
+            &#9665;
+          </button>
+          <div className="relative">
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="text-lg font-semibold text-[#65558F] bg-transparent border-none focus:outline-none"
+            >
+              {currentDate.format("MMMM YYYY")}
+            </button>
+            {showDropdown && (
+              <select
+                className="absolute left-0 top-8 bg-white border p-2 rounded-md shadow-lg"
+                onChange={handleSelectMonth}
+                value={currentDate.month()}
+              >
+                {Array.from({ length: 12 }, (_, i) => (
+                  <option key={i} value={i}>
+                    {dayjs().month(i).format("MMMM")}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
+          <button
+            onClick={() => handleMonthChange(1)}
+            className="text-lg text-gray-700"
+          >
+            &#9655;
+          </button>
         </div>
-      </LocalizationProvider>
-    </div>
+        {/* ปฏิทิน */}
+        <div className="h-auto grid grid-cols-7 text-center mt-2 ">
+          {days.map((day, index) => (
+            <div
+              key={index}
+              className="text-sm font-medium text-[#8677A7] mb-3"
+            >
+              {day}
+            </div>
+          ))}
+          {/* Fill the first empty days from the previous month */}
+          {[...Array(firstDayOfMonth).fill(null)].map((_, index) => (
+            <div key={index} className="text-sm text-transparent"></div>
+          ))}
+
+          {/* Render the current month's days */}
+          {Array.from({ length: daysInMonth }, (_, index) => {
+            const day = index + 1;
+            const date = currentDate.date(day);
+            const status = getStatus(date);
+            const isPast = dayjs().isAfter(date, "day"); // Check if the date is in the past
+
+            return (
+              <div
+                key={index}
+                className={`flex flex-col items-center py-2 ${
+                  isPast
+                    ? "text-gray-300" // Past days are gray
+                    : status === "day-off"
+                    ? "text-gray-400" // Day-offs are gray
+                    : "text-gray-800"
+                }`}
+              >
+                {day}
+                <span
+                  className={`w-2.5 h-2.5 rounded-full mt-1 ${
+                    isPast || status === "none"
+                      ? "hidden" // ❌ ซ่อนถ้าเป็นอดีต หรือ ไม่มีให้บริการ
+                      : status === "day-off"
+                      ? "bg-gray-400" // วันหยุด
+                      : status === "full"
+                      ? "bg-red-500" // วันเต็ม
+                      : "bg-green-500" // ✅ มีให้บริการ (schedules.day)
+                  }`}
+                ></span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </LocalizationProvider>
   );
 };
 
