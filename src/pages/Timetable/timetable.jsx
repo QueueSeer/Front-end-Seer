@@ -9,6 +9,8 @@ import ToggleSwitch from "../../components/timetablecomponent/ToggleSwitchCompon
 import FullCalendarPage from "../../components/timetablecomponent/FullCalendarPage";
 import HolidaySection from "../../components/timetablecomponent/HolidaySection"; // Import the HolidaySection
 import { fetchUserData } from "../../Data/Profile/ProfileApi";
+import Header from "../../components/Profile/Header";
+import images from "../../assets";
 
 const Timetable = () => {
   const [showFullCalendar, setShowFullCalendar] = useState(false);
@@ -71,13 +73,30 @@ const Timetable = () => {
 
         <div className="relative flex-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 shadow-lg p-6">
           {showFullCalendar ? (
-            <FullCalendarPage onEdit={handleEdit} onPost={handlePost} formData={formData} />
+            <FullCalendarPage
+              onEdit={handleEdit}
+              onPost={handlePost}
+              formData={formData}
+            />
           ) : (
             <>
+              <div className="pb-10">
+                <Header
+                  image={images.Clock_CircleIcon}
+                  alt="Clock_CircleIcon Icon"
+                  text="ตารางเวลา"
+                />
+              </div>
+
               <CalendarHeader toggleOption={toggleOption} seerId={userId} />
-              <FormSection onSave={(data) => setFormData(data)} userId={userId} />
-              <TimeSlots formData={formData} toggleOption={toggleOption} />
-              <ActionButtons onSave={() => handleSave(formData)} />
+              {userId && (
+                <FormSection
+                  onSave={(data) => setFormData(data)}
+                  userId={userId}
+                />
+              )}
+              {/* <TimeSlots formData={formData} toggleOption={toggleOption} /> */}
+              {/* <ActionButtons onSave={() => handleSave(formData)} /> */}
 
               {/* Include the Holiday Section */}
               <HolidaySection
@@ -88,7 +107,9 @@ const Timetable = () => {
                 error={holidayError}
                 userId={userId}
               />
-              {holidaySaved && <p className="text-green-500 mt-2">วันหยุดถูกบันทึกแล้ว</p>}
+              {holidaySaved && (
+                <p className="text-green-500 mt-2">วันหยุดถูกบันทึกแล้ว</p>
+              )}
             </>
           )}
         </div>

@@ -1,148 +1,295 @@
-import React, { useState } from "react";
-import axios from "axios";
-import ActionButtons from "./ActionButtons"; // ปุ่มล้างและบันทึก
+import React, { useState, useEffect } from "react";
+import ActionButtons from "./ActionButtons";
+import {
+  updateSeerSchedule,
+  getSeerCalendar,
+} from "../../Data/Schedule/Timetable";
 
-const FormSection = () => {
-  const [formData, setFormData] = useState({
-    workingHours: "",
-    closingHours: "",
-    maxCustomers: "",
-  });
+const FormSection = ({ userId }) => {
+  const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [maxCustomers, setMaxCustomers] = useState("");
+  const [showAfternoon, setShowAfternoon] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Handle input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" })); // Clear errors on input change
+  const daysOrder = [
+    "จันทร์",
+    "อังคาร",
+    "พุธ",
+    "พฤหัสบดี",
+    "ศุกร์",
+    "เสาร์",
+    "อาทิตย์",
+  ];
+
+  const dayMapping = {
+    จันทร์: 0,
+    อังคาร: 1,
+    พุธ: 2,
+    พฤหัสบดี: 3,
+    ศุกร์: 4,
+    เสาร์: 5,
+    อาทิตย์: 6,
   };
 
-  // Validate form before submission
-  const validateForm = () => {
-    const newErrors = {};
-    const timeRegex = /^\d{2}:\d{2}$/;
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const data = await getSeerCalendar(userId);
+        const scheduleData = data.schedules || [];
+        const newFormData = {};
 
-    // Validate working hours
-    if (!formData.workingHours.match(timeRegex)) {
-      newErrors.workingHours = "กรุณากรอกเวลาเปิดในรูปแบบ HH:mm";
-    }
+        scheduleData.forEach((item) => {
+          const dayName = Object.keys(dayMapping).find(
+            (key) => dayMapping[key] === item.day
+          );
 
-    // Validate closing hours
-    if (!formData.closingHours.match(timeRegex)) {
-      newErrors.closingHours = "กรุณากรอกเวลาปิดในรูปแบบ HH:mm";
-    }
+          if (!dayName) return;
 
-    // Validate max customers
-    if (!formData.maxCustomers || isNaN(Number(formData.maxCustomers))) {
-      newErrors.maxCustomers = "กรุณากรอกเวลาพักระหว่างคิวเป็นตัวเลข";
-    }
+          if (!newFormData[dayName]) {
+            newFormData[dayName] = {};
+          }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
-  };
+          const startTime = item.start_time.slice(0, 5); // ตัดเอาแค่ HH:MM
+          const endTime = item.end_time.slice(0, 5);
 
-  // Handle form submission
-  const handleSubmit = async () => {
-    if (!validateForm()) {
-      return; // Stop if validation fails
-    }
+          // แยกเป็นรอบเช้าและรอบบ่าย
+          if (parseInt(startTime.split(":")[0]) < 12) {
+            newFormData[dayName].workingHours = startTime;
+            newFormData[dayName].closingHours = endTime;
+          } else {
+            newFormData[dayName].afternoonStart = startTime;
+            newFormData[dayName].afternoonEnd = endTime;
+            setShowAfternoon((prev) => ({ ...prev, [dayName]: true }));
+          }
+        });
 
-    const workingHours = [
-      { start_time: `${formData.workingHours}:00+07:00`, end_time: `${formData.closingHours}:00+07:00` },
-    ];
-
-    const requestData = {
-      working_hours: workingHours,
-      break_between_queue: `${formData.maxCustomers} นาที`,
+        setFormData(newFormData);
+        setSelectedDays(Object.keys(newFormData)); // เลือกวันที่มีข้อมูลโดยอัตโนมัติ
+      } catch (error) {
+        console.error("❌ ไม่สามารถโหลดตารางเวลาได้", error);
+      }
     };
 
-    try {
-      const scheduleResponse = await axios.post(
-        "https://backend.qseer.app/api/seer/me/schedule",
-        requestData,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log("Schedules created:", scheduleResponse.data);
-      alert("บันทึกตารางเวลาสำเร็จ!");
-    } catch (error) {
-      if (error.response) {
-        console.error("Error response:", error.response.data);
-        alert(`เกิดข้อผิดพลาด: ${error.response.data.detail}`);
-      } else {
-        console.error("Error:", error.message);
-        alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-      }
+    fetchSchedule();
+  }, [userId]);
+
+  const handleInputChange = (e, day) => {
+    const { name, value } = e.target;
+
+    if (name === "maxCustomers") {
+      setMaxCustomers(value);
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [day]: { ...prev[day], [name]: value },
+      }));
     }
+
+    setErrors((prev) => ({
+      ...prev,
+      [day]: { ...prev[day], [name]: "" },
+    }));
   };
 
-  // Handle resetting the form
-  const handleReset = () => {
-    setFormData({
-      workingHours: "",
-      closingHours: "",
-      maxCustomers: "",
+  const toggleAfternoon = (day) => {
+    setShowAfternoon((prev) => {
+      const newShowAfternoon = { ...prev, [day]: !prev[day] };
+      if (!newShowAfternoon[day]) {
+        setFormData((prev) => {
+          const newFormData = { ...prev };
+          if (newFormData[day]) {
+            delete newFormData[day].afternoonStart;
+            delete newFormData[day].afternoonEnd;
+          }
+          return newFormData;
+        });
+      }
+      return newShowAfternoon;
     });
-    setErrors({});
-    alert("ล้างข้อมูลสำเร็จ!");
+  };
+
+  const formatTime = (time) => {
+    if (!time || typeof time !== "string") return null;
+    const parts = time.split(":");
+    if (parts.length === 2) return `${parts[0]}:${parts[1]}:00+07:00`;
+    if (parts.length === 3) return `${parts[0]}:${parts[1]}:${parts[2]}+07:00`;
+    return null;
+  };
+
+  const convertFormDataToSchedule = () => {
+    let schedule = [];
+
+    Object.keys(formData).forEach((day) => {
+      const dayNumber = dayMapping[day];
+      const data = formData[day];
+
+      if (dayNumber === undefined) {
+        console.warn(`⚠️ ไม่พบวัน: ${day}`);
+        return;
+      }
+
+      console.log(`🔍 กำลังประมวลผลวัน: ${day} (${dayNumber})`, data);
+
+      // ตรวจสอบว่าเวลาถูกต้องและไม่เป็น undefined
+      const morningStart = formatTime(data.workingHours);
+      const morningEnd = formatTime(data.closingHours);
+      const afternoonStart = formatTime(data.afternoonStart);
+      const afternoonEnd = formatTime(data.afternoonEnd);
+
+      if (morningStart && morningEnd) {
+        schedule.push({
+          day: dayNumber,
+          start_time: morningStart,
+          end_time: morningEnd,
+        });
+      }
+
+      if (afternoonStart && afternoonEnd) {
+        schedule.push({
+          day: dayNumber,
+          start_time: afternoonStart,
+          end_time: afternoonEnd,
+        });
+      }
+    });
+
+    console.log("📝 Final schedule data:", schedule);
+    return schedule;
+  };
+
+  const handleSave = async () => {
+    const scheduleData = convertFormDataToSchedule();
+    console.log("🚀 Data to be sent:", JSON.stringify(scheduleData, null, 2));
+
+    if (!scheduleData || scheduleData.length === 0) {
+      console.warn("⚠️ ไม่มีข้อมูลให้บันทึก");
+      return;
+    }
+
+    try {
+      const response = await updateSeerSchedule(scheduleData);
+      console.log("✅ Update successful:", response);
+      window.location.reload();
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.error(
+        "❌ Error updating schedule:",
+        error.response?.data || error
+      );
+    }
   };
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        {/* เวลาเปิดทำการ */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            เวลาเปิดทำการ <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="workingHours"
-            value={formData.workingHours}
-            onChange={handleInputChange}
-            placeholder="09:00"
-            className={`w-full border ${errors.workingHours ? "border-red-500" : "border-gray-300"} rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
-          />
-          {errors.workingHours && <p className="text-red-500 text-sm mt-1">{errors.workingHours}</p>}
-        </div>
+      <div className="mb-4 text-[22px] font-semibold">สร้างตารางเวลา</div>
 
-        {/* เวลาปิดทำการ */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            เวลาปิดทำการ <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="closingHours"
-            value={formData.closingHours}
-            onChange={handleInputChange}
-            placeholder="17:00"
-            className={`w-full border ${errors.closingHours ? "border-red-500" : "border-gray-300"} rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
-          />
-          {errors.closingHours && <p className="text-red-500 text-sm mt-1">{errors.closingHours}</p>}
-        </div>
-
-        {/* เวลาพักระหว่างคิว */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            เวลาพักระหว่างคิว
-          </label>
-          <input
-            type="number"
-            name="maxCustomers"
-            value={formData.maxCustomers}
-            onChange={handleInputChange}
-            placeholder="10 นาที"
-            className={`w-full border ${errors.maxCustomers ? "border-red-500" : "border-gray-300"} rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
-          />
-          {errors.maxCustomers && <p className="text-red-500 text-sm mt-1">{errors.maxCustomers}</p>}
-        </div>
+      <div className="flex flex-wrap gap-3 mb-[26px]">
+        {daysOrder.map((day) => (
+          <button
+            key={day}
+            onClick={() =>
+              setSelectedDays((prev) =>
+                prev.includes(day)
+                  ? prev.filter((d) => d !== day)
+                  : [...prev, day]
+              )
+            }
+            className={`px-4 py-2 rounded-full border text-sm ${
+              selectedDays.includes(day)
+                ? "bg-secondary2 text-white border-purple-600"
+                : "bg-white text-black border-gray-300"
+            } hover:border-purple-500`}
+          >
+            {day}
+          </button>
+        ))}
       </div>
 
-      {/* Buttons for saving and resetting all form data */}
-      <ActionButtons onSave={handleSubmit} onReset={handleReset} />
+      {daysOrder.map((day) =>
+        selectedDays.includes(day) ? (
+          <div key={day} className="mb-6 border p-4 rounded-lg shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">{day}</h3>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  เวลาเปิดทำการ
+                </label>
+                <input
+                  type="text"
+                  name="workingHours"
+                  value={formData[day]?.workingHours || ""}
+                  onChange={(e) => handleInputChange(e, day)}
+                  placeholder="09:00"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  เวลาปิดทำการ
+                </label>
+                <input
+                  type="text"
+                  name="closingHours"
+                  value={formData[day]?.closingHours || ""}
+                  onChange={(e) => handleInputChange(e, day)}
+                  placeholder="12:00"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={() => toggleAfternoon(day)}
+              className="mt-3 px-4 py-2 border border-primary text-primary text-[14px] rounded-full"
+            >
+              {showAfternoon[day] ? "ลบรอบบ่าย" : "เพิ่มรอบบ่าย"}
+            </button>
+
+            {showAfternoon[day] && (
+              <div className="grid grid-cols-2 gap-6 mt-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    เวลาเปิดรอบบ่าย
+                  </label>
+                  <input
+                    type="text"
+                    name="afternoonStart"
+                    value={formData[day]?.afternoonStart || ""}
+                    onChange={(e) => handleInputChange(e, day)}
+                    placeholder="13:00"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    เวลาปิดรอบบ่าย
+                  </label>
+                  <input
+                    type="text"
+                    name="afternoonEnd"
+                    value={formData[day]?.afternoonEnd || ""}
+                    onChange={(e) => handleInputChange(e, day)}
+                    placeholder="17:00"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        ) : null
+      )}
+
+      <ActionButtons
+        onSave={handleSave}
+        onReset={() => setFormData({})}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

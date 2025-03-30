@@ -38,13 +38,28 @@ const CalendarHeader = ({ seerId }) => {
   const getStatus = (date) => {
     const formattedDate = date.format("YYYY-MM-DD");
     const isOlderThan90Days = dayjs().subtract(90, "days").isAfter(date);
-
+  
     if (isOlderThan90Days) return "past"; // เกิน 90 วัน
-    if (calendarData.day_offs?.includes(formattedDate)) return "day-off"; // วันหยุด
-    if (calendarData.schedules.full?.includes(formattedDate)) return "full"; // วันเต็ม
-    return "available"; // วันว่าง
+  
+    if (calendarData.day_offs?.includes(formattedDate)) {
+      return "day-off"; // วันหยุด
+    }
+  
+    if (calendarData.schedules?.full?.includes(formattedDate)) {
+      return "full"; // วันเต็ม
+    }
+  
+    // 🔹 ตรวจสอบว่าวันที่นี้มีให้บริการหรือไม่
+    const seerDay = convertDayToSeerFormat(date.day()); // แปลงค่า dayjs().day() เป็น 0-6 ตามระบบ Seer
+    const isAvailable = calendarData.schedules?.some((schedule) => schedule.day === seerDay);
+  
+    return isAvailable ? "available" : "none"; // ถ้ามีวันให้บริการ แสดงว่า "available", ถ้าไม่มีเลยให้เป็น "none"
   };
-
+  
+  // 🔄 ฟังก์ชันช่วยแปลงค่า dayjs().day() (0 = อาทิตย์) เป็น 0 = จันทร์, 6 = อาทิตย์
+  const convertDayToSeerFormat = (dayjsDay) => (dayjsDay + 6) % 7;
+  
+  
   const handleMonthChange = (amount) => {
     setCurrentDate(currentDate.add(amount, "month"));
   };
@@ -60,6 +75,7 @@ const CalendarHeader = ({ seerId }) => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className=" p-4 mb-6 border rounded-lg  bg-white relative">
         {/* Header พร้อม Dropdown เลือกเดือน */}
+
         <div className="flex justify-between items-center mb-6">
           <button
             onClick={() => handleMonthChange(-1)}
@@ -131,13 +147,13 @@ const CalendarHeader = ({ seerId }) => {
                 {day}
                 <span
                   className={`w-2.5 h-2.5 rounded-full mt-1 ${
-                    isPast
-                      ? "hidden" // Hide the dot if it's a past date
+                    isPast || status === "none"
+                      ? "hidden" // ❌ ซ่อนถ้าเป็นอดีต หรือ ไม่มีให้บริการ
                       : status === "day-off"
-                      ? "bg-gray-400" // Day off color
+                      ? "bg-gray-400" // วันหยุด
                       : status === "full"
-                      ? "bg-red-500" // Full day color
-                      : "bg-green-500" // Available day color
+                      ? "bg-red-500" // วันเต็ม
+                      : "bg-green-500" // ✅ มีให้บริการ (schedules.day)
                   }`}
                 ></span>
               </div>

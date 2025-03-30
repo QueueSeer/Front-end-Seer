@@ -31,7 +31,7 @@ const menuItems = [
   {
     icon: Images.Clock_CircleIcon,
     label: "ตารางเวลา",
-    to: "/schedule",
+    to: "/timetable",
   },
   {
     icon: Images.OutlineIcon,
