@@ -12,7 +12,8 @@ const DetailPackage = ({ appointmentDetails, packageDetails }) => {
   useEffect(() => {
     if (contentRef.current) {
       if (isVisible) {
-        contentRef.current.style.maxHeight = contentRef.current.scrollHeight + "px";
+        contentRef.current.style.maxHeight =
+          contentRef.current.scrollHeight + "px";
         contentRef.current.style.opacity = "1";
       } else {
         contentRef.current.style.maxHeight = "0px";
@@ -43,12 +44,24 @@ const DetailPackage = ({ appointmentDetails, packageDetails }) => {
             รายละเอียดแพ็กเกจ
           </h3>
           <div className="space-y-4 text-[18px]">
-            {renderInfoSection("ชื่อแพ็กเกจ", appointmentDetails.package.name)}
+            {renderInfoSection(
+              "ชื่อแพ็กเกจ",
+              appointmentDetails.package?.name || "ประมูลดูดวง"
+            )}
             {renderInfoSection("ราคา (coin)", packageDetails.price + " คอยน์")}
-            {renderInfoSection("เวลาที่ใช้ ", packageDetails.duration + " นาที")}
-            {renderInfoSection("รูปแบบดูดวง", getChannelLabel(packageDetails.foretellChannel))}
+            {renderInfoSection(
+              "เวลาที่ใช้ ",
+              packageDetails.duration + " นาที"
+            )}
+            {renderInfoSection(
+              "รูปแบบดูดวง",
+              getChannelLabel(packageDetails.foretellChannel)
+            )}
             {renderInfoSection("หมวดหมู่", packageDetails.category)}
-            {renderInfoSection("จำนวนคำถาม", packageDetails.questionLimit + " คำถาม")}
+            {renderInfoSection(
+              "จำนวนคำถาม",
+              packageDetails.questionLimit + " คำถาม"
+            )}
             {renderInfoSection("รายละเอียด", packageDetails.description)}
           </div>
         </div>

@@ -37,7 +37,7 @@ const AppointmentCard = ({
       <ProfileInfo
         image={image}
         name={name}
-        packageName={truncateText(packageName, 20)}
+        packageName={truncateText(packageName || "ประมูลดูดวง", 20)}
         onNameChange={onNameChange}
         onBirthdateChange={onBirthdateChange}
       />
