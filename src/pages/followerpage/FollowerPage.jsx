@@ -84,7 +84,7 @@ const FollowerPage = () => {
                 />
                 <div>
                   <h2 className="text-lg font-bold text-gray-800">{follower.display_name}</h2>
-                  <p className="text-sm text-gray-600">@{follower.username || "No username"}</p>
+                  {/* <p className="text-sm text-gray-600">@{follower.username || "No username"}</p> */}
                 </div>
               </div>
             ))}
