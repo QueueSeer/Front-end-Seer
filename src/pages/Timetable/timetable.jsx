@@ -64,18 +64,20 @@ const Timetable = () => {
   };
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 flex flex-col pb-10">
-      <div className="h-[68px]">
-        <div className="fixed top-0 left-0 w-full z-[999]">
-          <Navbar />
-        </div>
+    <div className="min-h-screen dark:bg-gray-900 flex flex-col pb-10 relative">
+      {/* Navbar (อยู่หน้าสุด) */}
+      <div className="fixed top-0 left-0 w-full z-[1000] shadow-md bg-white dark:bg-gray-900">
+        <Navbar />
       </div>
-      <div className="flex px-12 pt-12 gap-14">
-        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-50">
+
+      <div className="flex px-12 pt-[80px] gap-14">
+        {/* Sidebar */}
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-[900]">
           <Sidebar />
         </div>
 
-        <div className="relative flex-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 shadow-lg p-6">
+        {/* Content */}
+        <div className="relative flex-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 shadow-lg p-6 z-[800]">
           {showFullCalendar ? (
             <FullCalendarPage
               onEdit={handleEdit}
@@ -99,14 +101,12 @@ const Timetable = () => {
                   userId={userId}
                 />
               )}
-              {/* <TimeSlots formData={formData} toggleOption={toggleOption} /> */}
-              {/* <ActionButtons onSave={() => handleSave(formData)} /> */}
 
               {/* Include the Holiday Section */}
               <HolidaySection
                 holiday={holiday}
                 onHolidayChange={handleHolidayChange}
-                onHolidaySave={setHolidaySaved} // Only pass the saved state as a callback
+                onHolidaySave={setHolidaySaved}
                 onResetHoliday={handleHolidayReset}
                 error={holidayError}
                 userId={userId}
