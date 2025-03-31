@@ -64,13 +64,11 @@ const Timetable = () => {
   };
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 flex flex-col pb-10 relative">
+    <div className="min-h-screen dark:bg-gray-900 flex flex-col">
       {/* Navbar (อยู่หน้าสุด) */}
-      <div className="fixed top-0 left-0 w-full z-[1000] shadow-md bg-white dark:bg-gray-900">
         <Navbar />
-      </div>
 
-      <div className="flex px-12 pt-[80px] gap-14">
+      <div className="flex px-12 py-12 gap-14">
         {/* Sidebar */}
         <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-[900]">
           <Sidebar />
