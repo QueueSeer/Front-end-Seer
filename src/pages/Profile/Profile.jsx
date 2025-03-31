@@ -6,19 +6,22 @@ import UserProfile from "./UserProfile"; // เรียกใช้ path ที
 
 export default function Profile() {
   return (
-    <div>
+    <div className="relative">
+      {/* Navbar - อยู่หน้าสุด */}
       <div className="h-[68px]">
-        <div className="fixed top-0 left-0 w-full z-[999]">
+        <div className="fixed top-0 left-0 w-full z-[1000]">
           <Navbar />
         </div>
       </div>
+
       <div className="flex px-12 pt-12 gap-14">
-        {/* Sidebar - Sticky */}
-        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-50">
+        {/* Sidebar - อยู่หน้ากว่า UserProfile */}
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-[900]">
           <Sidebar />
         </div>
-        {/* คอลัมน์ที่ 2 ใช้พื้นที่ที่เหลือ */}
-        <div className="flex-1 pb-10">
+
+        {/* UserProfile - อยู่หลังสุด */}
+        <div className="flex-1 pb-10 relative z-[800]">
           <UserProfile />
         </div>
       </div>
