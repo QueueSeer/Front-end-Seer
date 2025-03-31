@@ -108,13 +108,17 @@ const DetailsAppointment = () => {
 
   // Function to check if the appointment is today
   const isAppointmentToday = () => {
-    const today = new Date();
+    const now = new Date();
     const appointmentDate = new Date(appointmentDetails.start_time);
-    return (
-      today.getDate() === appointmentDate.getDate() &&
-      today.getMonth() === appointmentDate.getMonth() &&
-      today.getFullYear() === appointmentDate.getFullYear()
-    );
+  
+    const isSameDay =
+      now.getDate() === appointmentDate.getDate() &&
+      now.getMonth() === appointmentDate.getMonth() &&
+      now.getFullYear() === appointmentDate.getFullYear();
+  
+    const isTimeReached = appointmentDate <= now;
+  
+    return isSameDay && isTimeReached;
   };
 
   // Function to check if the appointment is past 7 days from end_time
