@@ -46,8 +46,9 @@ const DetailPackage = ({ appointmentDetails, packageDetails }) => {
           <div className="space-y-4 text-[18px]">
             {renderInfoSection(
               "ชื่อแพ็กเกจ",
-              appointmentDetails.package?.name || "ประมูลดูดวง"
+              appointmentDetails?.package?.name || "ประมูลดูดวง"
             )}
+
             {renderInfoSection("ราคา (coin)", packageDetails.price + " คอยน์")}
             {renderInfoSection(
               "เวลาที่ใช้ ",
