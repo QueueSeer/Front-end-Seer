@@ -89,7 +89,7 @@ const PopupSocialLinks = ({ isOpen, onClose, socialName, socialLink }) => {
                   >
                     <div className="flex items-start space-x-4">
                       <img
-                        src={Images.InstagramIcon} // เปลี่ยนเป็นรูปไอคอนที่เหมาะสม
+                        src={Images.LinkIcon} // เปลี่ยนเป็นรูปไอคอนที่เหมาะสม
                         alt="socailIcon"
                         className="w-8 h-8 rounded-full"
                       />
