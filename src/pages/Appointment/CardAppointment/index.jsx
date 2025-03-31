@@ -107,7 +107,7 @@ const Appointment = () => {
                 name={appointment.client.display_name } 
                 date={formatDate(appointment.start_time)}
                 time={formatTime(appointment.start_time)}
-                packageName={appointment.package?.name || "แพ็คเกจไม่ระบุ"} // เพิ่มการเช็คให้แน่ใจว่า package มีข้อมูล
+                packageName={appointment.package?.name || "ประมูลดูดวง"} // เพิ่มการเช็คให้แน่ใจว่า package มีข้อมูล
                 status={appointment.status}
                 code={appointment.confirmation_code}
                 isCopied={copiedCode === appointment.confirmation_code} // ใช้ copiedCode

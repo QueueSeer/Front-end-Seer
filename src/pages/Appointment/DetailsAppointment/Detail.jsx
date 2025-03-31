@@ -74,6 +74,7 @@ const DetailsAppointment = () => {
         );
         if (data) {
           setPackageDetails({
+            packageName: data.package?.name || "ประมูลดูดวง" ,// เพิ่มการเช็คให้แน่ใจว่า package มีข้อมูล
             price: data.price ? parseInt(data.price, 10) : 0,
             duration: data.duration ? data.duration / 60 : 0,
             foretellChannel: data.foretell_channel || "chat",
