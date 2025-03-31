@@ -30,22 +30,28 @@ export default function Login() {
 
   // ฟังก์ชันจัดการข้อมูลผู้ใช้หลังจากล็อกอินสำเร็จ
   const handleUserLogin = (userData) => {
-    // บันทึกข้อมูลสำคัญลง localStorage
+    if (!userData.roles || !userData.roles.includes("seer")) {
+      setLoginError("บัญชีนี้ไม่มีสิทธิ์เข้าถึง กรุณาใช้บัญชีที่ถูกต้อง");
+      return;
+    }
+  
+    // บันทึกข้อมูลลง localStorage
     localStorage.setItem("userId", userData.sub);
     localStorage.setItem("userRoles", JSON.stringify(userData.roles || []));
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("expiration", userData.exp.toString());
-    
+  
     // อัปเดต context
     setUser({
       id: userData.sub,
       roles: userData.roles || [],
       exp: userData.exp
     });
-    
+  
     console.log("Login successful:", userData);
     navigate("/profile");
   };
+  
 
   // ล็อกอินด้วย Google
   const handleGoogleLoginSuccess = async (credentialResponse) => {
