@@ -70,12 +70,12 @@ const Timetable = () => {
 
       <div className="flex px-12 py-12 gap-14">
         {/* Sidebar */}
-        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-[900]">
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start ">
           <Sidebar />
         </div>
 
         {/* Content */}
-        <div className="relative flex-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 shadow-lg p-6 z-[800]">
+        <div className=" flex-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 shadow-lg p-6">
           {showFullCalendar ? (
             <FullCalendarPage
               onEdit={handleEdit}

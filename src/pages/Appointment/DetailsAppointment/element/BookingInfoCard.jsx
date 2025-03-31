@@ -9,7 +9,7 @@ const BookingInfoCard = ({ client }) => {
       <div className="space-y-4 text-[18px]">
         {client.display_name && renderInfoSection("ชื่อ-นามสกุล", client.required.name)}
         {client.required.birthdate && renderInfoSection("วันเกิด", formatDate(client.required.birthdate))}
-        {client.required.birthdate && renderInfoSection("เวลาเกิด", formatTime(client.required.birthdate))}
+        {/* {client.required.birthdate && renderInfoSection("เวลาเกิด", formatTime(client.required.birthdate))} */}
         {client.required.phone_number && renderInfoSection("เบอร์โทรศัพท์", formatPhoneNumber(client.required.phone_number))}
       </div>
     </div>
