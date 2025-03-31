@@ -73,7 +73,7 @@ const Auction = () => {
             return (
               <Link
                 key={fortune.id}
-                to={`/auction/${fortune.id}`}
+                to={`https://qseer.app/detailAuction/${fortune.id}`}
                 state={fortune}
                 className="block"
               >
