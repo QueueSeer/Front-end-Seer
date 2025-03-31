@@ -30,7 +30,7 @@ const AppointmentInfoCard = ({ appointmentDetails, packageDetails }) => {
       </div>
       <div className="text-center mt-4 py-2">
         <p className="text-[24px] sm:text-[32px] font-semibold">
-          {appointmentDetails.package.name}
+          {appointmentDetails?.package?.name || "ประมูลดูดวง"}
         </p>
         <p className="text-lg font-medium">{appointmentDetails.seer.display_name}</p>
       </div>
