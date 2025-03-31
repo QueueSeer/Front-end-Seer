@@ -10,11 +10,15 @@ const LayoutDetails = ({ children }) => {
   return (
     <div>
       {/* Navbar */}
-      <Navbar />
+      <div className="h-[68px]">
+        <div className="fixed top-0 left-0 w-full z-[999]">
+          <Navbar />
+        </div>
+      </div>
       {/* Main Content */}
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
-        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-50">
           <Sidebar activeOverride={2} /> {/* กำหนด activeOverride เป็น 2 */}
         </div>
         {/* Content */}
@@ -22,7 +26,7 @@ const LayoutDetails = ({ children }) => {
           <div className="px-8 py-6 mx-auto bg-white border rounded-lg shadow-md">
             <Header image={Images.BoxIcon} alt="BoxIcon Icon" text="แพ็กเกจ" />
             <div className="flex flex-wrap gap-4 pt-10 justify-start items-center pb-8 relative">
-                <BackButton />
+              <BackButton />
             </div>
             {children}
           </div>

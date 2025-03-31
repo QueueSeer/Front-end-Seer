@@ -7,10 +7,14 @@ import UserProfile from "./UserProfile"; // เรียกใช้ path ที
 export default function Profile() {
   return (
     <div>
-      <Navbar /> {/* เรียกใช้ Navbar */}
+      <div className="h-[68px]">
+        <div className="fixed top-0 left-0 w-full z-[999]">
+          <Navbar />
+        </div>
+      </div>
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar - Sticky */}
-        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-50">
           <Sidebar />
         </div>
         {/* คอลัมน์ที่ 2 ใช้พื้นที่ที่เหลือ */}

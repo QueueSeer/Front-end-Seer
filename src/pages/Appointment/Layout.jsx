@@ -9,17 +9,25 @@ const Appointment = ({ children }) => {
   return (
     <div>
       {/* Navbar */}
-      <Navbar />
+      <div className="h-[68px]">
+        <div className="fixed top-0 left-0 w-full z-[999]">
+          <Navbar />
+        </div>
+      </div>
       {/* Main Content */}
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
-        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
-          <Sidebar  activeOverride={1} /> {/* กำหนด activeOverride เป็น 2 */}
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-50">
+          <Sidebar activeOverride={1} /> {/* กำหนด activeOverride เป็น 2 */}
         </div>
         {/* Content */}
         <div className="flex-1 pb-10">
           <div className="px-8 py-6 mx-auto bg-white border rounded-lg shadow-md">
-            <Header image={Images.calendarIcon} alt="calendarIcon Icon" text="จองคิว" />
+            <Header
+              image={Images.calendarIcon}
+              alt="calendarIcon Icon"
+              text="จองคิว"
+            />
             {children}
           </div>
         </div>

@@ -16,7 +16,7 @@ const EmailVerification = () => {
       setStatus("loading");
       
       // เรียก API เพื่อตรวจสอบ token
-      fetch(`https://backend.qseer.app/api/seer/verify/${token}`, {
+      fetch(`https://backend.qseer.app/api/user/verify/${token}`, {
         method: "GET",
         headers: { Accept: "application/json" },
         credentials: "include", 

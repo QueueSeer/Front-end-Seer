@@ -13,13 +13,17 @@ const Layout = ({ children }) => {
       {/* Main Content */}
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
-        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
-          <Sidebar  activeOverride={3} />
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-50">
+          <Sidebar activeOverride={3} />
         </div>
         {/* Content */}
         <div className="flex-1 pb-10">
           <div className="px-8 py-6 mx-auto bg-white border rounded-lg shadow-md">
-            <Header image={Images.SledgehammerIcon} alt="SledgehammerIcon Icon" text="ประมูล" />
+            <Header
+              image={Images.SledgehammerIcon}
+              alt="SledgehammerIcon Icon"
+              text="ประมูล"
+            />
             {children}
           </div>
         </div>

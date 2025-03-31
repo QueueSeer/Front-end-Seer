@@ -65,9 +65,13 @@ const Timetable = () => {
 
   return (
     <div className="min-h-screen dark:bg-gray-900 flex flex-col pb-10">
-      <Navbar />
+      <div className="h-[68px]">
+        <div className="fixed top-0 left-0 w-full z-[999]">
+          <Navbar />
+        </div>
+      </div>
       <div className="flex px-12 pt-12 gap-14">
-        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start">
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-50">
           <Sidebar />
         </div>
 

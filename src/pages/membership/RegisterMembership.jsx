@@ -62,7 +62,7 @@ const RegisterMembership = () => {
 
   const closePopupAndGoToProfile = () => {
     setShowPopup(false); // ซ่อน Pop-up
-    navigate("/profile"); // ไปหน้า Profile
+    navigate("/login"); // ไปหน้า Profile
   };
 
   return (
@@ -155,7 +155,7 @@ const RegisterMembership = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  วัน/เดือน/ปี *
+                  วัน/เดือน/ปี เริ่มประสบการณ์ *
                 </label>
                 <input
                   type="date"
@@ -264,7 +264,7 @@ const RegisterMembership = () => {
                 onClick={closePopupAndGoToProfile}
                 className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition"
               >
-                ไปหน้าโปรไฟล์
+                ไปหน้า
               </button>
             </div>
           </div>
