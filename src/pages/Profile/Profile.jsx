@@ -9,17 +9,18 @@ export default function Profile() {
       {/* Navbar */}
       <div className="h-[68px]">
         <div className="fixed top-0 left-0 w-full z-50">
-          <Navbar />
-        </div>
+        <Navbar />
       </div>
-
+      </div>
+      
+      
       {/* Content Section */}
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
-        <div className="lg:sticky lg:top-[88px] lg:self-start z-[10]">
+        <div className="hidden lg:block w-72 lg:sticky lg:top-[88px] lg:self-start z-40">
           <Sidebar />
         </div>
-
+        
         {/* Main Content */}
         <div className="flex-1 pb-10">
           <UserProfile />
