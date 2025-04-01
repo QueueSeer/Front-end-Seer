@@ -16,7 +16,7 @@ export default function Profile() {
       {/* Content Section */}
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
-        <div className="lg:sticky lg:top-[88px] lg:self-start">
+        <div className="lg:sticky lg:top-[88px] lg:self-start z-[10]">
           <Sidebar />
         </div>
 
