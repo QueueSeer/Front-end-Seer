@@ -74,7 +74,7 @@ const DetailsAppointment = () => {
         );
         if (data) {
           setPackageDetails({
-            packageName: data.package?.name || "ประมูลดูดวง" ,// เพิ่มการเช็คให้แน่ใจว่า package มีข้อมูล
+            packageName: data.package?.name || "ประมูลดูดวง", // เพิ่มการเช็คให้แน่ใจว่า package มีข้อมูล
             price: data.price ? parseInt(data.price, 10) : 0,
             duration: data.duration ? data.duration / 60 : 0,
             foretellChannel: data.foretell_channel || "chat",
@@ -111,25 +111,33 @@ const DetailsAppointment = () => {
   const isAppointmentToday = () => {
     const now = new Date();
     const appointmentDate = new Date(appointmentDetails.start_time);
-  
+
     const isSameDay =
       now.getDate() === appointmentDate.getDate() &&
       now.getMonth() === appointmentDate.getMonth() &&
       now.getFullYear() === appointmentDate.getFullYear();
-  
+
     const isTimeReached = appointmentDate <= now;
-  
+
     return isSameDay && isTimeReached;
   };
 
   // Function to check if the appointment is past 7 days from end_time
-const isAppointmentPast = () => {
-  const currentTime = new Date();
-  const appointmentEndTime = new Date(appointmentDetails.end_time);
-  appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
-  return currentTime > appointmentEndTime;
-};
+  const isAppointmentPast = () => {
+    const currentTime = new Date();
+    const appointmentEndTime = new Date(appointmentDetails.end_time);
+    appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
+    return currentTime > appointmentEndTime;
+  };
 
+  const isAppointmentTodayOrPast = () => {
+    const now = new Date();
+    const appointmentDate = new Date(appointmentDetails.start_time);
+    const appointmentEndTime = new Date(appointmentDetails.end_time);
+    appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
+    return now >= appointmentDate || now >= appointmentEndTime;
+  };
+  
 
   // Check if the appointment is past and update the status
   useEffect(() => {
@@ -228,7 +236,7 @@ const isAppointmentPast = () => {
                 onClick={handleCancel}
                 className="px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-full"
               />
-              {isAppointmentToday() ? (
+              {isAppointmentTodayOrPast() ? (
                 <>
                   <ButtonComponent
                     label="บริการเสร็จสิ้น"

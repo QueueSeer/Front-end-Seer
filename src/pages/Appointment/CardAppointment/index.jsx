@@ -63,6 +63,11 @@ const Appointment = () => {
     setTimeout(() => setCopiedCode(""), 15000); // Clear copied code after 15 seconds
   };
 
+  const isPastAppointmentEndTime = (endTime) => {
+    if (!endTime) return false;
+    return new Date() > new Date(endTime);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -79,12 +84,14 @@ const Appointment = () => {
     );
   }
 
-  // กรองสถานะและเรียงลำดับหลังจากที่ข้อมูลกรองจากตัวกรองเสร็จแล้ว
   const sortedFilteredAppointments = filteredAppointments
-    .filter(
-      (appointment) =>
-        appointment.status === "pending" || appointment.status === "u_cancelled"
-    )
+    .filter((appointment) => {
+      const isBeforeEndTime = !isPastAppointmentEndTime(appointment.end_time);
+      return (
+        appointment.status === "pending" ||
+        (appointment.status === "u_cancelled" && isBeforeEndTime)
+      );
+    })
     .sort((a, b) => new Date(a.start_time) - new Date(b.start_time)); // เรียงวันจากใกล้สุดไปไกลสุด
 
   return (
@@ -104,7 +111,7 @@ const Appointment = () => {
             >
               <AppointmentCard
                 image={appointment.client?.image || images.UserIcon} // เพิ่มการเช็คให้แน่ใจว่า client มีข้อมูล
-                name={appointment.client.display_name } 
+                name={appointment.client.display_name}
                 date={formatDate(appointment.start_time)}
                 time={formatTime(appointment.start_time)}
                 packageName={appointment.package?.name || "ประมูลดูดวง"} // เพิ่มการเช็คให้แน่ใจว่า package มีข้อมูล
