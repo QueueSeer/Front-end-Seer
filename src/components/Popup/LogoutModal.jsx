@@ -62,7 +62,7 @@ const LogoutModal = ({ isOpen, onClose, onLogout = () => {} }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[9999]">
       <div className="bg-white px-8 py-6 rounded-xl shadow-lg w-[450px] h-[400px] flex flex-col justify-between">
         {/* ส่วนหัว */}
         <div className="text-center">
