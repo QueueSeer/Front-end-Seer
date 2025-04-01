@@ -8,8 +8,8 @@ export default function Profile() {
   return (
     <div>
       <div className="h-[68px]">
-        <div className="fixed top-0 left-0 w-full z-[999]">
-          <Navbar />
+      <div className="fixed top-0 left-0 w-full z-50">
+      <Navbar />
         </div>
       </div>
       <div className="flex px-12 pt-12 gap-14">
