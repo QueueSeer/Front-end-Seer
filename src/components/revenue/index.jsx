@@ -7,6 +7,23 @@ import Pagination from "./element/Pagination";
 import FilterBar from "./element/FilterBar";
 import { fetchCoinsUser } from "../../Data/Profile/InfoDataUser";
 
+
+const getUniqueMonths = (transactions) => { 
+  const months = transactions.map((item) => {
+    const transactionDate = new Date(item.date_created);
+    return transactionDate.toLocaleString("th-TH", { month: "long" });
+  });
+
+  return [...new Set(months)].sort((a, b) => {
+    const monthOrder = [
+      "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+      "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+    ];
+    return monthOrder.indexOf(a) - monthOrder.indexOf(b);
+  });
+};
+
+
 const Revenue = () => {
   const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
@@ -31,13 +48,18 @@ const Revenue = () => {
       }
     };
 
-    getAccountBalance(); 
+    getAccountBalance();
   }, []);
 
-  // ฟังก์ชันสำหรับกรองข้อมูล
+  // กำหนดค่า uniqueMonths ก่อน
+  const uniqueMonths = getUniqueMonths(transactions) || [];
+
   const filteredTransactions = transactions.filter((item) => {
     const transactionDate = new Date(item.date_created);
     const now = new Date();
+    const transactionMonth = transactionDate.toLocaleString("th-TH", {
+      month: "long",
+    });
 
     if (dateFilter === "today") {
       return transactionDate.toDateString() === now.toDateString();
@@ -46,7 +68,11 @@ const Revenue = () => {
         transactionDate.getMonth() === now.getMonth() &&
         transactionDate.getFullYear() === now.getFullYear()
       );
+    } else if (uniqueMonths.includes(dateFilter)) {
+      // ✅ uniqueMonths ถูกกำหนดค่าแล้ว
+      return transactionMonth === dateFilter;
     }
+
     return true;
   });
 
@@ -76,6 +102,10 @@ const Revenue = () => {
     loadTransactions();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1); // รีเซ็ตหน้าปัจจุบันกลับไปที่หน้าแรก
+  }, [dateFilter]);
+
   // กรณีที่ยังโหลดข้อมูล
   if (loading)
     return (
@@ -86,34 +116,6 @@ const Revenue = () => {
   // กรณีที่เกิดข้อผิดพลาด
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
-  // ฟังก์ชันเพื่อดึงชื่อเดือนที่ไม่ซ้ำ
-  const getUniqueMonths = (transactions) => {
-    const months = transactions.map((item) => {
-      const transactionDate = new Date(item.date_created);
-      const month = transactionDate.toLocaleString("th-TH", { month: "long" });
-      return month;
-    });
-
-    return [...new Set(months)].sort((a, b) => {
-      const monthOrder = [
-        "มกราคม",
-        "กุมภาพันธ์",
-        "มีนาคม",
-        "เมษายน",
-        "พฤษภาคม",
-        "มิถุนายน",
-        "กรกฎาคม",
-        "สิงหาคม",
-        "กันยายน",
-        "ตุลาคม",
-        "พฤศจิกายน",
-        "ธันวาคม",
-      ];
-      return monthOrder.indexOf(a) - monthOrder.indexOf(b);
-    });
-  };
-
-  const uniqueMonths = getUniqueMonths(transactions);
 
   return (
     <div className="min-h-screen dark:bg-gray-900 flex justify-center items-start ">
@@ -139,7 +141,10 @@ const Revenue = () => {
           <div className="bg-[#8677A7] flex justify-between items-center w-full p-4 rounded-md shadow-md">
             <span className="text-white font-semibold text-[22px]">รวม</span>
             <span className="text-white font-semibold text-[22px]">
-              {accountBalance !== null ? accountBalance.toLocaleString() : "Loading..."} coins
+              {accountBalance !== null
+                ? accountBalance.toLocaleString()
+                : "Loading..."}{" "}
+              coins
             </span>
           </div>
           <div className="flex flex-col items-center ml-5">
