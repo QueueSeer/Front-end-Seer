@@ -5,7 +5,7 @@ const PackageNameInput = ({ packageName, setPackageName }) => {
   return (
     <div className="mb-4">
       <label htmlFor="package-name" className="block text-gray-700 font-medium mb-2">
-        ชื่อแพคเกจ
+        ชื่อแพ็กเกจ
       </label>
       <input
         id="package-name"
