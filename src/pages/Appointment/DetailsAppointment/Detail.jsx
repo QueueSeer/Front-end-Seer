@@ -135,11 +135,10 @@ const DetailsAppointment = () => {
     const appointmentDate = new Date(appointmentDetails.start_time);
     const appointmentEndTime = new Date(appointmentDetails.end_time);
     // appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
-    appointmentEndTime.setMinutes(appointmentEndTime.getMinutes() + 1); 
+    appointmentEndTime.setMinutes(appointmentEndTime.getMinutes() + 1);
 
     return now >= appointmentDate || now >= appointmentEndTime;
   };
-  
 
   // Check if the appointment is past and update the status
   useEffect(() => {
@@ -218,19 +217,26 @@ const DetailsAppointment = () => {
         )}
 
         <div className="flex justify-end space-x-6 mt-6 mb-2">
-          {["s_cancelled", "u_cancelled", "completed"].includes(
+          {["s_cancelled", "u_cancelled", "completed", "seer-cancel"].includes(
             appointmentDetails.status
           ) ? (
-            // Add condition for u_cancelled status
             appointmentDetails.status === "u_cancelled" ? (
               <div className="text-[20px] font-semibold text-secondary2/60 italic">
                 ลูกค้าได้ยกเลิกบริการ
+              </div>
+            ) : appointmentDetails.status === "s_cancelled" ? (
+              <div className="text-[20px] font-semibold text-red-500 italic">
+                คุณไม่ได้ดำเนินการภายในเวลาที่กำหนด (ระบบยกเลิกอัตโนมัติ)
               </div>
             ) : (
               <div className="text-[20px] font-semibold text-secondary2/60 italic">
                 คุณได้ยืนยันการให้บริการเรียบร้อย
               </div>
             )
+          ) : isAppointmentPast() ? (
+            <div className="text-[20px] font-semibold text-red-500 italic">
+              ระบบยกเลิกอัตโนมัติเนื่องจากเลยเวลานัดหมาย
+            </div>
           ) : (
             <>
               <ButtonComponent
@@ -239,13 +245,11 @@ const DetailsAppointment = () => {
                 className="px-8 py-3 text-base font-semibold text-red-600 border border-red-500 hover:bg-red-700 hover:text-white rounded-full"
               />
               {isAppointmentTodayOrPast() ? (
-                <>
-                  <ButtonComponent
-                    label="บริการเสร็จสิ้น"
-                    onClick={handleSave}
-                    className="px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
-                  />
-                </>
+                <ButtonComponent
+                  label="บริการเสร็จสิ้น"
+                  onClick={handleSave}
+                  className="px-8 py-3 text-base font-semibold text-green-600 border border-green-600 hover:bg-green-700 hover:text-white rounded-full"
+                />
               ) : (
                 <div className="mt-[16px] py-3 text-base font-semibold text-gray-500 rounded-full">
                   ยังไม่ถึงเวลาให้บริการ
