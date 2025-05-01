@@ -131,12 +131,22 @@ const DetailsAppointment = () => {
   };
 
   const isAppointmentTodayOrPast = () => {
+    if (
+      !appointmentDetails ||
+      !appointmentDetails.start_time ||
+      !appointmentDetails.end_time
+    ) {
+      return false; // หากไม่พบข้อมูลของ appointment จะไม่ให้ทำอะไร
+    }
+
     const now = new Date();
-    const appointmentDate = new Date(appointmentDetails.start_time);
-    const appointmentEndTime = new Date(appointmentDetails.end_time);
-    // appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
+    const appointmentStartTime = new Date(appointmentDetails.start_time); // ตรวจสอบให้แน่ใจว่ามีค่าถูกต้อง
+    const appointmentEndTime = new Date(appointmentDetails.end_time); // ตรวจสอบให้แน่ใจว่ามีค่าถูกต้อง
+
+    // เพิ่ม grace period 1 นาทีใน end_time
     appointmentEndTime.setMinutes(appointmentEndTime.getMinutes() + 1);
-    // ปุ่มจะแสดงเฉพาะช่วงเวลาเริ่มต้น ถึง สิ้นสุด + 1 นาที เท่านั้น
+
+    // เปรียบเทียบเวลาปัจจุบันกับเวลาเริ่มต้นและสิ้นสุด
     return now >= appointmentStartTime && now <= appointmentEndTime;
   };
 
