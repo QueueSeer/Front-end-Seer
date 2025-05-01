@@ -236,7 +236,9 @@ const DetailsAppointment = () => {
               </div>
             ) : appointmentDetails.status === "s_cancelled" ? (
               <div className="text-[20px] font-semibold text-red-500 italic">
-                คุณไม่ได้ดำเนินการภายในเวลาที่กำหนด (ระบบยกเลิกอัตโนมัติ)
+                {isAppointmentPast()
+                  ? "คุณไม่ได้ดำเนินการภายในเวลาที่กำหนด (ระบบยกเลิกอัตโนมัติ)"
+                  : "คุณได้ยกเลิกบริการ (ไม่สามารถแก้ไขได้)"}
               </div>
             ) : (
               <div className="text-[20px] font-semibold text-secondary2/60 italic">
