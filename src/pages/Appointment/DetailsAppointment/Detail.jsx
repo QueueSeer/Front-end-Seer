@@ -134,7 +134,9 @@ const DetailsAppointment = () => {
     const now = new Date();
     const appointmentDate = new Date(appointmentDetails.start_time);
     const appointmentEndTime = new Date(appointmentDetails.end_time);
-    appointmentEndTime.setDate(appointmentEndTime.getDate());
+    // appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
+    appointmentEndTime.setMinutes(appointmentEndTime.getMinutes() + 1); 
+
     return now >= appointmentDate || now >= appointmentEndTime;
   };
   
