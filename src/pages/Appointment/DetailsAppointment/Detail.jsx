@@ -136,8 +136,8 @@ const DetailsAppointment = () => {
     const appointmentEndTime = new Date(appointmentDetails.end_time);
     // appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
     appointmentEndTime.setMinutes(appointmentEndTime.getMinutes() + 1);
-
-    return now >= appointmentDate || now >= appointmentEndTime;
+    // ปุ่มจะแสดงเฉพาะช่วงเวลาเริ่มต้น ถึง สิ้นสุด + 1 นาที เท่านั้น
+    return now >= appointmentStartTime && now <= appointmentEndTime;
   };
 
   // Check if the appointment is past and update the status
