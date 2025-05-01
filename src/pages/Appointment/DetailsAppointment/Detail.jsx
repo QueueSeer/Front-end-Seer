@@ -127,7 +127,7 @@ const DetailsAppointment = () => {
     const appointmentEndTime = new Date(appointmentDetails.end_time);
 
     // เพิ่ม 7 วันใน appointmentEndTime
-    appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
+    appointmentEndTime.setMinutes(appointmentEndTime.getMinutes() + 7);
     return currentTime > appointmentEndTime; // ตรวจสอบว่าเวลาปัจจุบันเกินกว่าเวลาสิ้นสุดของนัดหมายแล้วหรือไม่
   };
 
@@ -144,7 +144,7 @@ const DetailsAppointment = () => {
     const appointmentStartTime = new Date(appointmentDetails.start_time); // ตรวจสอบให้แน่ใจว่ามีค่าถูกต้อง
     const appointmentEndTime = new Date(appointmentDetails.end_time); // ตรวจสอบให้แน่ใจว่ามีค่าถูกต้อง
 
-    appointmentEndTime.setDate(appointmentEndTime.getDate() + 7);
+    appointmentEndTime.setMinutes(appointmentEndTime.getMinutes() + 7);
 
     // เปรียบเทียบเวลาปัจจุบันกับเวลาเริ่มต้นและสิ้นสุด
     return now >= appointmentStartTime && now <= appointmentEndTime;
